@@ -19,7 +19,7 @@ export function DocsBreadcrumb({ tree, className }: { tree: PageTree.Root; class
             <BreadcrumbList>
                 <BreadcrumbItem>
                     <BreadcrumbLink asChild>
-                        <Link href="/docs/basics/introduction" className="hover:text-accent-foreground">
+                        <Link href="/docs" className="hover:text-accent-foreground">
                             Docs
                         </Link>
                     </BreadcrumbLink>

@@ -1,34 +1,14 @@
 "use client";
 
-import * as React from "react";
 import Link, { LinkProps } from "next/link";
 import { useRouter } from "next/navigation";
+import * as React from "react";
 
 import { showMcpDocs } from "@/lib/flags";
 import { source } from "@/lib/source";
 import { cn } from "@/lib/utils";
 import { Button } from "@/registry/new-york-v4/ui/button";
 import { Popover, PopoverContent, PopoverTrigger } from "@/registry/new-york-v4/ui/popover";
-
-const TOP_LEVEL_SECTIONS = [
-    { name: "Get Started", href: "/docs/basics/introduction" },
-    {
-        name: "Components",
-        href: "/docs/components"
-    },
-    {
-        name: "Registry",
-        href: "/docs/registry"
-    },
-    {
-        name: "MCP Server",
-        href: "/docs/mcp"
-    },
-    {
-        name: "Changelog",
-        href: "/docs/changelog"
-    }
-];
 
 export function MobileNav({ tree, items, className }: { tree: typeof source.pageTree; items: { href: string; label: string }[]; className?: string }) {
     const [open, setOpen] = React.useState(false);
@@ -60,21 +40,6 @@ export function MobileNav({ tree, items, className }: { tree: typeof source.page
                                     {item.label}
                                 </MobileLink>
                             ))}
-                        </div>
-                    </div>
-                    <div className="flex flex-col gap-4">
-                        <div className="text-muted-foreground text-sm font-medium">Sections</div>
-                        <div className="flex flex-col gap-3">
-                            {TOP_LEVEL_SECTIONS.map(({ name, href }) => {
-                                if (!showMcpDocs && href.includes("/mcp")) {
-                                    return null;
-                                }
-                                return (
-                                    <MobileLink key={name} href={href} onOpenChange={setOpen}>
-                                        {name}
-                                    </MobileLink>
-                                );
-                            })}
                         </div>
                     </div>
                     <div className="flex flex-col gap-8">
