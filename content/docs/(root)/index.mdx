@@ -8,11 +8,6 @@ component: true
 
 <CodeTabs>
 
-<TabsList>
-    <TabsTrigger value="cli">CLI</TabsTrigger>
-    <TabsTrigger value="manual">Manual</TabsTrigger>
-</TabsList>
-
 <TabsContent value="cli">
 
 ```bash
@@ -21,39 +16,26 @@ npx shadcn@latest add @shadcn-map/map
 
 </TabsContent>
 
-<TabsContent value="manual">
-
-<Steps>
-
-<Step>Install the following dependencies:</Step>
-
-```bash
-npm install leaflet react-leaflet
-```
-
-<Step>Copy and paste the following code into your project.</Step>
-
-<ComponentSource name="map" title="components/ui/map.tsx" />
-
-<Step>Update the import paths to match your project setup.</Step>
-
-</Steps>
-
-</TabsContent>
-
 </CodeTabs>
 
 ## Usage
 
 ```tsx showLineNumbers
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/map";
+import {
+    Map,
+    MapMarker,
+    MapPopup,
+    MapTileLayer,
+    MapZoomControl,
+} from "@/registry/new-york-v4/ui/map";
 ```
 
 ```tsx showLineNumbers
-<Accordion type="single" collapsible>
-    <AccordionItem value="item-1">
-        <AccordionTrigger>Is it accessible?</AccordionTrigger>
-        <AccordionContent>Yes. It adheres to the WAI-ARIA design pattern.</AccordionContent>
-    </AccordionItem>
-</Accordion>
+<Map center={[43.6532, -79.3832]}>
+    <MapTileLayer />
+    <MapZoomControl />
+    <MapMarker position={[43.6532, -79.3832]}>
+        <MapPopup>A map component for shadcn/ui.</MapPopup>
+    </MapMarker>
+</Map>
 ```

@@ -105,7 +105,7 @@ export const mdxComponents = {
     },
     Step: ({ className, ...props }: React.ComponentProps<"h3">) => <h3 className={cn("font-heading mt-8 scroll-m-32 text-xl font-medium tracking-tight", className)} {...props} />,
     Steps: ({ ...props }) => <div className="[&>h3]:step steps mb-12 [counter-reset:step] *:[h3]:first:!mt-0" {...props} />,
-    Image: ({ src, className, width, height, alt, ...props }: React.ComponentProps<"img">) => <Image className={cn("mt-6 rounded-md border", className)} src={src || ""} width={Number(width)} height={Number(height)} alt={alt || ""} {...props} />,
+    Image: ({ src, className, width, height, alt, ...props }: React.ComponentProps<"img">) => <Image className={cn("mt-6 rounded-md border", className)} src={src ? String(src) : ""} width={Number(width)} height={Number(height)} alt={alt || ""} {...props} />,
     Tabs: ({ className, ...props }: React.ComponentProps<typeof Tabs>) => {
         return <Tabs className={cn("relative mt-6 w-full", className)} {...props} />;
     },

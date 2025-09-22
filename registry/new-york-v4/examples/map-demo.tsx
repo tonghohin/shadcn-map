@@ -5,7 +5,7 @@ export function MapDemo() {
     const TORONTO_COORDINATES = [43.6532, -79.3832] satisfies LatLngExpression;
 
     return (
-        <Map center={TORONTO_COORDINATES} className="flex-1 border">
+        <Map center={TORONTO_COORDINATES} className="border">
             <MapTileLayer />
             <MapZoomControl />
             <MapMarker position={TORONTO_COORDINATES}>
