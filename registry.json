@@ -1,0 +1,41 @@
+{
+  "name": "shadcn/map",
+  "homepage": "https://shadcn-map.vercel.app",
+  "items": [
+    {
+      "name": "map",
+      "type": "registry:ui",
+      "dependencies": [
+        "leaflet",
+        "react-leaflet",
+        "next-themes"
+      ],
+      "devDependencies": [
+        "@types/leaflet"
+      ],
+      "registryDependencies": [
+        "button",
+        "skeleton"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york-v4/ui/map.tsx",
+          "type": "registry:ui"
+        }
+      ]
+    },
+    {
+      "name": "map-demo",
+      "type": "registry:example",
+      "registryDependencies": [
+        "map"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york-v4/examples/map-demo.tsx",
+          "type": "registry:example"
+        }
+      ]
+    }
+  ]
+}
