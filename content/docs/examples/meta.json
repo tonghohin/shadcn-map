@@ -1,4 +1,4 @@
 {
     "title": "Examples",
-    "pages": ["index"]
+    "pages": ["index", "zoom-control"]
 }
