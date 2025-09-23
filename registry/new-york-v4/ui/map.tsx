@@ -20,6 +20,7 @@ import type {
     PopupProps,
     RectangleProps,
     TileLayerProps,
+    TooltipProps,
 } from "react-leaflet"
 import { useMap } from "react-leaflet"
 
@@ -38,6 +39,9 @@ const Marker = dynamic(async () => (await import("react-leaflet")).Marker, {
     ssr: false,
 })
 const Popup = dynamic(async () => (await import("react-leaflet")).Popup, {
+    ssr: false,
+})
+const Tooltip = dynamic(async () => (await import("react-leaflet")).Tooltip, {
     ssr: false,
 })
 const Circle = dynamic(async () => (await import("react-leaflet")).Circle, {
@@ -137,6 +141,21 @@ function MapPopup({ className, ...props }: PopupProps) {
                 "bg-popover text-popover-foreground data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 z-50 w-72 origin-(--radix-popover-content-transform-origin) rounded-md border p-4 font-sans shadow-md outline-hidden",
                 className
             )}
+            {...props}
+        />
+    )
+}
+
+function MapTooltip({ className, ...props }: TooltipProps) {
+    return (
+        <Tooltip
+            className={cn(
+                "animate-in fade-in-0 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 z-50 w-fit origin-(--radix-tooltip-content-transform-origin) text-xs text-balance",
+                className
+            )}
+            direction="top"
+            offset={[0, -15]}
+            permanent
             {...props}
         />
     )
@@ -243,5 +262,6 @@ export {
     MapPopup,
     MapRectangle,
     MapTileLayer,
+    MapTooltip,
     MapZoomControl,
 }
