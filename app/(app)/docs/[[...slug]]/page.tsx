@@ -1,42 +1,42 @@
-import { mdxComponents } from "@/mdx-components";
+import { mdxComponents } from "@/mdx-components"
 import {
     IconArrowLeft,
     IconArrowRight,
     IconArrowUpRight,
-} from "@tabler/icons-react";
-import { findNeighbour } from "fumadocs-core/server";
-import Link from "next/link";
-import { notFound } from "next/navigation";
+} from "@tabler/icons-react"
+import { findNeighbour } from "fumadocs-core/server"
+import Link from "next/link"
+import { notFound } from "next/navigation"
 
-import { DocsCopyPage } from "@/components/docs-copy-page";
-import { DocsTableOfContents } from "@/components/docs-toc";
-import { source } from "@/lib/source";
-import { absoluteUrl } from "@/lib/utils";
-import { Badge } from "@/registry/new-york-v4/ui/badge";
-import { Button } from "@/registry/new-york-v4/ui/button";
+import { DocsCopyPage } from "@/components/docs-copy-page"
+import { DocsTableOfContents } from "@/components/docs-toc"
+import { source } from "@/lib/source"
+import { absoluteUrl } from "@/lib/utils"
+import { Badge } from "@/registry/new-york-v4/ui/badge"
+import { Button } from "@/registry/new-york-v4/ui/button"
 
-export const revalidate = false;
-export const dynamic = "force-static";
-export const dynamicParams = false;
+export const revalidate = false
+export const dynamic = "force-static"
+export const dynamicParams = false
 
 export function generateStaticParams() {
-    return source.generateParams();
+    return source.generateParams()
 }
 
 export async function generateMetadata(props: {
-    params: Promise<{ slug?: string[] }>;
+    params: Promise<{ slug?: string[] }>
 }) {
-    const params = await props.params;
-    const page = source.getPage(params.slug);
+    const params = await props.params
+    const page = source.getPage(params.slug)
 
     if (!page) {
-        notFound();
+        notFound()
     }
 
-    const doc = page.data;
+    const doc = page.data
 
     if (!doc.title || !doc.description) {
-        notFound();
+        notFound()
     }
 
     return {
@@ -64,25 +64,25 @@ export async function generateMetadata(props: {
             ],
             creator: "@shadcn",
         },
-    };
+    }
 }
 
 export default async function Page(props: {
-    params: Promise<{ slug?: string[] }>;
+    params: Promise<{ slug?: string[] }>
 }) {
-    const params = await props.params;
-    const page = source.getPage(params.slug);
+    const params = await props.params
+    const page = source.getPage(params.slug)
     if (!page) {
-        notFound();
+        notFound()
     }
 
-    const doc = page.data;
+    const doc = page.data
     // @ts-expect-error - revisit fumadocs types.
-    const MDX = doc.body;
-    const neighbours = await findNeighbour(source.pageTree, page.url);
+    const MDX = doc.body
+    const neighbours = await findNeighbour(source.pageTree, page.url)
 
     // @ts-expect-error - revisit fumadocs types.
-    const links = doc.links;
+    const links = doc.links
 
     return (
         <div
@@ -206,5 +206,5 @@ export default async function Page(props: {
                 ) : null}
             </div>
         </div>
-    );
+    )
 }
