@@ -28,7 +28,7 @@ export function CopyButton({
 }: React.ComponentProps<typeof Button> & {
     value: string
     src?: string
-    event?: Event["name"]
+    event?: Event["action"]
 }) {
     const [hasCopied, setHasCopied] = React.useState(false)
 
@@ -54,10 +54,8 @@ export function CopyButton({
                             value,
                             event
                                 ? {
-                                      name: event,
-                                      properties: {
-                                          code: value,
-                                      },
+                                      action: event,
+                                      identifier: value,
                                   }
                                 : undefined
                         )

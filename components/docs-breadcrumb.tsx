@@ -1,25 +1,40 @@
-"use client";
+"use client"
 
-import { Fragment } from "react";
-import Link from "next/link";
-import { usePathname } from "next/navigation";
-import { useBreadcrumb } from "fumadocs-core/breadcrumb";
-import type { PageTree } from "fumadocs-core/server";
+import { Fragment } from "react"
+import Link from "next/link"
+import { usePathname } from "next/navigation"
+import { useBreadcrumb } from "fumadocs-core/breadcrumb"
+import type { PageTree } from "fumadocs-core/server"
 
-import { Breadcrumb, BreadcrumbItem, BreadcrumbLink, BreadcrumbList, BreadcrumbPage, BreadcrumbSeparator } from "@/registry/new-york-v4/ui/breadcrumb";
+import {
+    Breadcrumb,
+    BreadcrumbItem,
+    BreadcrumbLink,
+    BreadcrumbList,
+    BreadcrumbPage,
+    BreadcrumbSeparator,
+} from "@/registry/new-york-v4/ui/breadcrumb"
 
-export function DocsBreadcrumb({ tree, className }: { tree: PageTree.Root; className?: string }) {
-    const pathname = usePathname();
-    const items = useBreadcrumb(pathname, tree);
+export function DocsBreadcrumb({
+    tree,
+    className,
+}: {
+    tree: PageTree.Root
+    className?: string
+}) {
+    const pathname = usePathname()
+    const items = useBreadcrumb(pathname, tree)
 
-    if (items.length === 0) return null;
+    if (items.length === 0) return null
 
     return (
         <Breadcrumb className={className}>
             <BreadcrumbList>
                 <BreadcrumbItem>
                     <BreadcrumbLink asChild>
-                        <Link href="/docs" className="hover:text-accent-foreground">
+                        <Link
+                            href="/docs"
+                            className="hover:text-accent-foreground">
                             Docs
                         </Link>
                     </BreadcrumbLink>
@@ -31,7 +46,9 @@ export function DocsBreadcrumb({ tree, className }: { tree: PageTree.Root; class
                         {item.url ? (
                             <BreadcrumbItem>
                                 <BreadcrumbLink asChild>
-                                    <Link href={item.url} className="hover:text-accent-foreground truncate">
+                                    <Link
+                                        href={item.url}
+                                        className="hover:text-accent-foreground truncate">
                                         {item.name}
                                     </Link>
                                 </BreadcrumbLink>
@@ -45,5 +62,5 @@ export function DocsBreadcrumb({ tree, className }: { tree: PageTree.Root; class
                 ))}
             </BreadcrumbList>
         </Breadcrumb>
-    );
+    )
 }

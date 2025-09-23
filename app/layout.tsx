@@ -1,13 +1,13 @@
 import type { Metadata } from "next"
 
 import { ActiveThemeProvider } from "@/components/active-theme"
-import { Analytics } from "@/components/analytics"
 import { ThemeProvider } from "@/components/theme-provider"
 import { LayoutProvider } from "@/hooks/use-layout"
 import { META_THEME_COLORS, siteConfig } from "@/lib/config"
 import { fontVariables } from "@/lib/fonts"
 import { cn } from "@/lib/utils"
 
+import { ClarityScript } from "@/components/clarity-script"
 import "@/styles/globals.css"
 
 export const metadata: Metadata = {
@@ -73,7 +73,7 @@ export default function RootLayout({
                     <LayoutProvider>
                         <ActiveThemeProvider>
                             {children}
-                            <Analytics />
+                            <ClarityScript />
                         </ActiveThemeProvider>
                     </LayoutProvider>
                 </ThemeProvider>

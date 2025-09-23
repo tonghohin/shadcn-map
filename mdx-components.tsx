@@ -1,36 +1,36 @@
-import Image from "next/image";
-import Link from "next/link";
-import * as React from "react";
+import Image from "next/image"
+import Link from "next/link"
+import * as React from "react"
 
-import { Callout } from "@/components/callout";
-import { CodeBlockCommand } from "@/components/code-block-command";
-import { CodeCollapsibleWrapper } from "@/components/code-collapsible-wrapper";
-import { CodeTabs } from "@/components/code-tabs";
-import { ComponentPreview } from "@/components/component-preview";
-import { ComponentSource } from "@/components/component-source";
-import { ComponentsList } from "@/components/components-list";
-import { CopyButton } from "@/components/copy-button";
-import { getIconForLanguageExtension } from "@/components/icons";
-import { cn } from "@/lib/utils";
+import { Callout } from "@/components/callout"
+import { CodeBlockCommand } from "@/components/code-block-command"
+import { CodeCollapsibleWrapper } from "@/components/code-collapsible-wrapper"
+import { CodeTabs } from "@/components/code-tabs"
+import { ComponentPreview } from "@/components/component-preview"
+import { ComponentSource } from "@/components/component-source"
+import { ComponentsList } from "@/components/components-list"
+import { CopyButton } from "@/components/copy-button"
+import { getIconForLanguageExtension } from "@/components/icons"
+import { cn } from "@/lib/utils"
 import {
     Accordion,
     AccordionContent,
     AccordionItem,
     AccordionTrigger,
-} from "@/registry/new-york-v4/ui/accordion";
+} from "@/registry/new-york-v4/ui/accordion"
 import {
     Alert,
     AlertDescription,
     AlertTitle,
-} from "@/registry/new-york-v4/ui/alert";
-import { AspectRatio } from "@/registry/new-york-v4/ui/aspect-ratio";
-import { Button } from "@/registry/new-york-v4/ui/button";
+} from "@/registry/new-york-v4/ui/alert"
+import { AspectRatio } from "@/registry/new-york-v4/ui/aspect-ratio"
+import { Button } from "@/registry/new-york-v4/ui/button"
 import {
     Tabs,
     TabsContent,
     TabsList,
     TabsTrigger,
-} from "@/registry/new-york-v4/ui/tabs";
+} from "@/registry/new-york-v4/ui/tabs"
 
 export const mdxComponents = {
     h1: ({ className, ...props }: React.ComponentProps<"h1">) => (
@@ -57,7 +57,7 @@ export const mdxComponents = {
                 )}
                 {...props}
             />
-        );
+        )
     },
     h3: ({ className, ...props }: React.ComponentProps<"h3">) => (
         <h3
@@ -186,10 +186,10 @@ export const mdxComponents = {
                 {...props}>
                 {children}
             </pre>
-        );
+        )
     },
     figure: ({ className, ...props }: React.ComponentProps<"figure">) => {
-        return <figure className={cn(className)} {...props} />;
+        return <figure className={cn(className)} {...props} />
     },
     figcaption: ({
         className,
@@ -200,7 +200,7 @@ export const mdxComponents = {
             "data-language" in props &&
             typeof props["data-language"] === "string"
                 ? getIconForLanguageExtension(props["data-language"])
-                : null;
+                : null
 
         return (
             <figcaption
@@ -212,7 +212,7 @@ export const mdxComponents = {
                 {iconExtension}
                 {children}
             </figcaption>
-        );
+        )
     },
     code: ({
         className,
@@ -224,12 +224,12 @@ export const mdxComponents = {
         __bun__,
         ...props
     }: React.ComponentProps<"code"> & {
-        __raw__?: string;
-        __src__?: string;
-        __npm__?: string;
-        __yarn__?: string;
-        __pnpm__?: string;
-        __bun__?: string;
+        __raw__?: string
+        __src__?: string
+        __npm__?: string
+        __yarn__?: string
+        __pnpm__?: string
+        __bun__?: string
     }) => {
         // Inline Code.
         if (typeof props.children === "string") {
@@ -241,11 +241,11 @@ export const mdxComponents = {
                     )}
                     {...props}
                 />
-            );
+            )
         }
 
         // npm command.
-        const isNpmCommand = __npm__ && __yarn__ && __pnpm__ && __bun__;
+        const isNpmCommand = __npm__ && __yarn__ && __pnpm__ && __bun__
         if (isNpmCommand) {
             return (
                 <CodeBlockCommand
@@ -254,7 +254,7 @@ export const mdxComponents = {
                     __pnpm__={__pnpm__}
                     __bun__={__bun__}
                 />
-            );
+            )
         }
 
         // Default codeblock.
@@ -263,7 +263,7 @@ export const mdxComponents = {
                 {__raw__ && <CopyButton value={__raw__} src={__src__} />}
                 <code {...props} />
             </>
-        );
+        )
     },
     Step: ({ className, ...props }: React.ComponentProps<"h3">) => (
         <h3
@@ -303,7 +303,7 @@ export const mdxComponents = {
                 className={cn("relative mt-6 w-full", className)}
                 {...props}
             />
-        );
+        )
     },
     TabsList: ({
         className,
@@ -380,4 +380,4 @@ export const mdxComponents = {
             {...props}
         />
     ),
-};
+}

@@ -1,4 +1,4 @@
-import { type Registry } from "shadcn/schema";
+import { type Registry } from "shadcn/schema"
 
 export const ui: Registry["items"] = [
     {
@@ -10,8 +10,8 @@ export const ui: Registry["items"] = [
         files: [
             {
                 path: "ui/map.tsx",
-                type: "registry:ui"
-            }
-        ]
-    }
-];
+                type: "registry:ui",
+            },
+        ],
+    },
+]

@@ -110,11 +110,8 @@ export function CommandMenu({
                 runCommand(() => {
                     if (selectedType === "block") {
                         copyToClipboardWithMeta(copyPayload, {
-                            name: "copy_npm_command",
-                            properties: {
-                                command: copyPayload,
-                                pm: packageManager,
-                            },
+                            action: "copy_npm_command",
+                            identifier: copyPayload,
                         })
                     }
 
@@ -123,11 +120,8 @@ export function CommandMenu({
                         selectedType === "component"
                     ) {
                         copyToClipboardWithMeta(copyPayload, {
-                            name: "copy_npm_command",
-                            properties: {
-                                command: copyPayload,
-                                pm: packageManager,
-                            },
+                            action: "copy_npm_command",
+                            identifier: copyPayload,
                         })
                     }
                 })

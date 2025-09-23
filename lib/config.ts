@@ -1,24 +1,25 @@
 export const siteConfig = {
     name: "shadcn map",
     url: "https://shadcn-map.vercel.app",
-    description: "A map component built for shadcn/ui using Leaflet and React Leaflet",
+    description:
+        "A map component built for shadcn/ui using Leaflet and React Leaflet",
     links: {
         website: "https://tonghohin.vercel.app",
-        github: "https://github.com/tonghohin/shadcn-map"
+        github: "https://github.com/tonghohin/shadcn-map",
     },
     navItems: [
         {
             href: "/docs",
-            label: "Docs"
+            label: "Docs",
         },
         {
             href: "/docs/examples",
-            label: "Examples"
-        }
-    ]
-};
+            label: "Examples",
+        },
+    ],
+}
 
 export const META_THEME_COLORS = {
     light: "#ffffff",
-    dark: "#09090b"
-};
+    dark: "#09090b",
+}
