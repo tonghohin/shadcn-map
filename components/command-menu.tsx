@@ -1,8 +1,11 @@
 "use client"
 
 import { type DialogProps } from "@radix-ui/react-dialog"
-import { IconArrowRight } from "@tabler/icons-react"
-import { CornerDownLeftIcon, SquareDashedIcon } from "lucide-react"
+import {
+    ArrowRightIcon,
+    CornerDownLeftIcon,
+    SquareDashedIcon,
+} from "lucide-react"
 import { useRouter } from "next/navigation"
 import * as React from "react"
 
@@ -204,7 +207,7 @@ export function CommandMenu({
                                                 router.push(item.href)
                                             )
                                         }}>
-                                        <IconArrowRight />
+                                        <ArrowRightIcon />
                                         {item.label}
                                     </CommandMenuItem>
                                 ))}
@@ -252,7 +255,7 @@ export function CommandMenu({
                                                     {isComponent ? (
                                                         <div className="border-muted-foreground aspect-square size-4 rounded-full border border-dashed" />
                                                     ) : (
-                                                        <IconArrowRight />
+                                                        <ArrowRightIcon />
                                                     )}
                                                     {item.name}
                                                 </CommandMenuItem>

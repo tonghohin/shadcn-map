@@ -1,7 +1,5 @@
 "use client"
 
-import { IconCheck, IconChevronDown, IconCopy } from "@tabler/icons-react"
-
 import { useCopyToClipboard } from "@/hooks/use-copy-to-clipboard"
 import { Button } from "@/registry/new-york-v4/ui/button"
 import {
@@ -17,6 +15,7 @@ import {
     PopoverTrigger,
 } from "@/registry/new-york-v4/ui/popover"
 import { Separator } from "@/registry/new-york-v4/ui/separator"
+import { CheckIcon, ChevronDownCircle, CopyIcon } from "lucide-react"
 
 function getPromptUrl(baseURL: string, url: string) {
     return `${baseURL}?q=${encodeURIComponent(
@@ -93,7 +92,7 @@ export function DocsCopyPage({ page, url }: { page: string; url: string }) {
             variant="secondary"
             size="sm"
             className="peer -ml-0.5 size-8 shadow-none md:size-7 md:text-[0.8rem]">
-            <IconChevronDown className="rotate-180 sm:rotate-0" />
+            <ChevronDownCircle className="rotate-180 sm:rotate-0" />
         </Button>
     )
 
@@ -106,7 +105,7 @@ export function DocsCopyPage({ page, url }: { page: string; url: string }) {
                     size="sm"
                     className="h-8 shadow-none md:h-7 md:text-[0.8rem]"
                     onClick={() => copyToClipboard(page)}>
-                    {isCopied ? <IconCheck /> : <IconCopy />}
+                    {isCopied ? <CheckIcon /> : <CopyIcon />}
                     Copy Page
                 </Button>
                 <DropdownMenu>

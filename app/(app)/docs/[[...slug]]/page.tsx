@@ -1,9 +1,4 @@
 import { mdxComponents } from "@/mdx-components"
-import {
-    IconArrowLeft,
-    IconArrowRight,
-    IconArrowUpRight,
-} from "@tabler/icons-react"
 import { findNeighbour } from "fumadocs-core/server"
 import Link from "next/link"
 import { notFound } from "next/navigation"
@@ -14,6 +9,7 @@ import { source } from "@/lib/source"
 import { absoluteUrl } from "@/lib/utils"
 import { Badge } from "@/registry/new-york-v4/ui/badge"
 import { Button } from "@/registry/new-york-v4/ui/button"
+import { ArrowLeftIcon, ArrowRightIcon, ArrowUpRightIcon } from "lucide-react"
 
 export const revalidate = false
 export const dynamic = "force-static"
@@ -111,7 +107,7 @@ export default async function Page(props: {
                                             asChild>
                                             <Link
                                                 href={neighbours.previous.url}>
-                                                <IconArrowLeft />
+                                                <ArrowLeftIcon />
                                                 <span className="sr-only">
                                                     Previous
                                                 </span>
@@ -128,7 +124,7 @@ export default async function Page(props: {
                                                 <span className="sr-only">
                                                     Next
                                                 </span>
-                                                <IconArrowRight />
+                                                <ArrowRightIcon />
                                             </Link>
                                         </Button>
                                     )}
@@ -148,7 +144,7 @@ export default async function Page(props: {
                                             href={links.doc}
                                             target="_blank"
                                             rel="noreferrer">
-                                            Docs <IconArrowUpRight />
+                                            Docs <ArrowUpRightIcon />
                                         </Link>
                                     </Badge>
                                 )}
@@ -158,7 +154,7 @@ export default async function Page(props: {
                                             href={links.api}
                                             target="_blank"
                                             rel="noreferrer">
-                                            API Reference <IconArrowUpRight />
+                                            API Reference <ArrowUpRightIcon />
                                         </Link>
                                     </Badge>
                                 )}
@@ -177,7 +173,7 @@ export default async function Page(props: {
                             asChild
                             className="shadow-none">
                             <Link href={neighbours.previous.url}>
-                                <IconArrowLeft /> {neighbours.previous.name}
+                                <ArrowLeftIcon /> {neighbours.previous.name}
                             </Link>
                         </Button>
                     )}
@@ -188,7 +184,7 @@ export default async function Page(props: {
                             className="ml-auto shadow-none"
                             asChild>
                             <Link href={neighbours.next.url}>
-                                {neighbours.next.name} <IconArrowRight />
+                                {neighbours.next.name} <ArrowRightIcon />
                             </Link>
                         </Button>
                     )}
