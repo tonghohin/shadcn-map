@@ -1,5 +1,6 @@
 import {
     Map,
+    MapCircle,
     MapMarker,
     MapPopup,
     MapTileLayer,
@@ -17,6 +18,7 @@ export function MapDemo() {
             <MapMarker position={TORONTO_COORDINATES}>
                 <MapPopup>A map component for shadcn/ui.</MapPopup>
             </MapMarker>
+            <MapCircle center={TORONTO_COORDINATES} radius={200} />
         </Map>
     )
 }
