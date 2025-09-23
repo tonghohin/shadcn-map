@@ -14,7 +14,6 @@
         "format:check": "prettier --check \"**/*.{ts,tsx,mdx}\" --cache",
         "lint-staged": "lint-staged",
         "registry:build": "npx tsx --tsconfig ./tsconfig.scripts.json ./scripts/build-registry.mts && prettier --log-level silent --write \"registry/**/*.{ts,tsx,json,mdx}\" --cache",
-        "registry:capture": "tsx --tsconfig ./tsconfig.scripts.json ./scripts/capture-registry.mts",
         "postinstall": "fumadocs-mdx"
     },
     "dependencies": {

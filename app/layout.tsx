@@ -2,13 +2,11 @@ import type { Metadata } from "next"
 
 import { ActiveThemeProvider } from "@/components/active-theme"
 import { Analytics } from "@/components/analytics"
-import { TailwindIndicator } from "@/components/tailwind-indicator"
 import { ThemeProvider } from "@/components/theme-provider"
 import { LayoutProvider } from "@/hooks/use-layout"
 import { META_THEME_COLORS, siteConfig } from "@/lib/config"
 import { fontVariables } from "@/lib/fonts"
 import { cn } from "@/lib/utils"
-import { Toaster } from "@/registry/new-york-v4/ui/sonner"
 
 import "@/styles/globals.css"
 
@@ -75,8 +73,6 @@ export default function RootLayout({
                     <LayoutProvider>
                         <ActiveThemeProvider>
                             {children}
-                            <TailwindIndicator />
-                            <Toaster position="top-center" />
                             <Analytics />
                         </ActiveThemeProvider>
                     </LayoutProvider>
