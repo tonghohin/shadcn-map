@@ -1,0 +1,13 @@
+{
+    "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+    "name": "map-with-rectangle",
+    "type": "registry:example",
+    "registryDependencies": ["map"],
+    "files": [
+        {
+            "path": "registry/new-york-v4/examples/map-with-rectangle.tsx",
+            "content": "import { Map, MapRectangle, MapTileLayer } from \"@/registry/new-york-v4/ui/map\"\nimport type { LatLngBoundsExpression } from \"leaflet\"\n\nexport function MapWithRectangle() {\n    const BOUNDS = [\n        [43.65, -79.387],\n        [43.6565, -79.379],\n    ] satisfies LatLngBoundsExpression\n\n    return (\n        <Map center={BOUNDS[0]} zoom={14}>\n            <MapTileLayer />\n            <MapRectangle bounds={BOUNDS} />\n        </Map>\n    )\n}\n",
+            "type": "registry:example"
+        }
+    ]
+}

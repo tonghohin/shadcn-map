@@ -1,0 +1,13 @@
+{
+    "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+    "name": "map-with-polyline",
+    "type": "registry:example",
+    "registryDependencies": ["map"],
+    "files": [
+        {
+            "path": "registry/new-york-v4/examples/map-with-polyline.tsx",
+            "content": "import { Map, MapPolyline, MapTileLayer } from \"@/registry/new-york-v4/ui/map\"\nimport type { LatLngExpression } from \"leaflet\"\n\nexport function MapWithPolyline() {\n    const POINTS = [\n        [43.6532, -79.3832],\n        [43.6545, -79.38],\n    ] satisfies LatLngExpression[]\n\n    return (\n        <Map center={POINTS[0]}>\n            <MapTileLayer />\n            <MapPolyline positions={POINTS} />\n        </Map>\n    )\n}\n",
+            "type": "registry:example"
+        }
+    ]
+}

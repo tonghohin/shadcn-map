@@ -45,4 +45,59 @@ export const examples: Registry["items"] = [
             },
         ],
     },
+    {
+        name: "map-with-circle",
+        type: "registry:example",
+        registryDependencies: ["map"],
+        files: [
+            {
+                path: "examples/map-with-circle.tsx",
+                type: "registry:example",
+            },
+        ],
+    },
+    {
+        name: "map-with-circle-marker",
+        type: "registry:example",
+        registryDependencies: ["map"],
+        files: [
+            {
+                path: "examples/map-with-circle-marker.tsx",
+                type: "registry:example",
+            },
+        ],
+    },
+    {
+        name: "map-with-polyline",
+        type: "registry:example",
+        registryDependencies: ["map"],
+        files: [
+            {
+                path: "examples/map-with-polyline.tsx",
+                type: "registry:example",
+            },
+        ],
+    },
+    {
+        name: "map-with-polygon",
+        type: "registry:example",
+        registryDependencies: ["map"],
+        files: [
+            {
+                path: "examples/map-with-polygon.tsx",
+                type: "registry:example",
+            },
+        ],
+    },
+    {
+        name: "map-with-rectangle",
+        type: "registry:example",
+        registryDependencies: ["map"],
+        files: [
+            {
+                path: "examples/map-with-rectangle.tsx",
+                type: "registry:example",
+            },
+        ],
+    },
 ]

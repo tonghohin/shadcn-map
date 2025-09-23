@@ -1,0 +1,13 @@
+{
+    "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+    "name": "map-with-polygon",
+    "type": "registry:example",
+    "registryDependencies": ["map"],
+    "files": [
+        {
+            "path": "registry/new-york-v4/examples/map-with-polygon.tsx",
+            "content": "import { Map, MapPolygon, MapTileLayer } from \"@/registry/new-york-v4/ui/map\"\nimport type { LatLngExpression } from \"leaflet\"\n\nexport function MapWithPolygon() {\n    const BOUNDS = [\n        [43.65, -79.387],\n        [43.657, -79.38],\n        [43.649, -79.379],\n    ] satisfies LatLngExpression[]\n\n    return (\n        <Map center={BOUNDS[0]} zoom={14}>\n            <MapTileLayer />\n            <MapPolygon positions={BOUNDS} />\n        </Map>\n    )\n}\n",
+            "type": "registry:example"
+        }
+    ]
+}
