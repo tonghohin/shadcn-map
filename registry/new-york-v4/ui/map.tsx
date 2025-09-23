@@ -1,22 +1,22 @@
-"use client";
+"use client"
 
-import { cn } from "@/lib/utils";
-import { Button } from "@/registry/new-york-v4/ui/button";
-import { Skeleton } from "@/registry/new-york-v4/ui/skeleton";
-import type { DivIconOptions, LatLngExpression } from "leaflet";
-import "leaflet/dist/leaflet.css";
-import { LucideProps, MapPinIcon, MinusIcon, PlusIcon } from "lucide-react";
-import { useTheme } from "next-themes";
-import dynamic from "next/dynamic";
-import { useEffect, useState, type ReactNode } from "react";
-import { renderToString } from "react-dom/server";
+import { cn } from "@/lib/utils"
+import { Button } from "@/registry/new-york-v4/ui/button"
+import { Skeleton } from "@/registry/new-york-v4/ui/skeleton"
+import type { DivIconOptions, LatLngExpression } from "leaflet"
+import "leaflet/dist/leaflet.css"
+import { LucideProps, MapPinIcon, MinusIcon, PlusIcon } from "lucide-react"
+import { useTheme } from "next-themes"
+import dynamic from "next/dynamic"
+import { useEffect, useState, type ReactNode } from "react"
+import { renderToString } from "react-dom/server"
 import type {
     MapContainerProps,
     MarkerProps,
     PopupProps,
     TileLayerProps,
-} from "react-leaflet";
-import { useMap } from "react-leaflet";
+} from "react-leaflet"
+import { useMap } from "react-leaflet"
 
 const MapContainer = dynamic(
     async () => (await import("react-leaflet")).MapContainer,
@@ -24,23 +24,23 @@ const MapContainer = dynamic(
         ssr: false,
         loading: () => <Skeleton className="size-full" />,
     }
-);
+)
 const TileLayer = dynamic(
     async () => (await import("react-leaflet")).TileLayer,
     { ssr: false }
-);
+)
 const Marker = dynamic(async () => (await import("react-leaflet")).Marker, {
     ssr: false,
-});
+})
 const Popup = dynamic(async () => (await import("react-leaflet")).Popup, {
     ssr: false,
-});
+})
 
 function Map({
     className,
     ...props
 }: MapContainerProps & { center: LatLngExpression }) {
-    const INITIAL_ZOOM = 15;
+    const INITIAL_ZOOM = 15
 
     return (
         <MapContainer
@@ -50,13 +50,13 @@ function Map({
             className={cn("size-full flex-1 rounded-md", className)}
             {...props}
         />
-    );
+    )
 }
 
 function MapTileLayer({ attribution, url, ...props }: Partial<TileLayerProps>) {
-    const { resolvedTheme } = useTheme();
-    const style = resolvedTheme === "dark" ? "dark_all" : "light_all";
-    const tileUrl = `https://{s}.basemaps.cartocdn.com/${style}/{z}/{x}/{y}.png`;
+    const { resolvedTheme } = useTheme()
+    const style = resolvedTheme === "dark" ? "dark_all" : "light_all"
+    const tileUrl = `https://{s}.basemaps.cartocdn.com/${style}/{z}/{x}/{y}.png`
 
     return (
         <TileLayer
@@ -64,11 +64,11 @@ function MapTileLayer({ attribution, url, ...props }: Partial<TileLayerProps>) {
             url={tileUrl}
             {...props}
         />
-    );
+    )
 }
 
 function MapDefaultMarkerIcon({ ...props }: LucideProps) {
-    return <MapPinIcon {...props} />;
+    return <MapPinIcon {...props} />
 }
 
 function MapMarker({
@@ -83,10 +83,10 @@ function MapMarker({
         DivIconOptions,
         "bgPos" | "iconAnchor" | "popupAnchor" | "tooltipAnchor"
     > & {
-        icon?: ReactNode;
+        icon?: ReactNode
     }) {
-    const L = useLeaflet();
-    if (!L) return null;
+    const L = useLeaflet()
+    if (!L) return null
 
     return (
         <Marker
@@ -100,7 +100,7 @@ function MapMarker({
             riseOnHover
             {...props}
         />
-    );
+    )
 }
 
 function MapPopup({ className, ...props }: PopupProps) {
@@ -112,14 +112,14 @@ function MapPopup({ className, ...props }: PopupProps) {
             )}
             {...props}
         />
-    );
+    )
 }
 
 function MapZoomControl({ className, ...props }: React.ComponentProps<"div">) {
-    const map = useMap();
-    const mapZoom = map.getZoom();
-    const mapMaxZoom = map.getMaxZoom();
-    const mapMinZoom = map.getMinZoom();
+    const map = useMap()
+    const mapZoom = map.getZoom()
+    const mapMaxZoom = map.getMaxZoom()
+    const mapMinZoom = map.getMinZoom()
 
     return (
         <div
@@ -142,22 +142,22 @@ function MapZoomControl({ className, ...props }: React.ComponentProps<"div">) {
                 <MinusIcon />
             </Button>
         </div>
-    );
+    )
 }
 
 function useLeaflet() {
-    const [L, setL] = useState<typeof import("leaflet") | null>(null);
+    const [L, setL] = useState<typeof import("leaflet") | null>(null)
 
     useEffect(() => {
-        if (L) return;
+        if (L) return
 
         if (typeof window !== "undefined") {
-            const leaflet = require("leaflet");
-            setL(leaflet);
+            const leaflet = require("leaflet")
+            setL(leaflet)
         }
-    }, [L]);
+    }, [L])
 
-    return L;
+    return L
 }
 
 export {
@@ -167,4 +167,4 @@ export {
     MapPopup,
     MapTileLayer,
     MapZoomControl,
-};
+}

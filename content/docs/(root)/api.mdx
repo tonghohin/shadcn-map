@@ -1,59 +1,78 @@
 ---
 title: API Reference
-description: A map component built for shadcn/ui, following the same design patterns and styles. Uses Leaflet with React Leaflet, both open-source libraries, to provide interactive mapping.
+description: What components are available in shadcn Map and how to use them.
 component: true
 ---
 
-## Installation
+## Components API
 
-<CodeTabs>
+Description of props of each component.
 
-<TabsList>
-    <TabsTrigger value="cli">CLI</TabsTrigger>
-    <TabsTrigger value="manual">Manual</TabsTrigger>
-</TabsList>
+## Map
 
-<TabsContent value="cli">
+The `Map` component is the main map container. It wraps `react-leaflet`’s `MapContainer` and provides default styles.
 
-```bash
-npx shadcn@latest add @shadcn-map/map
-```
+### Props
 
-</TabsContent>
+| Name           | Type                | Description                                                                                    |
+| -------------- | ------------------- | ---------------------------------------------------------------------------------------------- |
+| `center`       | `LatLngExpression`  | **Required.** The initial center of the map `[lat, lng]`.                                      |
+| `zoom`         | `number`            | Initial zoom level. Default is `15`.                                                           |
+| ...other props | `MapContainerProps` | All other props from [React Leaflet MapContainer](https://react-leaflet.js.org/docs/api-map/). |
 
-<TabsContent value="manual">
+## MapTileLayer
 
-<Steps>
+The `MapTileLayer` component adds a tile layer to the map. **It is required for the map to be rendered.** It automatically switches between light and dark map styles based on the current theme from `next-themes`. You can also provide a custom `url` or `attribution` if needed.
 
-<Step>Install the following dependencies:</Step>
+### Props
 
-```bash
-npm install leaflet react-leaflet
-```
+| Name           | Type             | Description                                                                                                  |
+| -------------- | ---------------- | ------------------------------------------------------------------------------------------------------------ |
+| `url`          | `string`         | Optional. URL of the tile server. Defaults to Carto’s light/dark tiles.                                      |
+| `attribution`  | `string`         | Optional. HTML string for map attribution. Defaults to OpenStreetMap and CARTO attribution.                  |
+| ...other props | `TileLayerProps` | All other props from [React Leaflet TileLayer](https://react-leaflet.js.org/docs/api-components/#tilelayer). |
 
-<Step>Copy and paste the following code into your project.</Step>
+## MapDefaultMarkerIcon
 
-<ComponentSource name="map" title="components/ui/map.tsx" />
+The `MapDefaultMarkerIcon` component renders the default marker icon used by `MapMarker`. Use this component if you want to customize the appearance of the default icon.
 
-<Step>Update the import paths to match your project setup.</Step>
+### Props
 
-</Steps>
+| Name     | Type          | Description                                  |
+| -------- | ------------- | -------------------------------------------- |
+| ...props | `LucideProps` | Any props supported by `lucide-react` icons. |
 
-</TabsContent>
+## MapMarker
 
-</CodeTabs>
+The `MapMarker` component renders a marker on the map. By default, it uses `MapDefaultMarkerIcon`, but you can provide a custom React node as the `icon` to override it. It supports customization of the icon’s position, popups, and tooltips using standard Leaflet `DivIcon` [options](https://leafletjs.com/reference.html#divicon).
 
-## Usage
+### Props
 
-```tsx showLineNumbers
-import { Accordion, AccordionContent, AccordionItem, AccordionTrigger } from "@/components/ui/map";
-```
+| Name            | Type                        | Description                                                                                                |
+| --------------- | --------------------------- | ---------------------------------------------------------------------------------------------------------- |
+| `icon`          | `ReactNode`                 | Optional. Custom icon to display instead of the default marker. Defaults to `MapDefaultMarkerIcon`.        |
+| `bgPos`         | `[number, number]`          | Optional. Background position offset for the icon.                                                         |
+| `iconAnchor`    | `[number, number]`          | Optional. The point of the icon which will correspond to marker’s location.                                |
+| `popupAnchor`   | `[number, number]`          | Optional. Point from which the popup should open relative to the icon.                                     |
+| `tooltipAnchor` | `[number, number]`          | Optional. Point from which the tooltip should open relative to the icon.                                   |
+| ...other props  | `Omit<MarkerProps, "icon">` | All other props from [React Leaflet Marker](https://react-leaflet.js.org/docs/api-marker/), except `icon`. |
 
-```tsx showLineNumbers
-<Accordion type="single" collapsible>
-    <AccordionItem value="item-1">
-        <AccordionTrigger>Is it accessible?</AccordionTrigger>
-        <AccordionContent>Yes. It adheres to the WAI-ARIA design pattern.</AccordionContent>
-    </AccordionItem>
-</Accordion>
-```
+## MapPopup
+
+The `MapPopup` component renders a popup attached to a `MapMarker`. It provides default styling and animations that match the shadcn/ui design system.
+
+### Props
+
+| Name     | Type         | Description                                                                                    |
+| -------- | ------------ | ---------------------------------------------------------------------------------------------- |
+| ...props | `PopupProps` | All props from [React Leaflet Popup](https://react-leaflet.js.org/docs/api-components/#popup). |
+
+## MapZoomControl
+
+The `MapZoomControl` component provides custom zoom buttons for the map.
+
+### Props
+
+| Name     | Type                          | Description                        |
+| -------- | ----------------------------- | ---------------------------------- |
+| ...props | `React.ComponentProps<"div">` | All props for the container `div`. |
