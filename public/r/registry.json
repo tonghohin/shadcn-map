@@ -1,67 +1,63 @@
 {
-  "name": "shadcn/map",
-  "homepage": "https://shadcn-map.vercel.app",
-  "items": [
-    {
-      "name": "map",
-      "type": "registry:ui",
-      "dependencies": [
-        "leaflet",
-        "react-leaflet",
-        "next-themes"
-      ],
-      "devDependencies": [
-        "@types/leaflet"
-      ],
-      "registryDependencies": [
-        "button",
-        "skeleton"
-      ],
-      "files": [
+    "name": "shadcn/map",
+    "homepage": "https://shadcn-map.vercel.app",
+    "items": [
         {
-          "path": "registry/new-york-v4/ui/map.tsx",
-          "type": "registry:ui"
-        }
-      ]
-    },
-    {
-      "name": "basic-map",
-      "type": "registry:example",
-      "registryDependencies": [
-        "map"
-      ],
-      "files": [
+            "name": "map",
+            "type": "registry:ui",
+            "dependencies": ["leaflet", "react-leaflet", "next-themes"],
+            "devDependencies": ["@types/leaflet"],
+            "registryDependencies": ["button", "skeleton"],
+            "files": [
+                {
+                    "path": "registry/new-york-v4/ui/map.tsx",
+                    "type": "registry:ui"
+                }
+            ]
+        },
         {
-          "path": "registry/new-york-v4/examples/basic-map.tsx",
-          "type": "registry:example"
-        }
-      ]
-    },
-    {
-      "name": "map-with-markers",
-      "type": "registry:example",
-      "registryDependencies": [
-        "map"
-      ],
-      "files": [
+            "name": "basic-map",
+            "type": "registry:example",
+            "registryDependencies": ["map"],
+            "files": [
+                {
+                    "path": "registry/new-york-v4/examples/basic-map.tsx",
+                    "type": "registry:example"
+                }
+            ]
+        },
         {
-          "path": "registry/new-york-v4/examples/map-with-markers.tsx",
-          "type": "registry:example"
-        }
-      ]
-    },
-    {
-      "name": "map-with-custom-markers",
-      "type": "registry:example",
-      "registryDependencies": [
-        "map"
-      ],
-      "files": [
+            "name": "map-with-markers",
+            "type": "registry:example",
+            "registryDependencies": ["map"],
+            "files": [
+                {
+                    "path": "registry/new-york-v4/examples/map-with-markers.tsx",
+                    "type": "registry:example"
+                }
+            ]
+        },
         {
-          "path": "registry/new-york-v4/examples/map-with-custom-markers.tsx",
-          "type": "registry:example"
+            "name": "map-with-custom-markers",
+            "type": "registry:example",
+            "registryDependencies": ["map"],
+            "files": [
+                {
+                    "path": "registry/new-york-v4/examples/map-with-custom-markers.tsx",
+                    "type": "registry:example"
+                }
+            ]
+        },
+        {
+            "name": "map-with-zoom-control",
+            "type": "registry:example",
+            "registryDependencies": ["map"],
+            "files": [
+                {
+                    "path": "registry/new-york-v4/examples/map-with-zoom-control.tsx",
+                    "type": "registry:example"
+                }
+            ]
         }
-      ]
-    }
-  ]
+    ]
 }

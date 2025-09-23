@@ -1,0 +1,13 @@
+{
+    "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+    "name": "map-with-zoom-control",
+    "type": "registry:example",
+    "registryDependencies": ["map"],
+    "files": [
+        {
+            "path": "registry/new-york-v4/examples/map-with-zoom-control.tsx",
+            "content": "import {\n    Map,\n    MapTileLayer,\n    MapZoomControl,\n} from \"@/registry/new-york-v4/ui/map\"\nimport type { LatLngExpression } from \"leaflet\"\n\nexport function MapWithZoomControl() {\n    const TORONTO_COORDINATES = [43.6532, -79.3832] satisfies LatLngExpression\n\n    return (\n        <Map center={TORONTO_COORDINATES}>\n            <MapTileLayer />\n            <MapZoomControl />\n        </Map>\n    )\n}\n",
+            "type": "registry:example"
+        }
+    ]
+}

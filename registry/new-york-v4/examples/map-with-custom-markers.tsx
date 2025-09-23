@@ -6,6 +6,7 @@ import {
 } from "@/registry/new-york-v4/ui/map"
 import type { LatLngExpression } from "leaflet"
 import { BrushIcon } from "lucide-react"
+import Image from "next/image"
 
 export function MapWithCustomMarkers() {
     const places = [
@@ -23,6 +24,11 @@ export function MapWithCustomMarkers() {
             name: "Eiffel Tower",
             coordinates: [48.8584, 2.2945] satisfies LatLngExpression,
             icon: <MapDefaultMarkerIcon className="fill-muted-foreground" />,
+        },
+        {
+            name: "Colosseum",
+            coordinates: [41.8902, 12.4922] satisfies LatLngExpression,
+            icon: <Image alt="cat" src="/cat.png" width={16} height={16} />,
         },
     ]
 
