@@ -24,18 +24,54 @@ export const Index: Record<string, any> = {
     categories: undefined,
     meta: undefined,
   },
-  "map-demo": {
-    name: "map-demo",
+  "basic-map": {
+    name: "basic-map",
     description: "",
     type: "registry:example",
     registryDependencies: ["map"],
     files: [{
-      path: "registry/new-york-v4/examples/map-demo.tsx",
+      path: "registry/new-york-v4/examples/basic-map.tsx",
       type: "registry:example",
       target: ""
     }],
     component: React.lazy(async () => {
-      const mod = await import("@/registry/new-york-v4/examples/map-demo.tsx")
+      const mod = await import("@/registry/new-york-v4/examples/basic-map.tsx")
+      const exportName = Object.keys(mod).find(key => typeof mod[key] === 'function' || typeof mod[key] === 'object') || item.name
+      return { default: mod.default || mod[exportName] }
+    }),
+    categories: undefined,
+    meta: undefined,
+  },
+  "map-with-markers": {
+    name: "map-with-markers",
+    description: "",
+    type: "registry:example",
+    registryDependencies: ["map"],
+    files: [{
+      path: "registry/new-york-v4/examples/map-with-markers.tsx",
+      type: "registry:example",
+      target: ""
+    }],
+    component: React.lazy(async () => {
+      const mod = await import("@/registry/new-york-v4/examples/map-with-markers.tsx")
+      const exportName = Object.keys(mod).find(key => typeof mod[key] === 'function' || typeof mod[key] === 'object') || item.name
+      return { default: mod.default || mod[exportName] }
+    }),
+    categories: undefined,
+    meta: undefined,
+  },
+  "map-with-custom-markers": {
+    name: "map-with-custom-markers",
+    description: "",
+    type: "registry:example",
+    registryDependencies: ["map"],
+    files: [{
+      path: "registry/new-york-v4/examples/map-with-custom-markers.tsx",
+      type: "registry:example",
+      target: ""
+    }],
+    component: React.lazy(async () => {
+      const mod = await import("@/registry/new-york-v4/examples/map-with-custom-markers.tsx")
       const exportName = Object.keys(mod).find(key => typeof mod[key] === 'function' || typeof mod[key] === 'object') || item.name
       return { default: mod.default || mod[exportName] }
     }),

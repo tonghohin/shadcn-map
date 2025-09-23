@@ -1,0 +1,13 @@
+{
+    "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+    "name": "map-with-custom-markers",
+    "type": "registry:example",
+    "registryDependencies": ["map"],
+    "files": [
+        {
+            "path": "registry/new-york-v4/examples/map-with-custom-markers.tsx",
+            "content": "import {\n    Map,\n    MapDefaultMarkerIcon,\n    MapMarker,\n    MapTileLayer,\n} from \"@/registry/new-york-v4/ui/map\"\nimport type { LatLngExpression } from \"leaflet\"\nimport { BrushIcon } from \"lucide-react\"\n\nexport function MapWithCustomMarkers() {\n    const places = [\n        {\n            name: \"Matterhorn\",\n            coordinates: [45.9763, 7.6586] satisfies LatLngExpression,\n            icon: <span className=\"text-sm\">🏔️</span>,\n        },\n        {\n            name: \"Piazzale Michelangelo\",\n            coordinates: [43.7629, 11.2658] satisfies LatLngExpression,\n            icon: <BrushIcon />,\n        },\n        {\n            name: \"Eiffel Tower\",\n            coordinates: [48.8584, 2.2945] satisfies LatLngExpression,\n            icon: <MapDefaultMarkerIcon className=\"fill-muted-foreground\" />,\n        },\n    ]\n\n    return (\n        <Map center={places[0].coordinates} zoom={5}>\n            <MapTileLayer />\n            {places.map((place) => (\n                <MapMarker\n                    key={place.name}\n                    position={place.coordinates}\n                    icon={place.icon}\n                />\n            ))}\n        </Map>\n    )\n}\n",
+            "type": "registry:example"
+        }
+    ]
+}
