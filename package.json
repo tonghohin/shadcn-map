@@ -10,8 +10,8 @@
         "lint": "next lint",
         "lint:fix": "next lint --fix",
         "typecheck": "tsc --noEmit",
-        "format:write": "prettier --write \"**/*.{ts,tsx,mdx}\" --cache",
-        "format:check": "prettier --check \"**/*.{ts,tsx,mdx}\" --cache",
+        "format:write": "prettier --write \"**/*.{ts,tsx,mdx,json}\" --cache",
+        "format:check": "prettier --check \"**/*.{ts,tsx,mdx,json}\" --cache",
         "lint-staged": "lint-staged",
         "registry:build": "npx tsx --tsconfig ./tsconfig.scripts.json ./scripts/build-registry.mts && prettier --log-level silent --write \"registry/**/*.{ts,tsx,json,mdx}\" --cache",
         "postinstall": "fumadocs-mdx"
