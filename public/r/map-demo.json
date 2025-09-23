@@ -1,0 +1,13 @@
+{
+    "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+    "name": "map-demo",
+    "type": "registry:example",
+    "registryDependencies": ["map"],
+    "files": [
+        {
+            "path": "registry/new-york-v4/examples/map-demo.tsx",
+            "content": "import { Map, MapMarker, MapPopup, MapTileLayer, MapZoomControl } from \"@/registry/new-york-v4/ui/map\";\nimport type { LatLngExpression } from \"leaflet\";\n\nexport function MapDemo() {\n    const TORONTO_COORDINATES = [43.6532, -79.3832] satisfies LatLngExpression;\n\n    return (\n        <Map center={TORONTO_COORDINATES} className=\"border\">\n            <MapTileLayer />\n            <MapZoomControl />\n            <MapMarker position={TORONTO_COORDINATES}>\n                <MapPopup>A map component for shadcn/ui.</MapPopup>\n            </MapMarker>\n        </Map>\n    );\n}\n",
+            "type": "registry:example"
+        }
+    ]
+}

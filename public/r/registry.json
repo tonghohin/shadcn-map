@@ -14,6 +14,17 @@
                     "type": "registry:ui"
                 }
             ]
+        },
+        {
+            "name": "map-demo",
+            "type": "registry:example",
+            "registryDependencies": ["map"],
+            "files": [
+                {
+                    "path": "registry/new-york-v4/examples/map-demo.tsx",
+                    "type": "registry:example"
+                }
+            ]
         }
     ]
 }

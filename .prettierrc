@@ -1,4 +1,7 @@
 {
+    "endOfLine": "lf",
+    "semi": false,
+    "singleQuote": false,
     "bracketSameLine": true,
     "trailingComma": "es5",
     "tabWidth": 4,

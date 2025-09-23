@@ -4,15 +4,57 @@ description: A map component built for shadcn/ui, following the same design patt
 component: true
 ---
 
+## Prerequisite
+
+Before installing, make sure you already have **[shadcn/ui](https://ui.shadcn.com/docs/installation)** set up in your project.
+
 ## Installation
 
 <CodeTabs>
 
 <TabsContent value="cli">
 
+<Steps>
+
+<Step>Run the following command to install `map.tsx`</Step>
+
 ```bash
 npx shadcn@latest add @shadcn-map/map
 ```
+
+<Step>Add the following Tailwind CSS to your CSS file</Step>
+
+```css showLineNumbers title="app/globals.css"
+@layer base {
+    /* Leaflet */
+    .leaflet-container {
+        @apply !bg-card;
+    }
+
+    .leaflet-container a {
+        @apply !text-inherit;
+    }
+
+    .leaflet-div-icon {
+        @apply !border-none !bg-transparent;
+    }
+
+    .leaflet-popup-tip-container {
+        @apply hidden;
+    }
+
+    .leaflet-popup-content-wrapper,
+    .leaflet-popup-content {
+        @apply ![all:unset];
+    }
+
+    .leaflet-popup-close-button {
+        @apply ring-offset-background focus:ring-ring data-[state=open]:bg-secondary rounded-xs opacity-70 transition-opacity hover:opacity-100 focus:ring-2 focus:outline-hidden;
+    }
+}
+```
+
+</Steps>
 
 </TabsContent>
 
@@ -27,7 +69,7 @@ import {
     MapPopup,
     MapTileLayer,
     MapZoomControl,
-} from "@/registry/new-york-v4/ui/map";
+} from "@/components/ui/map";
 ```
 
 ```tsx showLineNumbers
