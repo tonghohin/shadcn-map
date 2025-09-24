@@ -108,7 +108,7 @@ function Map({
             zoom={INITIAL_ZOOM}
             attributionControl={false}
             zoomControl={false}
-            className={cn("size-full flex-1 rounded-md", className)}
+            className={cn("size-full min-h-96 flex-1 rounded-md", className)}
             {...props}
         />
     )
