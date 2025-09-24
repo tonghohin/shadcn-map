@@ -9,6 +9,7 @@ import { cn } from "@/lib/utils"
 
 import { ClarityScript } from "@/components/clarity-script"
 import "@/styles/globals.css"
+import { Toaster } from "@/registry/new-york-v4/ui/sonner"
 
 export const metadata: Metadata = {
     title: {
@@ -77,6 +78,7 @@ export default function RootLayout({
                     <LayoutProvider>
                         <ActiveThemeProvider>
                             {children}
+                            <Toaster richColors />
                             <ClarityScript />
                         </ActiveThemeProvider>
                     </LayoutProvider>

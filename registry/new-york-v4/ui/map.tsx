@@ -12,6 +12,7 @@ import type {
 } from "leaflet"
 import "leaflet/dist/leaflet.css"
 import {
+    LoaderCircleIcon,
     LucideProps,
     MapPinIcon,
     MinusIcon,
@@ -20,7 +21,7 @@ import {
 } from "lucide-react"
 import { useTheme } from "next-themes"
 import dynamic from "next/dynamic"
-import { useEffect, useState, type ReactNode } from "react"
+import { useEffect, useRef, useState, type ReactNode } from "react"
 import { renderToString } from "react-dom/server"
 import type {
     CircleMarkerProps,
@@ -227,6 +228,8 @@ function MapZoomControl({ className, ...props }: React.ComponentProps<"div">) {
                 type="button"
                 size="icon"
                 variant="secondary"
+                aria-label="Zoom in"
+                title="Zoom in"
                 disabled={zoomLevel >= map.getMaxZoom()}
                 onClick={() => map.zoomIn()}>
                 <PlusIcon />
@@ -235,6 +238,8 @@ function MapZoomControl({ className, ...props }: React.ComponentProps<"div">) {
                 type="button"
                 size="icon"
                 variant="secondary"
+                aria-label="Zoom out"
+                title="Zoom out"
                 disabled={zoomLevel <= map.getMinZoom()}
                 onClick={() => map.zoomOut()}>
                 <MinusIcon />
@@ -252,6 +257,34 @@ function MapLocatePulseIcon() {
     )
 }
 
+function useDebounceLoadingState(delay = 200) {
+    const [isLoading, setIsLoading] = useState(false)
+    const [showLoading, setShowLoading] = useState(false)
+    const timeoutRef = useRef<NodeJS.Timeout | null>(null)
+
+    useEffect(() => {
+        if (isLoading) {
+            timeoutRef.current = setTimeout(() => {
+                setShowLoading(true)
+            }, delay)
+        } else {
+            if (timeoutRef.current) {
+                clearTimeout(timeoutRef.current)
+                timeoutRef.current = null
+            }
+            setShowLoading(false)
+        }
+
+        return () => {
+            if (timeoutRef.current) {
+                clearTimeout(timeoutRef.current)
+            }
+        }
+    }, [isLoading, delay])
+
+    return [showLoading, setIsLoading] as const
+}
+
 function MapLocateControl({
     className,
     watch = false,
@@ -264,48 +297,65 @@ function MapLocateControl({
         onLocationError?: (error: ErrorEvent) => void
     }) {
     const map = useMap()
-    const [isLocating, setIsLocating] = useState(false)
+    const [isLocating, setIsLocating] = useDebounceLoadingState(200)
     const [position, setPosition] = useState<LatLngExpression | null>(null)
 
-    useEffect(() => {
-        if (isLocating) {
-            map.locate({ setView: true, maxZoom: 16, watch })
-            map.on("locationfound", (location: LocationEvent) => {
-                setPosition(location.latlng)
-                onLocationFound?.(location)
-            })
-            map.on("locationerror", (error: ErrorEvent) => {
-                setPosition(null)
-                setIsLocating(false)
-                onLocationError?.(error)
-            })
-        }
-
-        return () => {
-            map.stopLocate()
-            map.off("locationfound")
-            map.off("locationerror")
+    function startLocating() {
+        setIsLocating(true)
+        map.locate({ setView: true, maxZoom: map.getMaxZoom(), watch })
+        map.on("locationfound", (location: LocationEvent) => {
+            setPosition(location.latlng)
+            setIsLocating(false)
+            onLocationFound?.(location)
+        })
+        map.on("locationerror", (error: ErrorEvent) => {
             setPosition(null)
-        }
-    }, [map, watch, isLocating])
+            setIsLocating(false)
+            onLocationError?.(error)
+        })
+    }
+
+    function stopLocating() {
+        map.stopLocate()
+        map.off("locationfound")
+        map.off("locationerror")
+        setPosition(null)
+        setIsLocating(false)
+    }
+
+    useEffect(() => {
+        return () => stopLocating()
+    }, [])
 
     return (
         <>
             <Button
                 type="button"
                 size="icon"
-                variant={isLocating ? "default" : "secondary"}
-                onClick={() =>
-                    setIsLocating((prevIsLocating) => !prevIsLocating)
+                variant={position ? "default" : "secondary"}
+                onClick={position ? stopLocating : startLocating}
+                disabled={isLocating}
+                title={
+                    isLocating
+                        ? "Locating..."
+                        : position
+                          ? "Stop tracking"
+                          : "Track location"
                 }
                 aria-label={
                     isLocating
-                        ? "Stop location tracking"
-                        : "Start location tracking"
+                        ? "Locating..."
+                        : position
+                          ? "Stop location tracking"
+                          : "Start location tracking"
                 }
                 className={cn("absolute right-1 bottom-1 z-1000", className)}
                 {...props}>
-                <NavigationIcon />
+                {isLocating ? (
+                    <LoaderCircleIcon className="animate-spin" />
+                ) : (
+                    <NavigationIcon />
+                )}
             </Button>
             {position && (
                 <MapMarker position={position} icon={<MapLocatePulseIcon />} />
