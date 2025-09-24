@@ -38,13 +38,13 @@ npx shadcn@latest add http://shadcn-map.vercel.app/r/map.json
         @apply !border-none !bg-transparent;
     }
 
-    .leaflet-popup-tip-container {
-        @apply hidden;
-    }
-
     .leaflet-popup-content-wrapper,
     .leaflet-popup-content {
         @apply ![all:unset];
+    }
+
+    .leaflet-popup {
+        @apply !animate-none;
     }
 
     .leaflet-popup-close-button {
@@ -52,11 +52,15 @@ npx shadcn@latest add http://shadcn-map.vercel.app/r/map.json
     }
 
     .leaflet-tooltip {
-        @apply !bg-foreground !text-background !rounded-md !border-none !p-0 !px-3 !py-1.5 !opacity-100 !shadow-none;
+        @apply !bg-foreground !text-background !animate-none !rounded-md !border-none !p-0 !px-3 !py-1.5 !shadow-none;
     }
 
-    .leaflet-tooltip-top:before {
-        @apply !border-foreground;
+    .leaflet-popup-tip-container,
+    .leaflet-tooltip-top:before,
+    .leaflet-tooltip-bottom:before,
+    .leaflet-tooltip-left:before,
+    .leaflet-tooltip-right:before {
+        @apply hidden;
     }
 }
 ```

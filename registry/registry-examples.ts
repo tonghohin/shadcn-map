@@ -24,6 +24,17 @@ export const examples: Registry["items"] = [
         ],
     },
     {
+        name: "map-with-popups-and-tooltips",
+        type: "registry:example",
+        registryDependencies: ["map"],
+        files: [
+            {
+                path: "examples/map-with-popups-and-tooltips.tsx",
+                type: "registry:example",
+            },
+        ],
+    },
+    {
         name: "map-with-custom-markers",
         type: "registry:example",
         registryDependencies: ["map"],

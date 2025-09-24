@@ -17,7 +17,6 @@ The `Map` component is the main map container. It wraps `react-leaflet`’s `Map
 | Name           | Type                | Description                                                                                    |
 | -------------- | ------------------- | ---------------------------------------------------------------------------------------------- |
 | `center`       | `LatLngExpression`  | **Required.** The initial center of the map `[lat, lng]`.                                      |
-| `zoom`         | `number`            | Initial zoom level. Default is `15`.                                                           |
 | ...other props | `MapContainerProps` | All other props from [React Leaflet MapContainer](https://react-leaflet.js.org/docs/api-map/). |
 
 ## MapTileLayer
@@ -59,13 +58,24 @@ The `MapMarker` component renders a marker on the map. By default, it uses `MapD
 
 ## MapPopup
 
-The `MapPopup` component renders a popup attached to a `MapMarker`. It provides default styling and animations that match the shadcn/ui design system.
+The `MapPopup` component renders a popup. It provides default styling and animations that match the shadcn/ui design system.
 
 ### Props
 
 | Name     | Type         | Description                                                                                    |
 | -------- | ------------ | ---------------------------------------------------------------------------------------------- |
 | ...props | `PopupProps` | All props from [React Leaflet Popup](https://react-leaflet.js.org/docs/api-components/#popup). |
+
+## MapTooltip
+
+The `MapTooltip` component renders a tooltip. It provides default styling and animations that match the shadcn/ui design system.
+
+### Props
+
+| Name        | Type                                     | Description                                                                                        |
+| ----------- | ---------------------------------------- | -------------------------------------------------------------------------------------------------- |
+| `direction` | `"top" \| "right" \| "bottom" \| "left"` | Controls the position of the tooltip relative to the target element. Defaults to `"top"`.          |
+| ...props    | `TooltipProps`                           | All props from [React Leaflet Tooltip](https://react-leaflet.js.org/docs/api-components/#tooltip). |
 
 ## MapZoomControl
 

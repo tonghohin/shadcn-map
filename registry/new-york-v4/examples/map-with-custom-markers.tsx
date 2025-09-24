@@ -9,7 +9,7 @@ import { BrushIcon } from "lucide-react"
 import Image from "next/image"
 
 export function MapWithCustomMarkers() {
-    const places = [
+    const PLACES = [
         {
             name: "Matterhorn",
             coordinates: [45.9763, 7.6586] satisfies LatLngExpression,
@@ -33,9 +33,9 @@ export function MapWithCustomMarkers() {
     ]
 
     return (
-        <Map center={places[0].coordinates} zoom={5}>
+        <Map center={PLACES[0].coordinates} zoom={5}>
             <MapTileLayer />
-            {places.map((place) => (
+            {PLACES.map((place) => (
                 <MapMarker
                     key={place.name}
                     position={place.coordinates}

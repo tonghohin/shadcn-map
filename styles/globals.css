@@ -184,12 +184,12 @@
     @apply !bg-transparent !border-none
   }
 
-  .leaflet-popup-tip-container {
-    @apply hidden
-  }
-
   .leaflet-popup-content-wrapper, .leaflet-popup-content {
     @apply ![all:unset]
+  }
+
+  .leaflet-popup {
+    @apply !animate-none
   }
 
   .leaflet-popup-close-button {
@@ -197,11 +197,11 @@
   }
 
   .leaflet-tooltip {
-    @apply !bg-foreground !text-background !border-none !p-0 !px-3 !py-1.5 !rounded-md !shadow-none !opacity-100
+    @apply !bg-foreground !text-background !border-none !p-0 !px-3 !py-1.5 !rounded-md !shadow-none !animate-none
   }
 
-  .leaflet-tooltip-top:before {
-    @apply !border-foreground
+  .leaflet-popup-tip-container, .leaflet-tooltip-top:before, .leaflet-tooltip-bottom:before, .leaflet-tooltip-left:before, .leaflet-tooltip-right:before {
+    @apply hidden
   }
 }
 

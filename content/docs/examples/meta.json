@@ -1,4 +1,11 @@
 {
     "title": "Examples",
-    "pages": ["index", "markers", "custom-markers", "shapes", "zoom-control"]
+    "pages": [
+        "index",
+        "marker",
+        "custom-marker",
+        "shapes",
+        "popup-and-tooltip",
+        "zoom-control"
+    ]
 }

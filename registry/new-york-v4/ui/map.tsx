@@ -35,31 +35,49 @@ const TileLayer = dynamic(
     async () => (await import("react-leaflet")).TileLayer,
     { ssr: false }
 )
-const Marker = dynamic(async () => (await import("react-leaflet")).Marker, {
-    ssr: false,
-})
-const Popup = dynamic(async () => (await import("react-leaflet")).Popup, {
-    ssr: false,
-})
-const Tooltip = dynamic(async () => (await import("react-leaflet")).Tooltip, {
-    ssr: false,
-})
-const Circle = dynamic(async () => (await import("react-leaflet")).Circle, {
-    ssr: false,
-})
-const CircleMarker = dynamic(
+const LeafletMarker = dynamic(
+    async () => (await import("react-leaflet")).Marker,
+    {
+        ssr: false,
+    }
+)
+const LeafletPopup = dynamic(
+    async () => (await import("react-leaflet")).Popup,
+    {
+        ssr: false,
+    }
+)
+const LeafletTooltip = dynamic(
+    async () => (await import("react-leaflet")).Tooltip,
+    {
+        ssr: false,
+    }
+)
+const LeafletCircle = dynamic(
+    async () => (await import("react-leaflet")).Circle,
+    {
+        ssr: false,
+    }
+)
+const LeafletCircleMarker = dynamic(
     async () => (await import("react-leaflet")).CircleMarker,
     {
         ssr: false,
     }
 )
-const Polyline = dynamic(async () => (await import("react-leaflet")).Polyline, {
-    ssr: false,
-})
-const Polygon = dynamic(async () => (await import("react-leaflet")).Polygon, {
-    ssr: false,
-})
-const Rectangle = dynamic(
+const LeafletPolyline = dynamic(
+    async () => (await import("react-leaflet")).Polyline,
+    {
+        ssr: false,
+    }
+)
+const LeafletPolygon = dynamic(
+    async () => (await import("react-leaflet")).Polygon,
+    {
+        ssr: false,
+    }
+)
+const LeafletRectangle = dynamic(
     async () => (await import("react-leaflet")).Rectangle,
     {
         ssr: false,
@@ -102,9 +120,9 @@ function MapDefaultMarkerIcon({ ...props }: LucideProps) {
 }
 
 function MapMarker({
-    icon,
+    icon = <MapDefaultMarkerIcon />,
     bgPos,
-    iconAnchor,
+    iconAnchor = [12, 12],
     popupAnchor,
     tooltipAnchor,
     ...props
@@ -119,12 +137,11 @@ function MapMarker({
     if (!L) return null
 
     return (
-        <Marker
+        <LeafletMarker
             icon={L.divIcon({
-                html: renderToString(icon ?? <MapDefaultMarkerIcon />),
-                iconAnchor: [12, 12],
+                html: renderToString(icon),
+                iconAnchor,
                 ...(bgPos ? { bgPos } : {}),
-                ...(iconAnchor ? { iconAnchor } : {}),
                 ...(popupAnchor ? { popupAnchor } : {}),
                 ...(tooltipAnchor ? { tooltipAnchor } : {}),
             })}
@@ -136,9 +153,9 @@ function MapMarker({
 
 function MapPopup({ className, ...props }: PopupProps) {
     return (
-        <Popup
+        <LeafletPopup
             className={cn(
-                "bg-popover text-popover-foreground data-[state=open]:animate-in data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=open]:fade-in-0 data-[state=closed]:zoom-out-95 data-[state=open]:zoom-in-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 z-50 w-72 origin-(--radix-popover-content-transform-origin) rounded-md border p-4 font-sans shadow-md outline-hidden",
+                "bg-popover text-popover-foreground animate-in fade-out-0 fade-in-0 zoom-out-95 zoom-in-95 slide-in-from-bottom-2 z-50 w-72 rounded-md border p-4 font-sans shadow-md outline-hidden",
                 className
             )}
             {...props}
@@ -146,18 +163,37 @@ function MapPopup({ className, ...props }: PopupProps) {
     )
 }
 
-function MapTooltip({ className, ...props }: TooltipProps) {
+function MapTooltip({
+    className,
+    children,
+    direction = "top",
+    ...props
+}: TooltipProps & { direction?: "top" | "right" | "bottom" | "left" }) {
+    const ARROW_POSITION_CLASSES = {
+        top: "bottom-0.5 left-1/2 -translate-x-1/2 translate-y-1/2",
+        bottom: "top-0.5 left-1/2 -translate-x-1/2 -translate-y-1/2",
+        left: "right-0.5 top-1/2 translate-x-1/2 -translate-y-1/2",
+        right: "left-0.5 top-1/2 -translate-x-1/2 -translate-y-1/2",
+    }
+
     return (
-        <Tooltip
+        <LeafletTooltip
             className={cn(
-                "animate-in fade-in-0 zoom-in-95 data-[state=closed]:animate-out data-[state=closed]:fade-out-0 data-[state=closed]:zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 z-50 w-fit origin-(--radix-tooltip-content-transform-origin) text-xs text-balance",
+                "animate-in fade-in-0 zoom-in-95 fade-out-0 zoom-out-95 data-[side=bottom]:slide-in-from-top-2 data-[side=left]:slide-in-from-right-2 data-[side=right]:slide-in-from-left-2 data-[side=top]:slide-in-from-bottom-2 relative z-50 w-fit text-xs text-balance transition-opacity",
                 className
             )}
-            direction="top"
-            offset={[0, -15]}
-            permanent
-            {...props}
-        />
+            direction={direction}
+            data-side={direction}
+            opacity={1}
+            {...props}>
+            {children}
+            <div
+                className={cn(
+                    "bg-foreground fill-foreground absolute z-50 size-2.5 rotate-45 rounded-[2px]",
+                    ARROW_POSITION_CLASSES[direction]
+                )}
+            />
+        </LeafletTooltip>
     )
 }
 
@@ -193,7 +229,7 @@ function MapZoomControl({ className, ...props }: React.ComponentProps<"div">) {
 
 function MapCircle({ className, ...props }: CircleProps) {
     return (
-        <Circle
+        <LeafletCircle
             className="fill-foreground stroke-foreground stroke-2"
             {...props}
         />
@@ -202,7 +238,7 @@ function MapCircle({ className, ...props }: CircleProps) {
 
 function MapCircleMarker({ className, ...props }: CircleMarkerProps) {
     return (
-        <CircleMarker
+        <LeafletCircleMarker
             className="fill-foreground stroke-foreground stroke-2"
             {...props}
         />
@@ -211,7 +247,7 @@ function MapCircleMarker({ className, ...props }: CircleMarkerProps) {
 
 function MapPolyline({ className, ...props }: PolylineProps) {
     return (
-        <Polyline
+        <LeafletPolyline
             className="fill-foreground stroke-foreground stroke-2"
             {...props}
         />
@@ -220,7 +256,7 @@ function MapPolyline({ className, ...props }: PolylineProps) {
 
 function MapPolygon({ className, ...props }: PolygonProps) {
     return (
-        <Polygon
+        <LeafletPolygon
             className="fill-foreground stroke-foreground stroke-2"
             {...props}
         />
@@ -229,7 +265,7 @@ function MapPolygon({ className, ...props }: PolygonProps) {
 
 function MapRectangle({ className, ...props }: RectangleProps) {
     return (
-        <Rectangle
+        <LeafletRectangle
             className="fill-foreground stroke-foreground stroke-2"
             {...props}
         />
