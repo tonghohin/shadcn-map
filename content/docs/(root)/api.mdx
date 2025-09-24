@@ -12,9 +12,7 @@ Description of props of each component.
 
 The `Map` component is the main map container. It wraps `react-leaflet`’s `MapContainer` and provides default styles.
 
-### Props
-
-| Name           | Type                | Description                                                                                    |
+| Prop           | Type                | Description                                                                                    |
 | -------------- | ------------------- | ---------------------------------------------------------------------------------------------- |
 | `center`       | `LatLngExpression`  | **Required.** The initial center of the map `[lat, lng]`.                                      |
 | ...other props | `MapContainerProps` | All other props from [React Leaflet MapContainer](https://react-leaflet.js.org/docs/api-map/). |
@@ -23,9 +21,7 @@ The `Map` component is the main map container. It wraps `react-leaflet`’s `Map
 
 The `MapTileLayer` component adds a tile layer to the map. **It is required for the map to be rendered.** It automatically switches between light and dark map styles based on the current theme from `next-themes`. You can also provide a custom `url` or `attribution` if needed.
 
-### Props
-
-| Name           | Type             | Description                                                                                                  |
+| Prop           | Type             | Description                                                                                                  |
 | -------------- | ---------------- | ------------------------------------------------------------------------------------------------------------ |
 | `url`          | `string`         | Optional. URL of the tile server. Defaults to Carto’s light/dark tiles.                                      |
 | `attribution`  | `string`         | Optional. HTML string for map attribution. Defaults to OpenStreetMap and CARTO attribution.                  |
@@ -35,9 +31,7 @@ The `MapTileLayer` component adds a tile layer to the map. **It is required for 
 
 The `MapDefaultMarkerIcon` component renders the default marker icon used by `MapMarker`. Use this component if you want to customize the appearance of the default icon.
 
-### Props
-
-| Name     | Type          | Description                                  |
+| Prop     | Type          | Description                                  |
 | -------- | ------------- | -------------------------------------------- |
 | ...props | `LucideProps` | Any props supported by `lucide-react` icons. |
 
@@ -45,9 +39,7 @@ The `MapDefaultMarkerIcon` component renders the default marker icon used by `Ma
 
 The `MapMarker` component renders a marker on the map. By default, it uses `MapDefaultMarkerIcon`, but you can provide a custom React node as the `icon` to override it. It supports customization of the icon’s position, popups, and tooltips using standard Leaflet `DivIcon` [options](https://leafletjs.com/reference.html#divicon).
 
-### Props
-
-| Name            | Type                        | Description                                                                                                |
+| Prop            | Type                        | Description                                                                                                |
 | --------------- | --------------------------- | ---------------------------------------------------------------------------------------------------------- |
 | `icon`          | `ReactNode`                 | Optional. Custom icon to display instead of the default marker. Defaults to `MapDefaultMarkerIcon`.        |
 | `bgPos`         | `[number, number]`          | Optional. Background position offset for the icon.                                                         |
@@ -60,9 +52,7 @@ The `MapMarker` component renders a marker on the map. By default, it uses `MapD
 
 The `MapPopup` component renders a popup. It provides default styling and animations that match the shadcn/ui design system.
 
-### Props
-
-| Name     | Type         | Description                                                                                    |
+| Prop     | Type         | Description                                                                                    |
 | -------- | ------------ | ---------------------------------------------------------------------------------------------- |
 | ...props | `PopupProps` | All props from [React Leaflet Popup](https://react-leaflet.js.org/docs/api-components/#popup). |
 
@@ -70,9 +60,7 @@ The `MapPopup` component renders a popup. It provides default styling and animat
 
 The `MapTooltip` component renders a tooltip. It provides default styling and animations that match the shadcn/ui design system.
 
-### Props
-
-| Name        | Type                                     | Description                                                                                        |
+| Prop        | Type                                     | Description                                                                                        |
 | ----------- | ---------------------------------------- | -------------------------------------------------------------------------------------------------- |
 | `direction` | `"top" \| "right" \| "bottom" \| "left"` | Controls the position of the tooltip relative to the target element. Defaults to `"top"`.          |
 | ...props    | `TooltipProps`                           | All props from [React Leaflet Tooltip](https://react-leaflet.js.org/docs/api-components/#tooltip). |
@@ -81,9 +69,7 @@ The `MapTooltip` component renders a tooltip. It provides default styling and an
 
 The `MapZoomControl` component provides custom zoom buttons for the map.
 
-### Props
-
-| Name     | Type                          | Description                        |
+| Prop     | Type                          | Description                        |
 | -------- | ----------------------------- | ---------------------------------- |
 | ...props | `React.ComponentProps<"div">` | All props for the container `div`. |
 
@@ -91,9 +77,7 @@ The `MapZoomControl` component provides custom zoom buttons for the map.
 
 The `MapLocateControl` component provides a button to locate the user on the map.
 
-### Props
-
-| Name              | Type                                | Description                                                                                                                                            |
+| Prop              | Type                                | Description                                                                                                                                            |
 | ----------------- | ----------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
 | `watch`           | `boolean`                           | Optional. Whether to continuously watch the user’s location. Defaults to `false`.                                                                      |
 | `onLocationFound` | `(location: LocationEvent) => void` | Optional. Callback fired when the user’s location is found. Receives the [Leaflet LocationEvent](https://leafletjs.com/reference.html#locationevent).  |
@@ -104,9 +88,7 @@ The `MapLocateControl` component provides a button to locate the user on the map
 
 The `MapCircle` component renders a circle on the map.
 
-### Props
-
-| Name     | Type          | Description                                                                                      |
+| Prop     | Type          | Description                                                                                      |
 | -------- | ------------- | ------------------------------------------------------------------------------------------------ |
 | ...props | `CircleProps` | All props from [React Leaflet Circle](https://react-leaflet.js.org/docs/api-components/#circle). |
 
@@ -114,9 +96,7 @@ The `MapCircle` component renders a circle on the map.
 
 The `MapCircleMarker` component renders a circle marker on the map.
 
-### Props
-
-| Name     | Type                | Description                                                                                                  |
+| Prop     | Type                | Description                                                                                                  |
 | -------- | ------------------- | ------------------------------------------------------------------------------------------------------------ |
 | ...props | `CircleMarkerProps` | All props from [React Leaflet CircleMarker](https://react-leaflet.js.org/docs/api-components/#circlemarker). |
 
@@ -124,9 +104,7 @@ The `MapCircleMarker` component renders a circle marker on the map.
 
 The `MapPolyline` component renders a polyline on the map.
 
-### Props
-
-| Name     | Type            | Description                                                                                          |
+| Prop     | Type            | Description                                                                                          |
 | -------- | --------------- | ---------------------------------------------------------------------------------------------------- |
 | ...props | `PolylineProps` | All props from [React Leaflet Polyline](https://react-leaflet.js.org/docs/api-components/#polyline). |
 
@@ -134,9 +112,7 @@ The `MapPolyline` component renders a polyline on the map.
 
 The `MapPolygon` component renders a polygon on the map.
 
-### Props
-
-| Name     | Type           | Description                                                                                        |
+| Prop     | Type           | Description                                                                                        |
 | -------- | -------------- | -------------------------------------------------------------------------------------------------- |
 | ...props | `PolygonProps` | All props from [React Leaflet Polygon](https://react-leaflet.js.org/docs/api-components/#polygon). |
 
@@ -144,8 +120,6 @@ The `MapPolygon` component renders a polygon on the map.
 
 The `MapRectangle` component renders a rectangle on the map.
 
-### Props
-
-| Name     | Type             | Description                                                                                            |
+| Prop     | Type             | Description                                                                                            |
 | -------- | ---------------- | ------------------------------------------------------------------------------------------------------ |
 | ...props | `RectangleProps` | All props from [React Leaflet Rectangle](https://react-leaflet.js.org/docs/api-components/#rectangle). |
