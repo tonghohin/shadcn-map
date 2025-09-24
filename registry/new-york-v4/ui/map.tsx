@@ -34,7 +34,7 @@ import type {
     TileLayerProps,
     TooltipProps,
 } from "react-leaflet"
-import { useMap } from "react-leaflet"
+import { useMap, useMapEvents } from "react-leaflet"
 
 const MapContainer = dynamic(
     async () => (await import("react-leaflet")).MapContainer,
@@ -211,9 +211,13 @@ function MapTooltip({
 
 function MapZoomControl({ className, ...props }: React.ComponentProps<"div">) {
     const map = useMap()
-    const mapZoom = map.getZoom()
-    const mapMaxZoom = map.getMaxZoom()
-    const mapMinZoom = map.getMinZoom()
+    const [zoomLevel, setZoomLevel] = useState(map.getZoom())
+
+    useMapEvents({
+        zoomend: () => {
+            setZoomLevel(map.getZoom())
+        },
+    })
 
     return (
         <div
@@ -223,7 +227,7 @@ function MapZoomControl({ className, ...props }: React.ComponentProps<"div">) {
                 type="button"
                 size="icon"
                 variant="secondary"
-                disabled={mapZoom >= mapMaxZoom}
+                disabled={zoomLevel >= map.getMaxZoom()}
                 onClick={() => map.zoomIn()}>
                 <PlusIcon />
             </Button>
@@ -231,7 +235,7 @@ function MapZoomControl({ className, ...props }: React.ComponentProps<"div">) {
                 type="button"
                 size="icon"
                 variant="secondary"
-                disabled={mapZoom <= mapMinZoom}
+                disabled={zoomLevel <= map.getMinZoom()}
                 onClick={() => map.zoomOut()}>
                 <MinusIcon />
             </Button>
