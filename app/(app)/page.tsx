@@ -41,7 +41,7 @@ export default function IndexPage() {
                     <p className="text-foreground max-w-3xl text-base text-balance sm:text-lg">
                         {description}
                     </p>
-                    <div className="flex w-full items-center justify-center gap-2 pt-2 **:data-[slot=button]:shadow-none">
+                    <div className="flex w-full items-center justify-center gap-2 **:data-[slot=button]:shadow-none">
                         <Button asChild size="sm">
                             <Link href="/docs">Get Started</Link>
                         </Button>
