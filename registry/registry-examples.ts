@@ -133,4 +133,15 @@ export const examples: Registry["items"] = [
             },
         ],
     },
+    {
+        name: "map-with-styled-shapes",
+        type: "registry:example",
+        registryDependencies: ["map"],
+        files: [
+            {
+                path: "examples/map-with-styled-shapes.tsx",
+                type: "registry:example",
+            },
+        ],
+    },
 ]

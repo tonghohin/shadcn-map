@@ -146,6 +146,17 @@
                     "type": "registry:example"
                 }
             ]
+        },
+        {
+            "name": "map-with-styled-shapes",
+            "type": "registry:example",
+            "registryDependencies": ["map"],
+            "files": [
+                {
+                    "path": "registry/new-york-v4/examples/map-with-styled-shapes.tsx",
+                    "type": "registry:example"
+                }
+            ]
         }
     ]
 }

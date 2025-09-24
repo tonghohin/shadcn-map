@@ -1,0 +1,13 @@
+{
+    "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+    "name": "map-with-styled-shapes",
+    "type": "registry:example",
+    "registryDependencies": ["map"],
+    "files": [
+        {
+            "path": "registry/new-york-v4/examples/map-with-styled-shapes.tsx",
+            "content": "import {\n    Map,\n    MapCircle,\n    MapRectangle,\n    MapTileLayer,\n} from \"@/registry/new-york-v4/ui/map\"\nimport type { LatLngBoundsExpression, LatLngExpression } from \"leaflet\"\n\nexport function MapWithStyledShapes() {\n    const BOUNDS = [\n        [43.65, -79.387],\n        [43.6565, -79.379],\n    ] satisfies LatLngBoundsExpression\n    const CIRCLE_COORDINATES = [43.658, -79.388] satisfies LatLngExpression\n\n    return (\n        <Map center={BOUNDS[0]} zoom={14}>\n            <MapTileLayer />\n            <MapRectangle\n                bounds={BOUNDS}\n                className=\"fill-destructive stroke-destructive stroke-1\"\n            />\n            <MapCircle\n                center={CIRCLE_COORDINATES}\n                radius={300}\n                className=\"fill-yellow-600 stroke-yellow-600 stroke-1\"\n            />\n        </Map>\n    )\n}\n",
+            "type": "registry:example"
+        }
+    ]
+}

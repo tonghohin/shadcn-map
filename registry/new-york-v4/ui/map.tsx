@@ -367,7 +367,10 @@ function MapLocateControl({
 function MapCircle({ className, ...props }: CircleProps) {
     return (
         <LeafletCircle
-            className="fill-foreground stroke-foreground stroke-2"
+            className={cn(
+                "fill-foreground stroke-foreground stroke-2",
+                className
+            )}
             {...props}
         />
     )
@@ -376,7 +379,10 @@ function MapCircle({ className, ...props }: CircleProps) {
 function MapCircleMarker({ className, ...props }: CircleMarkerProps) {
     return (
         <LeafletCircleMarker
-            className="fill-foreground stroke-foreground stroke-2"
+            className={cn(
+                "fill-foreground stroke-foreground stroke-2",
+                className
+            )}
             {...props}
         />
     )
@@ -385,7 +391,10 @@ function MapCircleMarker({ className, ...props }: CircleMarkerProps) {
 function MapPolyline({ className, ...props }: PolylineProps) {
     return (
         <LeafletPolyline
-            className="fill-foreground stroke-foreground stroke-2"
+            className={cn(
+                "fill-foreground stroke-foreground stroke-2",
+                className
+            )}
             {...props}
         />
     )
@@ -394,7 +403,10 @@ function MapPolyline({ className, ...props }: PolylineProps) {
 function MapPolygon({ className, ...props }: PolygonProps) {
     return (
         <LeafletPolygon
-            className="fill-foreground stroke-foreground stroke-2"
+            className={cn(
+                "fill-foreground stroke-foreground stroke-2",
+                className
+            )}
             {...props}
         />
     )
@@ -403,7 +415,10 @@ function MapPolygon({ className, ...props }: PolygonProps) {
 function MapRectangle({ className, ...props }: RectangleProps) {
     return (
         <LeafletRectangle
-            className="fill-foreground stroke-foreground stroke-2"
+            className={cn(
+                "fill-foreground stroke-foreground stroke-2",
+                className
+            )}
             {...props}
         />
     )
