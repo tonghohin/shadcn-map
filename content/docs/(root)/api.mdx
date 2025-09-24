@@ -87,6 +87,19 @@ The `MapZoomControl` component provides custom zoom buttons for the map.
 | -------- | ----------------------------- | ---------------------------------- |
 | ...props | `React.ComponentProps<"div">` | All props for the container `div`. |
 
+## MapLocateControl
+
+The `MapLocateControl` component provides a button to locate the user on the map.
+
+### Props
+
+| Name              | Type                                | Description                                                                                                                                            |
+| ----------------- | ----------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------ |
+| `watch`           | `boolean`                           | Optional. Whether to continuously watch the user’s location. Defaults to `false`.                                                                      |
+| `onLocationFound` | `(location: LocationEvent) => void` | Optional. Callback fired when the user’s location is found. Receives the [Leaflet LocationEvent](https://leafletjs.com/reference.html#locationevent).  |
+| `onLocationError` | `(error: ErrorEvent) => void`       | Optional. Callback fired when there is an error locating the user. Receives the [Leaflet ErrorEvent](https://leafletjs.com/reference.html#errorevent). |
+| `...props`        | `React.ComponentProps<"button">`    | All other props for the `button` element.                                                                                                              |
+
 ## MapCircle
 
 The `MapCircle` component renders a circle on the map.
