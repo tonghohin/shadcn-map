@@ -287,7 +287,7 @@ function MapLocateControl({
             map.off("locationerror")
             setPosition(null)
         }
-    }, [map, watch, isLocating, onLocationFound, onLocationError])
+    }, [map, watch, isLocating])
 
     return (
         <>
