@@ -8,8 +8,9 @@ import { fontVariables } from "@/lib/fonts"
 import { cn } from "@/lib/utils"
 
 import { ClarityScript } from "@/components/clarity-script"
-import "@/styles/globals.css"
 import { Toaster } from "@/registry/new-york-v4/ui/sonner"
+
+import "@/styles/globals.css"
 
 export const metadata: Metadata = {
     title: {
@@ -33,6 +34,22 @@ export const metadata: Metadata = {
         },
     ],
     creator: "Hin",
+    openGraph: {
+        type: "website",
+        locale: "en_US",
+        url: process.env.NEXT_PUBLIC_APP_URL!,
+        title: siteConfig.name,
+        description: siteConfig.description,
+        siteName: siteConfig.name,
+        images: [
+            {
+                url: `${process.env.NEXT_PUBLIC_APP_URL}/opengraph-image.png`,
+                width: 1200,
+                height: 630,
+                alt: siteConfig.name,
+            },
+        ],
+    },
     icons: {
         icon: "/favicon.ico",
         shortcut: "/favicon-16x16.png",
