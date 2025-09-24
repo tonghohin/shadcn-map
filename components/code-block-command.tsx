@@ -58,7 +58,6 @@ export function CodeBlockCommand({
 
         copyToClipboardWithMeta(command, {
             action: "copy_npm_command",
-            identifier: command,
         })
         setHasCopied(true)
     }, [packageManager, tabs])

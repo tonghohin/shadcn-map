@@ -114,7 +114,6 @@ export function CommandMenu({
                     if (selectedType === "block") {
                         copyToClipboardWithMeta(copyPayload, {
                             action: "copy_npm_command",
-                            identifier: copyPayload,
                         })
                     }
 
@@ -124,7 +123,6 @@ export function CommandMenu({
                     ) {
                         copyToClipboardWithMeta(copyPayload, {
                             action: "copy_npm_command",
-                            identifier: copyPayload,
                         })
                     }
                 })

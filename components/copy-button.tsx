@@ -55,7 +55,6 @@ export function CopyButton({
                             event
                                 ? {
                                       action: event,
-                                      identifier: value,
                                   }
                                 : undefined
                         )
