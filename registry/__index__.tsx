@@ -8,7 +8,7 @@ import * as React from "react"
 export const Index: Record<string, any> = {
   "map": {
     name: "map",
-    description: "",
+    description: "A map component.",
     type: "registry:ui",
     registryDependencies: ["button","skeleton"],
     files: [{
