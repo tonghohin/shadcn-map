@@ -3,9 +3,21 @@
 import { cn } from "@/lib/utils"
 import { Button } from "@/registry/new-york-v4/ui/button"
 import { Skeleton } from "@/registry/new-york-v4/ui/skeleton"
-import type { DivIconOptions, LatLngExpression } from "leaflet"
+import type {
+    DivIconOptions,
+    ErrorEvent,
+    LatLngExpression,
+    LocateOptions,
+    LocationEvent,
+} from "leaflet"
 import "leaflet/dist/leaflet.css"
-import { LucideProps, MapPinIcon, MinusIcon, PlusIcon } from "lucide-react"
+import {
+    LucideProps,
+    MapPinIcon,
+    MinusIcon,
+    NavigationIcon,
+    PlusIcon,
+} from "lucide-react"
 import { useTheme } from "next-themes"
 import dynamic from "next/dynamic"
 import { useEffect, useState, type ReactNode } from "react"
@@ -210,7 +222,7 @@ function MapZoomControl({ className, ...props }: React.ComponentProps<"div">) {
             <Button
                 type="button"
                 size="icon"
-                variant="outline"
+                variant="secondary"
                 disabled={mapZoom >= mapMaxZoom}
                 onClick={() => map.zoomIn()}>
                 <PlusIcon />
@@ -218,12 +230,83 @@ function MapZoomControl({ className, ...props }: React.ComponentProps<"div">) {
             <Button
                 type="button"
                 size="icon"
-                variant="outline"
+                variant="secondary"
                 disabled={mapZoom <= mapMinZoom}
                 onClick={() => map.zoomOut()}>
                 <MinusIcon />
             </Button>
         </div>
+    )
+}
+
+function MapLocatePulseIcon() {
+    return (
+        <div className="absolute -top-1 -right-1 flex size-3 rounded-full">
+            <div className="bg-primary absolute inline-flex size-full animate-ping rounded-full opacity-75" />
+            <div className="bg-primary relative inline-flex size-3 rounded-full" />
+        </div>
+    )
+}
+
+function MapLocateControl({
+    className,
+    watch = false,
+    onLocationFound,
+    onLocationError,
+    ...props
+}: React.ComponentProps<"button"> &
+    Pick<LocateOptions, "watch"> & {
+        onLocationFound?: (location: LocationEvent) => void
+        onLocationError?: (error: ErrorEvent) => void
+    }) {
+    const map = useMap()
+    const [isLocating, setIsLocating] = useState(false)
+    const [position, setPosition] = useState<LatLngExpression | null>(null)
+
+    useEffect(() => {
+        if (isLocating) {
+            map.locate({ setView: true, maxZoom: 16, watch })
+            map.on("locationfound", (location: LocationEvent) => {
+                setPosition(location.latlng)
+                onLocationFound?.(location)
+            })
+            map.on("locationerror", (error: ErrorEvent) => {
+                setPosition(null)
+                setIsLocating(false)
+                onLocationError?.(error)
+            })
+        }
+
+        return () => {
+            map.stopLocate()
+            map.off("locationfound")
+            map.off("locationerror")
+            setPosition(null)
+        }
+    }, [map, watch, isLocating, onLocationFound, onLocationError])
+
+    return (
+        <>
+            <Button
+                type="button"
+                size="icon"
+                variant={isLocating ? "default" : "secondary"}
+                onClick={() =>
+                    setIsLocating((prevIsLocating) => !prevIsLocating)
+                }
+                aria-label={
+                    isLocating
+                        ? "Stop location tracking"
+                        : "Start location tracking"
+                }
+                className={cn("absolute right-1 bottom-1 z-1000", className)}
+                {...props}>
+                <NavigationIcon />
+            </Button>
+            {position && (
+                <MapMarker position={position} icon={<MapLocatePulseIcon />} />
+            )}
+        </>
     )
 }
 
@@ -292,6 +375,7 @@ export {
     MapCircle,
     MapCircleMarker,
     MapDefaultMarkerIcon,
+    MapLocateControl,
     MapMarker,
     MapPolygon,
     MapPolyline,
