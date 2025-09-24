@@ -37,14 +37,14 @@ import type {
 } from "react-leaflet"
 import { useMap, useMapEvents } from "react-leaflet"
 
-const MapContainer = dynamic(
+const LeafletMapContainer = dynamic(
     async () => (await import("react-leaflet")).MapContainer,
     {
         ssr: false,
         loading: () => <Skeleton className="size-full" />,
     }
 )
-const TileLayer = dynamic(
+const LeafletTileLayer = dynamic(
     async () => (await import("react-leaflet")).TileLayer,
     { ssr: false }
 )
@@ -104,7 +104,7 @@ function Map({
     const INITIAL_ZOOM = 15
 
     return (
-        <MapContainer
+        <LeafletMapContainer
             zoom={INITIAL_ZOOM}
             attributionControl={false}
             zoomControl={false}
@@ -117,10 +117,11 @@ function Map({
 function MapTileLayer({ attribution, url, ...props }: Partial<TileLayerProps>) {
     const { resolvedTheme } = useTheme()
     const style = resolvedTheme === "dark" ? "dark_all" : "light_all"
-    const tileUrl = `https://{s}.basemaps.cartocdn.com/${style}/{z}/{x}/{y}.png`
+    const tileUrl =
+        url ?? `https://{s}.basemaps.cartocdn.com/${style}/{z}/{x}/{y}.png`
 
     return (
-        <TileLayer
+        <LeafletTileLayer
             attribution='&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy; <a href="https://carto.com/attributions">CARTO</a>'
             url={tileUrl}
             {...props}

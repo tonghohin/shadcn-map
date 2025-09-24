@@ -5,6 +5,9 @@
         {
             "name": "map",
             "type": "registry:ui",
+            "title": "Map",
+            "author": "Hin",
+            "description": "A map component.",
             "dependencies": ["leaflet", "react-leaflet", "next-themes"],
             "devDependencies": ["@types/leaflet"],
             "registryDependencies": ["button", "skeleton"],
