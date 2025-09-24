@@ -6,6 +6,7 @@
         "custom-marker",
         "shapes",
         "popup-and-tooltip",
-        "zoom-control"
+        "zoom-control",
+        "locate-control"
     ]
 }

@@ -1,0 +1,13 @@
+{
+    "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+    "name": "map-with-locate-control",
+    "type": "registry:example",
+    "registryDependencies": ["map"],
+    "files": [
+        {
+            "path": "registry/new-york-v4/examples/map-with-locate-control.tsx",
+            "content": "import {\n    Map,\n    MapLocateControl,\n    MapTileLayer,\n} from \"@/registry/new-york-v4/ui/map\"\nimport type { LatLngExpression } from \"leaflet\"\n\nexport function MapWithLocateControl() {\n    const TORONTO_COORDINATES = [43.6532, -79.3832] satisfies LatLngExpression\n\n    return (\n        <Map center={TORONTO_COORDINATES}>\n            <MapTileLayer />\n            <MapLocateControl />\n        </Map>\n    )\n}\n",
+            "type": "registry:example"
+        }
+    ]
+}

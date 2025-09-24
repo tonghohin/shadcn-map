@@ -57,6 +57,17 @@ export const examples: Registry["items"] = [
         ],
     },
     {
+        name: "map-with-locate-control",
+        type: "registry:example",
+        registryDependencies: ["map"],
+        files: [
+            {
+                path: "examples/map-with-locate-control.tsx",
+                type: "registry:example",
+            },
+        ],
+    },
+    {
         name: "map-with-circle",
         type: "registry:example",
         registryDependencies: ["map"],
