@@ -3,12 +3,13 @@
 import {
     Map,
     MapCircleMarker,
+    MapLayerGroup,
+    MapLayers,
     MapLayersControl,
     MapLocateControl,
     MapMarker,
     MapPopup,
     MapTileLayer,
-    MapTileLayers,
     MapZoomControl,
 } from "@/registry/new-york-v4/ui/map"
 import type { LatLngExpression } from "leaflet"
@@ -19,7 +20,7 @@ export function MapDemo() {
 
     return (
         <Map center={TORONTO_COORDINATES} className="border">
-            <MapTileLayers>
+            <MapLayers defaultLayerGroups={["Pin", "Area"]}>
                 <MapLayersControl />
                 <MapTileLayer />
                 <MapTileLayer
@@ -27,16 +28,23 @@ export function MapDemo() {
                     url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
                     attribution="Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community"
                 />
-            </MapTileLayers>
+                <MapLayerGroup name="Pin">
+                    <MapMarker position={TORONTO_COORDINATES}>
+                        <MapPopup>A map component for shadcn/ui.</MapPopup>
+                    </MapMarker>
+                </MapLayerGroup>
+                <MapLayerGroup name="Area">
+                    <MapCircleMarker
+                        center={TORONTO_COORDINATES}
+                        radius={100}
+                    />
+                </MapLayerGroup>
+            </MapLayers>
             <MapZoomControl />
             <MapLocateControl
                 watch
                 onLocationError={(error) => toast.error(error.message)}
             />
-            <MapMarker position={TORONTO_COORDINATES}>
-                <MapPopup>A map component for shadcn/ui.</MapPopup>
-            </MapMarker>
-            <MapCircleMarker center={TORONTO_COORDINATES} radius={100} />
         </Map>
     )
 }

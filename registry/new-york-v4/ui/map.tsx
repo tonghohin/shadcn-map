@@ -4,6 +4,7 @@ import { cn } from "@/lib/utils"
 import { Button } from "@/registry/new-york-v4/ui/button"
 import {
     DropdownMenu,
+    DropdownMenuCheckboxItem,
     DropdownMenuContent,
     DropdownMenuLabel,
     DropdownMenuRadioGroup,
@@ -12,6 +13,7 @@ import {
     DropdownMenuTrigger,
 } from "@/registry/new-york-v4/ui/dropdown-menu"
 import { Skeleton } from "@/registry/new-york-v4/ui/skeleton"
+import type { CheckboxItem } from "@radix-ui/react-dropdown-menu"
 import type {
     DivIconOptions,
     ErrorEvent,
@@ -43,6 +45,7 @@ import { renderToString } from "react-dom/server"
 import type {
     CircleMarkerProps,
     CircleProps,
+    LayerGroupProps,
     MapContainerProps,
     MarkerProps,
     PolygonProps,
@@ -113,6 +116,12 @@ const LeafletRectangle = dynamic(
         ssr: false,
     }
 )
+const LeafletLayerGroup = dynamic(
+    async () => (await import("react-leaflet")).LayerGroup,
+    {
+        ssr: false,
+    }
+)
 
 function Map({
     zoom = 15,
@@ -136,21 +145,27 @@ interface MapTileLayerOption {
     attribution?: string
 }
 
+interface MapLayerGroupOption
+    extends Pick<React.ComponentProps<typeof CheckboxItem>, "disabled"> {
+    name: string
+}
+
 interface MapLayersContextType {
-    registerLayer: (layer: MapTileLayerOption) => void
-    layers: MapTileLayerOption[]
-    selectedLayer: string
-    setSelectedLayer: (name: string) => void
+    registerTileLayer: (layer: MapTileLayerOption) => void
+    tileLayers: MapTileLayerOption[]
+    selectedTileLayer: string
+    setSelectedTileLayer: (name: string) => void
+
+    registerLayerGroup: (layer: MapLayerGroupOption) => void
+    layerGroups: MapLayerGroupOption[]
+    activeLayerGroups: string[]
+    setActiveLayerGroups: (names: string[]) => void
 }
 
 const MapLayersContext = createContext<MapLayersContextType | null>(null)
 
 function useMapLayersContext() {
-    const context = useContext(MapLayersContext)
-    if (!context) {
-        throw new Error("MapLayersControl must be used within MapTileLayers")
-    }
-    return context
+    return useContext(MapLayersContext)
 }
 
 function MapTileLayer({
@@ -184,7 +199,7 @@ function MapTileLayer({
 
     useEffect(() => {
         if (context) {
-            context.registerLayer({
+            context.registerTileLayer({
                 name,
                 url: resolvedUrl,
                 attribution: resolvedAttribution,
@@ -192,7 +207,7 @@ function MapTileLayer({
         }
     }, [context, name, url, attribution])
 
-    if (context && context.selectedLayer !== name) {
+    if (context && context.selectedTileLayer !== name) {
         return null
     }
 
@@ -205,56 +220,120 @@ function MapTileLayer({
     )
 }
 
-function MapTileLayers({
-    defaultValue,
+function MapLayerGroup({
+    name,
+    disabled,
+    ...props
+}: LayerGroupProps & MapLayerGroupOption) {
+    const context = useMapLayersContext()
+
+    useEffect(() => {
+        if (context) {
+            context.registerLayerGroup({
+                name,
+                disabled,
+            })
+        }
+    }, [context, name, disabled])
+
+    if (context && !context.activeLayerGroups.includes(name)) {
+        return null
+    }
+
+    return <LeafletLayerGroup {...props} />
+}
+
+function MapLayers({
+    defaultTileLayer,
+    defaultLayerGroups = [],
     ...props
 }: Omit<React.ComponentProps<typeof MapLayersContext.Provider>, "value"> & {
-    defaultValue?: string
+    defaultTileLayer?: string
+    defaultLayerGroups?: string[]
 }) {
-    const [layers, setLayers] = useState<MapTileLayerOption[]>([])
-    const [selectedLayer, setSelectedLayer] = useState<string>(
-        defaultValue || ""
+    const [tileLayers, setTileLayers] = useState<MapTileLayerOption[]>([])
+    const [selectedTileLayer, setSelectedTileLayer] = useState<string>(
+        defaultTileLayer || ""
     )
+    const [layerGroups, setLayerGroups] = useState<MapLayerGroupOption[]>([])
+    const [activeLayerGroups, setActiveLayerGroups] =
+        useState<string[]>(defaultLayerGroups)
 
-    function registerLayer(layer: MapTileLayerOption) {
-        setLayers((prevLayers) => {
-            if (
-                prevLayers.some(
-                    (existingLayer) => existingLayer.name === layer.name
-                )
-            ) {
-                return prevLayers
+    function registerTileLayer(tileLayer: MapTileLayerOption) {
+        setTileLayers((prevTileLayers) => {
+            if (prevTileLayers.some((layer) => layer.name === tileLayer.name)) {
+                return prevTileLayers
             }
-            return [...prevLayers, layer]
+            return [...prevTileLayers, tileLayer]
+        })
+    }
+
+    function registerLayerGroup(layerGroup: MapLayerGroupOption) {
+        setLayerGroups((prevLayerGroups) => {
+            if (
+                prevLayerGroups.some((group) => group.name === layerGroup.name)
+            ) {
+                return prevLayerGroups
+            }
+            return [...prevLayerGroups, layerGroup]
         })
     }
 
     useEffect(() => {
         // Error: Invalid defaultValue
         if (
-            defaultValue &&
-            layers.length > 0 &&
-            !layers.some((layer) => layer.name === defaultValue)
+            defaultTileLayer &&
+            tileLayers.length > 0 &&
+            !tileLayers.some((tileLayer) => tileLayer.name === defaultTileLayer)
         ) {
             throw new Error(
-                `Invalid defaultValue "${defaultValue}" provided to MapTileLayers. It must match a MapTileLayer's value prop.`
+                `Invalid defaultTileLayer "${defaultTileLayer}" provided to MapLayers. It must match a MapTileLayer's name prop.`
             )
         }
 
-        // Set initial selected layer
-        if (layers.length > 0 && !selectedLayer) {
+        // Set initial selected tile layer
+        if (tileLayers.length > 0 && !selectedTileLayer) {
             const validDefaultValue =
-                defaultValue &&
-                layers.some((layer) => layer.name === defaultValue)
-                    ? defaultValue
-                    : layers[0].name
-            setSelectedLayer(validDefaultValue)
+                defaultTileLayer &&
+                tileLayers.some((layer) => layer.name === defaultTileLayer)
+                    ? defaultTileLayer
+                    : tileLayers[0].name
+            setSelectedTileLayer(validDefaultValue)
         }
-    }, [layers, defaultValue, selectedLayer])
+
+        // Error: Invalid defaultActiveLayerGroups
+        if (
+            defaultLayerGroups.length > 0 &&
+            layerGroups.length > 0 &&
+            defaultLayerGroups.some(
+                (name) => !layerGroups.some((group) => group.name === name)
+            )
+        ) {
+            throw new Error(
+                `Invalid defaultLayerGroups value provided to MapLayers. All names must match a MapLayerGroup's name prop.`
+            )
+        }
+    }, [
+        tileLayers,
+        defaultTileLayer,
+        selectedTileLayer,
+        layerGroups,
+        defaultLayerGroups,
+    ])
 
     return (
         <MapLayersContext.Provider
-            value={{ registerLayer, layers, selectedLayer, setSelectedLayer }}
+            value={{
+                registerTileLayer,
+                tileLayers,
+                selectedTileLayer,
+                setSelectedTileLayer,
+
+                registerLayerGroup,
+                layerGroups,
+                activeLayerGroups,
+                setActiveLayerGroups,
+            }}
             {...props}
         />
     )
@@ -264,10 +343,31 @@ function MapLayersControl({
     className,
     ...props
 }: React.ComponentProps<"button">) {
-    const { layers, selectedLayer, setSelectedLayer } = useMapLayersContext()
+    const layersContext = useMapLayersContext()
+    if (!layersContext) {
+        throw new Error("MapLayersControl must be used within MapLayers")
+    }
 
-    if (layers.length === 0) {
+    const {
+        tileLayers,
+        selectedTileLayer,
+        setSelectedTileLayer,
+
+        layerGroups,
+        activeLayerGroups,
+        setActiveLayerGroups,
+    } = layersContext
+
+    if (tileLayers.length === 0 && layerGroups.length === 0) {
         return null
+    }
+
+    function handleLayerGroupToggle(name: string, checked: boolean) {
+        setActiveLayerGroups(
+            checked
+                ? [...activeLayerGroups, name]
+                : activeLayerGroups.filter((groupName) => groupName !== name)
+        )
     }
 
     return (
@@ -277,27 +377,54 @@ function MapLayersControl({
                     type="button"
                     variant="secondary"
                     size="icon"
-                    aria-label="Select map type"
-                    title="Select map type"
+                    aria-label="Select layers"
+                    title="Select layers"
                     className={cn("absolute top-1 right-1 z-1000", className)}
                     {...props}>
                     <LayersIcon />
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-                <DropdownMenuLabel>Map Type</DropdownMenuLabel>
-                <DropdownMenuSeparator />
-                <DropdownMenuRadioGroup
-                    value={selectedLayer}
-                    onValueChange={setSelectedLayer}>
-                    {layers.map((layer) => (
-                        <DropdownMenuRadioItem
-                            key={layer.name}
-                            value={layer.name}>
-                            {layer.name}
-                        </DropdownMenuRadioItem>
-                    ))}
-                </DropdownMenuRadioGroup>
+                {tileLayers.length > 0 && (
+                    <>
+                        <DropdownMenuLabel>Map Type</DropdownMenuLabel>
+                        <DropdownMenuRadioGroup
+                            value={selectedTileLayer}
+                            onValueChange={setSelectedTileLayer}>
+                            {tileLayers.map((tileLayer) => (
+                                <DropdownMenuRadioItem
+                                    key={tileLayer.name}
+                                    value={tileLayer.name}>
+                                    {tileLayer.name}
+                                </DropdownMenuRadioItem>
+                            ))}
+                        </DropdownMenuRadioGroup>
+                    </>
+                )}
+                {tileLayers.length > 0 && layerGroups.length > 0 && (
+                    <DropdownMenuSeparator />
+                )}
+                {layerGroups.length > 0 && (
+                    <>
+                        <DropdownMenuLabel>Layers</DropdownMenuLabel>
+                        {layerGroups.map((layerGroup) => (
+                            <DropdownMenuCheckboxItem
+                                key={layerGroup.name}
+                                checked={activeLayerGroups.includes(
+                                    layerGroup.name
+                                )}
+                                disabled={layerGroup.disabled}
+                                onCheckedChange={(checked) =>
+                                    handleLayerGroupToggle(
+                                        layerGroup.name,
+                                        checked
+                                    )
+                                }>
+                                {layerGroup.name}
+                            </DropdownMenuCheckboxItem>
+                        ))}
+                    </>
+                )}
             </DropdownMenuContent>
         </DropdownMenu>
     )
@@ -619,6 +746,8 @@ export {
     MapCircle,
     MapCircleMarker,
     MapDefaultMarkerIcon,
+    MapLayerGroup,
+    MapLayers,
     MapLayersControl,
     MapLocateControl,
     MapMarker,
@@ -627,7 +756,6 @@ export {
     MapPopup,
     MapRectangle,
     MapTileLayer,
-    MapTileLayers,
     MapTooltip,
     MapZoomControl,
 }

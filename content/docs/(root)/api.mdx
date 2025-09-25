@@ -21,14 +21,14 @@ The `Map` component is the main map container. It wraps `react-leaflet`’s `Map
 
 The `MapTileLayer` component adds a tile layer to the map. **It is required for the map to be rendered.** It automatically switches between light and dark map styles based on the current theme from `next-themes`. You can provide custom URLs and attributions for both light and dark modes using the `url`, `darkUrl`, `attribution`, and `darkAttribution` props.
 
-| Prop              | Type             | Description                                                                                                             |
-| ----------------- | ---------------- | ----------------------------------------------------------------------------------------------------------------------- |
-| `url`             | `string`         | Optional. URL of the tile server for light mode. Defaults to Carto’s light tiles.                                       |
-| `attribution`     | `string`         | Optional. HTML string for map attribution in light mode. Defaults to OpenStreetMap and CARTO attribution.               |
-| `darkUrl`         | `string`         | Optional. URL of the tile server for dark mode. Defaults to Carto’s dark tiles.                                         |
-| `darkAttribution` | `string`         | Optional. HTML string for map attribution in dark mode. Defaults to OpenStreetMap and CARTO attribution.                |
-| `name`            | `string`         | Optional. Name of the layer, only required when using multiple tile layers with `MapTileLayers`. Defaults to `Default`. |
-| ...other props    | `TileLayerProps` | All other props from [React Leaflet TileLayer](https://react-leaflet.js.org/docs/api-components/#tilelayer).            |
+| Prop              | Type             | Description                                                                                                         |
+| ----------------- | ---------------- | ------------------------------------------------------------------------------------------------------------------- |
+| `url`             | `string`         | Optional. URL of the tile server for light mode. Defaults to Carto’s light tiles.                                   |
+| `attribution`     | `string`         | Optional. HTML string for map attribution in light mode. Defaults to OpenStreetMap and CARTO attribution.           |
+| `darkUrl`         | `string`         | Optional. URL of the tile server for dark mode. Defaults to Carto’s dark tiles.                                     |
+| `darkAttribution` | `string`         | Optional. HTML string for map attribution in dark mode. Defaults to OpenStreetMap and CARTO attribution.            |
+| `name`            | `string`         | Optional. Name of the layer, only required when using multiple tile layers with `MapLayers`. Defaults to `Default`. |
+| ...other props    | `TileLayerProps` | All other props from [React Leaflet TileLayer](https://react-leaflet.js.org/docs/api-components/#tilelayer).        |
 
 ## MapDefaultMarkerIcon
 
