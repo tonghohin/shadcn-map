@@ -10,7 +10,7 @@ export const Index: Record<string, any> = {
     name: "map",
     description: "A map component.",
     type: "registry:ui",
-    registryDependencies: ["button","skeleton"],
+    registryDependencies: ["button","skeleton","dropdown-menu"],
     files: [{
       path: "registry/new-york-v4/ui/map.tsx",
       type: "registry:ui",
@@ -42,6 +42,24 @@ export const Index: Record<string, any> = {
     categories: undefined,
     meta: undefined,
   },
+  "map-with-custom-tiles": {
+    name: "map-with-custom-tiles",
+    description: "",
+    type: "registry:example",
+    registryDependencies: ["map"],
+    files: [{
+      path: "registry/new-york-v4/examples/map-with-custom-tiles.tsx",
+      type: "registry:example",
+      target: ""
+    }],
+    component: React.lazy(async () => {
+      const mod = await import("@/registry/new-york-v4/examples/map-with-custom-tiles.tsx")
+      const exportName = Object.keys(mod).find(key => typeof mod[key] === 'function' || typeof mod[key] === 'object') || item.name
+      return { default: mod.default || mod[exportName] }
+    }),
+    categories: undefined,
+    meta: undefined,
+  },
   "map-with-markers": {
     name: "map-with-markers",
     description: "",
@@ -60,24 +78,6 @@ export const Index: Record<string, any> = {
     categories: undefined,
     meta: undefined,
   },
-  "map-with-popups-and-tooltips": {
-    name: "map-with-popups-and-tooltips",
-    description: "",
-    type: "registry:example",
-    registryDependencies: ["map"],
-    files: [{
-      path: "registry/new-york-v4/examples/map-with-popups-and-tooltips.tsx",
-      type: "registry:example",
-      target: ""
-    }],
-    component: React.lazy(async () => {
-      const mod = await import("@/registry/new-york-v4/examples/map-with-popups-and-tooltips.tsx")
-      const exportName = Object.keys(mod).find(key => typeof mod[key] === 'function' || typeof mod[key] === 'object') || item.name
-      return { default: mod.default || mod[exportName] }
-    }),
-    categories: undefined,
-    meta: undefined,
-  },
   "map-with-custom-markers": {
     name: "map-with-custom-markers",
     description: "",
@@ -90,60 +90,6 @@ export const Index: Record<string, any> = {
     }],
     component: React.lazy(async () => {
       const mod = await import("@/registry/new-york-v4/examples/map-with-custom-markers.tsx")
-      const exportName = Object.keys(mod).find(key => typeof mod[key] === 'function' || typeof mod[key] === 'object') || item.name
-      return { default: mod.default || mod[exportName] }
-    }),
-    categories: undefined,
-    meta: undefined,
-  },
-  "map-with-zoom-control": {
-    name: "map-with-zoom-control",
-    description: "",
-    type: "registry:example",
-    registryDependencies: ["map"],
-    files: [{
-      path: "registry/new-york-v4/examples/map-with-zoom-control.tsx",
-      type: "registry:example",
-      target: ""
-    }],
-    component: React.lazy(async () => {
-      const mod = await import("@/registry/new-york-v4/examples/map-with-zoom-control.tsx")
-      const exportName = Object.keys(mod).find(key => typeof mod[key] === 'function' || typeof mod[key] === 'object') || item.name
-      return { default: mod.default || mod[exportName] }
-    }),
-    categories: undefined,
-    meta: undefined,
-  },
-  "map-with-locate-control": {
-    name: "map-with-locate-control",
-    description: "",
-    type: "registry:example",
-    registryDependencies: ["map"],
-    files: [{
-      path: "registry/new-york-v4/examples/map-with-locate-control.tsx",
-      type: "registry:example",
-      target: ""
-    }],
-    component: React.lazy(async () => {
-      const mod = await import("@/registry/new-york-v4/examples/map-with-locate-control.tsx")
-      const exportName = Object.keys(mod).find(key => typeof mod[key] === 'function' || typeof mod[key] === 'object') || item.name
-      return { default: mod.default || mod[exportName] }
-    }),
-    categories: undefined,
-    meta: undefined,
-  },
-  "map-with-locate-control-callbacks": {
-    name: "map-with-locate-control-callbacks",
-    description: "",
-    type: "registry:example",
-    registryDependencies: ["map"],
-    files: [{
-      path: "registry/new-york-v4/examples/map-with-locate-control-callbacks.tsx",
-      type: "registry:example",
-      target: ""
-    }],
-    component: React.lazy(async () => {
-      const mod = await import("@/registry/new-york-v4/examples/map-with-locate-control-callbacks.tsx")
       const exportName = Object.keys(mod).find(key => typeof mod[key] === 'function' || typeof mod[key] === 'object') || item.name
       return { default: mod.default || mod[exportName] }
     }),
@@ -252,6 +198,78 @@ export const Index: Record<string, any> = {
     }],
     component: React.lazy(async () => {
       const mod = await import("@/registry/new-york-v4/examples/map-with-styled-shapes.tsx")
+      const exportName = Object.keys(mod).find(key => typeof mod[key] === 'function' || typeof mod[key] === 'object') || item.name
+      return { default: mod.default || mod[exportName] }
+    }),
+    categories: undefined,
+    meta: undefined,
+  },
+  "map-with-popups-and-tooltips": {
+    name: "map-with-popups-and-tooltips",
+    description: "",
+    type: "registry:example",
+    registryDependencies: ["map"],
+    files: [{
+      path: "registry/new-york-v4/examples/map-with-popups-and-tooltips.tsx",
+      type: "registry:example",
+      target: ""
+    }],
+    component: React.lazy(async () => {
+      const mod = await import("@/registry/new-york-v4/examples/map-with-popups-and-tooltips.tsx")
+      const exportName = Object.keys(mod).find(key => typeof mod[key] === 'function' || typeof mod[key] === 'object') || item.name
+      return { default: mod.default || mod[exportName] }
+    }),
+    categories: undefined,
+    meta: undefined,
+  },
+  "map-with-zoom-control": {
+    name: "map-with-zoom-control",
+    description: "",
+    type: "registry:example",
+    registryDependencies: ["map"],
+    files: [{
+      path: "registry/new-york-v4/examples/map-with-zoom-control.tsx",
+      type: "registry:example",
+      target: ""
+    }],
+    component: React.lazy(async () => {
+      const mod = await import("@/registry/new-york-v4/examples/map-with-zoom-control.tsx")
+      const exportName = Object.keys(mod).find(key => typeof mod[key] === 'function' || typeof mod[key] === 'object') || item.name
+      return { default: mod.default || mod[exportName] }
+    }),
+    categories: undefined,
+    meta: undefined,
+  },
+  "map-with-locate-control": {
+    name: "map-with-locate-control",
+    description: "",
+    type: "registry:example",
+    registryDependencies: ["map"],
+    files: [{
+      path: "registry/new-york-v4/examples/map-with-locate-control.tsx",
+      type: "registry:example",
+      target: ""
+    }],
+    component: React.lazy(async () => {
+      const mod = await import("@/registry/new-york-v4/examples/map-with-locate-control.tsx")
+      const exportName = Object.keys(mod).find(key => typeof mod[key] === 'function' || typeof mod[key] === 'object') || item.name
+      return { default: mod.default || mod[exportName] }
+    }),
+    categories: undefined,
+    meta: undefined,
+  },
+  "map-with-locate-control-callbacks": {
+    name: "map-with-locate-control-callbacks",
+    description: "",
+    type: "registry:example",
+    registryDependencies: ["map"],
+    files: [{
+      path: "registry/new-york-v4/examples/map-with-locate-control-callbacks.tsx",
+      type: "registry:example",
+      target: ""
+    }],
+    component: React.lazy(async () => {
+      const mod = await import("@/registry/new-york-v4/examples/map-with-locate-control-callbacks.tsx")
       const exportName = Object.keys(mod).find(key => typeof mod[key] === 'function' || typeof mod[key] === 'object') || item.name
       return { default: mod.default || mod[exportName] }
     }),

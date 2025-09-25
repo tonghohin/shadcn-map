@@ -10,7 +10,7 @@
             "description": "A map component.",
             "dependencies": ["leaflet", "react-leaflet", "next-themes"],
             "devDependencies": ["@types/leaflet"],
-            "registryDependencies": ["button", "skeleton"],
+            "registryDependencies": ["button", "skeleton", "dropdown-menu"],
             "files": [
                 {
                     "path": "registry/new-york-v4/ui/map.tsx",
@@ -30,6 +30,17 @@
             ]
         },
         {
+            "name": "map-with-custom-tiles",
+            "type": "registry:example",
+            "registryDependencies": ["map"],
+            "files": [
+                {
+                    "path": "registry/new-york-v4/examples/map-with-custom-tiles.tsx",
+                    "type": "registry:example"
+                }
+            ]
+        },
+        {
             "name": "map-with-markers",
             "type": "registry:example",
             "registryDependencies": ["map"],
@@ -41,56 +52,12 @@
             ]
         },
         {
-            "name": "map-with-popups-and-tooltips",
-            "type": "registry:example",
-            "registryDependencies": ["map"],
-            "files": [
-                {
-                    "path": "registry/new-york-v4/examples/map-with-popups-and-tooltips.tsx",
-                    "type": "registry:example"
-                }
-            ]
-        },
-        {
             "name": "map-with-custom-markers",
             "type": "registry:example",
             "registryDependencies": ["map"],
             "files": [
                 {
                     "path": "registry/new-york-v4/examples/map-with-custom-markers.tsx",
-                    "type": "registry:example"
-                }
-            ]
-        },
-        {
-            "name": "map-with-zoom-control",
-            "type": "registry:example",
-            "registryDependencies": ["map"],
-            "files": [
-                {
-                    "path": "registry/new-york-v4/examples/map-with-zoom-control.tsx",
-                    "type": "registry:example"
-                }
-            ]
-        },
-        {
-            "name": "map-with-locate-control",
-            "type": "registry:example",
-            "registryDependencies": ["map"],
-            "files": [
-                {
-                    "path": "registry/new-york-v4/examples/map-with-locate-control.tsx",
-                    "type": "registry:example"
-                }
-            ]
-        },
-        {
-            "name": "map-with-locate-control-callbacks",
-            "type": "registry:example",
-            "registryDependencies": ["map"],
-            "files": [
-                {
-                    "path": "registry/new-york-v4/examples/map-with-locate-control-callbacks.tsx",
                     "type": "registry:example"
                 }
             ]
@@ -157,6 +124,50 @@
             "files": [
                 {
                     "path": "registry/new-york-v4/examples/map-with-styled-shapes.tsx",
+                    "type": "registry:example"
+                }
+            ]
+        },
+        {
+            "name": "map-with-popups-and-tooltips",
+            "type": "registry:example",
+            "registryDependencies": ["map"],
+            "files": [
+                {
+                    "path": "registry/new-york-v4/examples/map-with-popups-and-tooltips.tsx",
+                    "type": "registry:example"
+                }
+            ]
+        },
+        {
+            "name": "map-with-zoom-control",
+            "type": "registry:example",
+            "registryDependencies": ["map"],
+            "files": [
+                {
+                    "path": "registry/new-york-v4/examples/map-with-zoom-control.tsx",
+                    "type": "registry:example"
+                }
+            ]
+        },
+        {
+            "name": "map-with-locate-control",
+            "type": "registry:example",
+            "registryDependencies": ["map"],
+            "files": [
+                {
+                    "path": "registry/new-york-v4/examples/map-with-locate-control.tsx",
+                    "type": "registry:example"
+                }
+            ]
+        },
+        {
+            "name": "map-with-locate-control-callbacks",
+            "type": "registry:example",
+            "registryDependencies": ["map"],
+            "files": [
+                {
+                    "path": "registry/new-york-v4/examples/map-with-locate-control-callbacks.tsx",
                     "type": "registry:example"
                 }
             ]

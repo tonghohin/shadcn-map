@@ -2,6 +2,7 @@
     "title": "Examples",
     "pages": [
         "index",
+        "custom-tile",
         "marker",
         "custom-marker",
         "shapes",
