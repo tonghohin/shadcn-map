@@ -3,10 +3,12 @@
 import {
     Map,
     MapCircle,
+    MapLayersControl,
     MapLocateControl,
     MapMarker,
     MapPopup,
     MapTileLayer,
+    MapTileLayers,
     MapZoomControl,
 } from "@/registry/new-york-v4/ui/map"
 import type { LatLngExpression } from "leaflet"
@@ -17,7 +19,15 @@ export function MapDemo() {
 
     return (
         <Map center={TORONTO_COORDINATES} className="border">
-            <MapTileLayer />
+            <MapTileLayers>
+                <MapTileLayer />
+                <MapTileLayer
+                    name="Satellite"
+                    url="https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}"
+                    attribution="Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community"
+                />
+                <MapLayersControl />
+            </MapTileLayers>
             <MapZoomControl />
             <MapLocateControl
                 watch

@@ -2,6 +2,15 @@
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/registry/new-york-v4/ui/button"
+import {
+    DropdownMenu,
+    DropdownMenuContent,
+    DropdownMenuLabel,
+    DropdownMenuRadioGroup,
+    DropdownMenuRadioItem,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from "@/registry/new-york-v4/ui/dropdown-menu"
 import { Skeleton } from "@/registry/new-york-v4/ui/skeleton"
 import type {
     DivIconOptions,
@@ -12,6 +21,7 @@ import type {
 } from "leaflet"
 import "leaflet/dist/leaflet.css"
 import {
+    LayersIcon,
     LoaderCircleIcon,
     LucideProps,
     MapPinIcon,
@@ -21,7 +31,14 @@ import {
 } from "lucide-react"
 import { useTheme } from "next-themes"
 import dynamic from "next/dynamic"
-import { useEffect, useRef, useState, type ReactNode } from "react"
+import {
+    createContext,
+    useContext,
+    useEffect,
+    useRef,
+    useState,
+    type ReactNode,
+} from "react"
 import { renderToString } from "react-dom/server"
 import type {
     CircleMarkerProps,
@@ -98,14 +115,13 @@ const LeafletRectangle = dynamic(
 )
 
 function Map({
+    zoom = 15,
     className,
     ...props
 }: MapContainerProps & { center: LatLngExpression }) {
-    const INITIAL_ZOOM = 15
-
     return (
         <LeafletMapContainer
-            zoom={INITIAL_ZOOM}
+            zoom={zoom}
             attributionControl={false}
             zoomControl={false}
             className={cn("size-full min-h-96 flex-1 rounded-md", className)}
@@ -114,18 +130,162 @@ function Map({
     )
 }
 
-function MapTileLayer({ attribution, url, ...props }: Partial<TileLayerProps>) {
+interface MapTileLayerOption {
+    name: string
+    url: string
+    attribution?: string
+}
+
+interface MapLayersContextType {
+    registerLayer: (layer: MapTileLayerOption) => void
+    layers: MapTileLayerOption[]
+    selectedLayer: string
+    setSelectedLayer: (name: string) => void
+}
+
+const MapLayersContext = createContext<MapLayersContextType | null>(null)
+
+function useMapLayersContext() {
+    const context = useContext(MapLayersContext)
+    if (!context) {
+        throw new Error("MapLayersControl must be used within MapTileLayers")
+    }
+    return context
+}
+
+function MapTileLayer({
+    name = "Default",
+    url,
+    attribution,
+    ...props
+}: Partial<TileLayerProps> & { name?: string }) {
+    const context = useContext(MapLayersContext)
     const { resolvedTheme } = useTheme()
     const style = resolvedTheme === "dark" ? "dark_all" : "light_all"
-    const tileUrl =
+    const resolvedUrl =
         url ?? `https://{s}.basemaps.cartocdn.com/${style}/{z}/{x}/{y}.png`
+    const resolvedAttribution =
+        attribution ??
+        '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy; <a href="https://carto.com/attributions">CARTO</a>'
+
+    useEffect(() => {
+        if (context) {
+            context.registerLayer({
+                name,
+                url: resolvedUrl,
+                attribution: resolvedAttribution,
+            })
+        }
+    }, [context, name, url, attribution])
+
+    if (context && context.selectedLayer !== name) {
+        return null
+    }
 
     return (
         <LeafletTileLayer
-            attribution='&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy; <a href="https://carto.com/attributions">CARTO</a>'
-            url={tileUrl}
+            url={resolvedUrl}
+            attribution={resolvedAttribution}
             {...props}
         />
+    )
+}
+
+function MapTileLayers({
+    defaultValue,
+    ...props
+}: Omit<React.ComponentProps<typeof MapLayersContext.Provider>, "value"> & {
+    defaultValue?: string
+}) {
+    const [layers, setLayers] = useState<MapTileLayerOption[]>([])
+    const [selectedLayer, setSelectedLayer] = useState<string>(
+        defaultValue || ""
+    )
+
+    function registerLayer(layer: MapTileLayerOption) {
+        setLayers((prevLayers) => {
+            if (
+                prevLayers.some(
+                    (existingLayer) => existingLayer.name === layer.name
+                )
+            ) {
+                return prevLayers
+            }
+            return [...prevLayers, layer]
+        })
+    }
+
+    useEffect(() => {
+        // Error: Invalid defaultValue
+        if (
+            defaultValue &&
+            layers.length > 0 &&
+            !layers.some((layer) => layer.name === defaultValue)
+        ) {
+            throw new Error(
+                `Invalid defaultValue "${defaultValue}" provided to MapTileLayers. It must match a MapTileLayer's value prop.`
+            )
+        }
+
+        // Set initial selected layer
+        if (layers.length > 0 && !selectedLayer) {
+            const validDefaultValue =
+                defaultValue &&
+                layers.some((layer) => layer.name === defaultValue)
+                    ? defaultValue
+                    : layers[0].name
+            setSelectedLayer(validDefaultValue)
+        }
+    }, [layers, defaultValue, selectedLayer])
+
+    return (
+        <MapLayersContext.Provider
+            value={{ registerLayer, layers, selectedLayer, setSelectedLayer }}
+            {...props}
+        />
+    )
+}
+
+function MapLayersControl({
+    className,
+    ...props
+}: React.ComponentProps<"button">) {
+    const { layers, selectedLayer, setSelectedLayer } = useMapLayersContext()
+
+    if (layers.length === 0) {
+        return null
+    }
+
+    return (
+        <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+                <Button
+                    type="button"
+                    variant="secondary"
+                    size="icon"
+                    aria-label="Select map type"
+                    title="Select map type"
+                    className={cn("absolute top-1 right-1 z-1000", className)}
+                    {...props}>
+                    <LayersIcon />
+                </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+                <DropdownMenuLabel>Map Type</DropdownMenuLabel>
+                <DropdownMenuSeparator />
+                <DropdownMenuRadioGroup
+                    value={selectedLayer}
+                    onValueChange={setSelectedLayer}>
+                    {layers.map((layer) => (
+                        <DropdownMenuRadioItem
+                            key={layer.name}
+                            value={layer.name}>
+                            {layer.name}
+                        </DropdownMenuRadioItem>
+                    ))}
+                </DropdownMenuRadioGroup>
+            </DropdownMenuContent>
+        </DropdownMenu>
     )
 }
 
@@ -160,6 +320,66 @@ function MapMarker({
                 ...(tooltipAnchor ? { tooltipAnchor } : {}),
             })}
             riseOnHover
+            {...props}
+        />
+    )
+}
+
+function MapCircle({ className, ...props }: CircleProps) {
+    return (
+        <LeafletCircle
+            className={cn(
+                "fill-foreground stroke-foreground stroke-2",
+                className
+            )}
+            {...props}
+        />
+    )
+}
+
+function MapCircleMarker({ className, ...props }: CircleMarkerProps) {
+    return (
+        <LeafletCircleMarker
+            className={cn(
+                "fill-foreground stroke-foreground stroke-2",
+                className
+            )}
+            {...props}
+        />
+    )
+}
+
+function MapPolyline({ className, ...props }: PolylineProps) {
+    return (
+        <LeafletPolyline
+            className={cn(
+                "fill-foreground stroke-foreground stroke-2",
+                className
+            )}
+            {...props}
+        />
+    )
+}
+
+function MapPolygon({ className, ...props }: PolygonProps) {
+    return (
+        <LeafletPolygon
+            className={cn(
+                "fill-foreground stroke-foreground stroke-2",
+                className
+            )}
+            {...props}
+        />
+    )
+}
+
+function MapRectangle({ className, ...props }: RectangleProps) {
+    return (
+        <LeafletRectangle
+            className={cn(
+                "fill-foreground stroke-foreground stroke-2",
+                className
+            )}
             {...props}
         />
     )
@@ -258,34 +478,6 @@ function MapLocatePulseIcon() {
     )
 }
 
-function useDebounceLoadingState(delay = 200) {
-    const [isLoading, setIsLoading] = useState(false)
-    const [showLoading, setShowLoading] = useState(false)
-    const timeoutRef = useRef<NodeJS.Timeout | null>(null)
-
-    useEffect(() => {
-        if (isLoading) {
-            timeoutRef.current = setTimeout(() => {
-                setShowLoading(true)
-            }, delay)
-        } else {
-            if (timeoutRef.current) {
-                clearTimeout(timeoutRef.current)
-                timeoutRef.current = null
-            }
-            setShowLoading(false)
-        }
-
-        return () => {
-            if (timeoutRef.current) {
-                clearTimeout(timeoutRef.current)
-            }
-        }
-    }, [isLoading, delay])
-
-    return [showLoading, setIsLoading] as const
-}
-
 function MapLocateControl({
     className,
     watch = false,
@@ -365,66 +557,6 @@ function MapLocateControl({
     )
 }
 
-function MapCircle({ className, ...props }: CircleProps) {
-    return (
-        <LeafletCircle
-            className={cn(
-                "fill-foreground stroke-foreground stroke-2",
-                className
-            )}
-            {...props}
-        />
-    )
-}
-
-function MapCircleMarker({ className, ...props }: CircleMarkerProps) {
-    return (
-        <LeafletCircleMarker
-            className={cn(
-                "fill-foreground stroke-foreground stroke-2",
-                className
-            )}
-            {...props}
-        />
-    )
-}
-
-function MapPolyline({ className, ...props }: PolylineProps) {
-    return (
-        <LeafletPolyline
-            className={cn(
-                "fill-foreground stroke-foreground stroke-2",
-                className
-            )}
-            {...props}
-        />
-    )
-}
-
-function MapPolygon({ className, ...props }: PolygonProps) {
-    return (
-        <LeafletPolygon
-            className={cn(
-                "fill-foreground stroke-foreground stroke-2",
-                className
-            )}
-            {...props}
-        />
-    )
-}
-
-function MapRectangle({ className, ...props }: RectangleProps) {
-    return (
-        <LeafletRectangle
-            className={cn(
-                "fill-foreground stroke-foreground stroke-2",
-                className
-            )}
-            {...props}
-        />
-    )
-}
-
 function useLeaflet() {
     const [L, setL] = useState<typeof import("leaflet") | null>(null)
 
@@ -440,11 +572,40 @@ function useLeaflet() {
     return L
 }
 
+function useDebounceLoadingState(delay = 200) {
+    const [isLoading, setIsLoading] = useState(false)
+    const [showLoading, setShowLoading] = useState(false)
+    const timeoutRef = useRef<NodeJS.Timeout | null>(null)
+
+    useEffect(() => {
+        if (isLoading) {
+            timeoutRef.current = setTimeout(() => {
+                setShowLoading(true)
+            }, delay)
+        } else {
+            if (timeoutRef.current) {
+                clearTimeout(timeoutRef.current)
+                timeoutRef.current = null
+            }
+            setShowLoading(false)
+        }
+
+        return () => {
+            if (timeoutRef.current) {
+                clearTimeout(timeoutRef.current)
+            }
+        }
+    }, [isLoading, delay])
+
+    return [showLoading, setIsLoading] as const
+}
+
 export {
     Map,
     MapCircle,
     MapCircleMarker,
     MapDefaultMarkerIcon,
+    MapLayersControl,
     MapLocateControl,
     MapMarker,
     MapPolygon,
@@ -452,6 +613,7 @@ export {
     MapPopup,
     MapRectangle,
     MapTileLayer,
+    MapTileLayers,
     MapTooltip,
     MapZoomControl,
 }

@@ -9,7 +9,7 @@ export const ui: Registry["items"] = [
         type: "registry:ui",
         dependencies: ["leaflet", "react-leaflet", "next-themes"],
         devDependencies: ["@types/leaflet"],
-        registryDependencies: ["button", "skeleton"],
+        registryDependencies: ["button", "skeleton", "dropdown-menu"],
         files: [
             {
                 path: "ui/map.tsx",
