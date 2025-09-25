@@ -25,7 +25,6 @@ import "leaflet/dist/leaflet.css"
 import {
     LayersIcon,
     LoaderCircleIcon,
-    LucideProps,
     MapPinIcon,
     MinusIcon,
     NavigationIcon,
@@ -430,12 +429,8 @@ function MapLayersControl({
     )
 }
 
-function MapDefaultMarkerIcon({ ...props }: LucideProps) {
-    return <MapPinIcon className="size-6" {...props} />
-}
-
 function MapMarker({
-    icon = <MapDefaultMarkerIcon />,
+    icon = <MapPinIcon className="size-6" />,
     bgPos,
     iconAnchor = [12, 12],
     popupAnchor,
@@ -745,7 +740,6 @@ export {
     Map,
     MapCircle,
     MapCircleMarker,
-    MapDefaultMarkerIcon,
     MapLayerGroup,
     MapLayers,
     MapLayersControl,

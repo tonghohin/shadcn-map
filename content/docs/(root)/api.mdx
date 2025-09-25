@@ -30,17 +30,9 @@ The `MapTileLayer` component adds a tile layer to the map. **It is required for 
 | `name`            | `string`         | Optional. Name of the layer, only required when using multiple tile layers with `MapLayers`. Defaults to `Default`. |
 | ...other props    | `TileLayerProps` | All other props from [React Leaflet TileLayer](https://react-leaflet.js.org/docs/api-components/#tilelayer).        |
 
-## MapDefaultMarkerIcon
-
-The `MapDefaultMarkerIcon` component renders the default marker icon used by `MapMarker`. Use this component if you want to customize the appearance of the default icon.
-
-| Prop     | Type          | Description                                  |
-| -------- | ------------- | -------------------------------------------- |
-| ...props | `LucideProps` | Any props supported by `lucide-react` icons. |
-
 ## MapMarker
 
-The `MapMarker` component renders a marker on the map. By default, it uses `MapDefaultMarkerIcon`, but you can provide a custom React node as the `icon` to override it. It supports customization of the icon’s position, popups, and tooltips using standard Leaflet `DivIcon` [options](https://leafletjs.com/reference.html#divicon).
+The `MapMarker` component renders a marker on the map. By default, it uses the `MapPinIcon` from `lucide-react`, but you can provide a custom React node as the `icon` to override it. It supports customization of the icon’s position, popups, and tooltips using standard Leaflet `DivIcon` [options](https://leafletjs.com/reference.html#divicon).
 
 | Prop            | Type                        | Description                                                                                                |
 | --------------- | --------------------------- | ---------------------------------------------------------------------------------------------------------- |
