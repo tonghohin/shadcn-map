@@ -157,16 +157,30 @@ function MapTileLayer({
     name = "Default",
     url,
     attribution,
+    darkUrl,
+    darkAttribution,
     ...props
-}: Partial<TileLayerProps> & { name?: string }) {
+}: Partial<TileLayerProps> & {
+    name?: string
+    darkUrl?: string
+    darkAttribution?: string
+}) {
     const context = useContext(MapLayersContext)
+    const DEFAULT_URL =
+        "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png"
+    const DEFAULT_DARK_URL =
+        "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png"
+
     const { resolvedTheme } = useTheme()
-    const style = resolvedTheme === "dark" ? "dark_all" : "light_all"
     const resolvedUrl =
-        url ?? `https://{s}.basemaps.cartocdn.com/${style}/{z}/{x}/{y}.png`
+        resolvedTheme === "dark"
+            ? (darkUrl ?? url ?? DEFAULT_DARK_URL)
+            : (url ?? DEFAULT_URL)
     const resolvedAttribution =
-        attribution ??
-        '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy; <a href="https://carto.com/attributions">CARTO</a>'
+        resolvedTheme === "dark" && darkAttribution
+            ? darkAttribution
+            : (attribution ??
+              '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy; <a href="https://carto.com/attributions">CARTO</a>')
 
     useEffect(() => {
         if (context) {
