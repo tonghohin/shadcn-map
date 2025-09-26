@@ -173,7 +173,7 @@
 
   /* Leaflet */
   .leaflet-container {
-    @apply !bg-card
+    @apply !bg-card !font-[inherit]
   }
 
   .leaflet-container a {
@@ -202,6 +202,10 @@
 
   .leaflet-popup-tip-container, .leaflet-tooltip-top:before, .leaflet-tooltip-bottom:before, .leaflet-tooltip-left:before, .leaflet-tooltip-right:before {
     @apply hidden
+  }
+
+  .leaflet-control-attribution {
+    @apply !bg-muted !text-inherit !px-[4px] !py-[2px] !leading-none text-[10px] rounded-md
   }
 }
 

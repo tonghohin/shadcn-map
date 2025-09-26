@@ -27,7 +27,7 @@ npx shadcn@latest add http://shadcn-map.vercel.app/r/map.json
 ```css showLineNumbers title="app/globals.css"
 @layer base {
     .leaflet-container {
-        @apply !bg-card;
+        @apply !bg-card !font-[inherit];
     }
 
     .leaflet-container a {
@@ -61,6 +61,10 @@ npx shadcn@latest add http://shadcn-map.vercel.app/r/map.json
     .leaflet-tooltip-left:before,
     .leaflet-tooltip-right:before {
         @apply hidden;
+    }
+
+    .leaflet-control-attribution {
+        @apply !bg-muted rounded-md !px-[4px] !py-[2px] text-[10px] !leading-none !text-inherit;
     }
 }
 ```

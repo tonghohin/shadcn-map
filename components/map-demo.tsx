@@ -19,7 +19,7 @@ export function MapDemo() {
     const TORONTO_COORDINATES = [43.6532, -79.3832] satisfies LatLngExpression
 
     return (
-        <Map center={TORONTO_COORDINATES} className="border">
+        <Map center={TORONTO_COORDINATES} attributionControl className="border">
             <MapLayers defaultLayerGroups={["Pin", "Area"]}>
                 <MapLayersControl />
                 <MapTileLayer />
@@ -44,6 +44,7 @@ export function MapDemo() {
             <MapLocateControl
                 watch
                 onLocationError={(error) => toast.error(error.message)}
+                className="bottom-5"
             />
         </Map>
     )

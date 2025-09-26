@@ -125,6 +125,12 @@ const LeafletFeatureGroup = dynamic(
         ssr: false,
     }
 )
+const LeafletScaleControl = dynamic(
+    async () => (await import("react-leaflet")).ScaleControl,
+    {
+        ssr: false,
+    }
+)
 
 function Map({
     zoom = 15,
@@ -183,6 +189,11 @@ function MapTileLayer({
     darkUrl?: string
     darkAttribution?: string
 }) {
+    const map = useMap()
+    if (map.attributionControl) {
+        map.attributionControl.setPrefix("")
+    }
+
     const context = useContext(MapLayersContext)
     const DEFAULT_URL =
         "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png"
@@ -779,6 +790,7 @@ function useDebounceLoadingState(delay = 200) {
 }
 
 export {
+    LeafletScaleControl,
     Map,
     MapCircle,
     MapCircleMarker,
