@@ -30,6 +30,41 @@ The `MapTileLayer` component adds a tile layer to the map. **It is required for 
 | `name`            | `string`         | Optional. Name of the layer, only required when using multiple tile layers with `MapLayers`. Defaults to `Default`. |
 | ...other props    | `TileLayerProps` | All other props from [React Leaflet TileLayer](https://react-leaflet.js.org/docs/api-components/#tilelayer).        |
 
+## MapLayerGroup
+
+The `MapLayerGroup` component is for grouping multiple map layers, which is useful when you want to control their visibility by group. It has little effect if you only have one layer group or don’t need to toggle visibility.
+
+| Prop           | Type              | Description                                                                                                               |
+| -------------- | ----------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| `name`         | `string`          | **Required.** A unique name for the layer group.                                                                          |
+| `disabled`     | `boolean`         | Optional. If `true`, the layer group’s checkbox in the layer control will be disabled, preventing users from toggling it. |
+| ...other props | `LayerGroupProps` | All other props from [React Leaflet LayerGroup](https://react-leaflet.js.org/docs/api-components/#layergroup).            |
+
+## MapLayers
+
+The `MapLayers` component provides a context for managing multiple tile layers and layer groups on the map.  
+It is required when you want to use multiple tile layers or multiple layer groups together.  
+Tile layers and layer groups can still be used on their own, but `MapLayers` is needed if you want to control visibility via the `MapLayersControl` component.
+
+| Prop                 | Type                           | Description                                                                                                  |
+| -------------------- | ------------------------------ | ------------------------------------------------------------------------------------------------------------ |
+| `defaultTileLayer`   | `string`                       | Optional. The name of the tile layer to select by default. Must match the `name` prop of a `MapTileLayer`.   |
+| `defaultLayerGroups` | `string[]`                     | Optional. Names of the layer groups to activate by default. Must match the `name` prop of a `MapLayerGroup`. |
+| ...props             | `Omit<ProviderProps, "value">` | All props from the context provider, except `value`.                                                         |
+
+## MapLayersControl
+
+The `MapLayersControl` component renders a UI for selecting the active tile layer and toggling layer groups.  
+It must be used inside a `MapLayers` component and is only visible if there are multiple tile layers or layer groups registered.
+
+The control is only visible if there are **multiple tile layers** or **layer groups** registered—if there’s only one tile layer and no layer group, it will not appear.
+
+| Prop               | Type                             | Description                                                                                      |
+| ------------------ | -------------------------------- | ------------------------------------------------------------------------------------------------ |
+| `tileLayersLabel`  | `string`                         | Optional. Custom label for the tile layers section in the dropdown menu. Defaults to `Map Type`. |
+| `layerGroupsLabel` | `string`                         | Optional. Custom label for the layer groups section in the dropdown menu. Defaults to `Layers`.  |
+| ...props           | `React.ComponentProps<"button">` | All props for the control button element.                                                        |
+
 ## MapMarker
 
 The `MapMarker` component renders a marker on the map. By default, it uses the `MapPinIcon` from `lucide-react`, but you can provide a custom React node as the `icon` to override it. It supports customization of the icon’s position, popups, and tooltips using standard Leaflet `DivIcon` [options](https://leafletjs.com/reference.html#divicon).

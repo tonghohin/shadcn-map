@@ -327,7 +327,6 @@ function MapLayers({
                 tileLayers,
                 selectedTileLayer,
                 setSelectedTileLayer,
-
                 registerLayerGroup,
                 layerGroups,
                 activeLayerGroups,
@@ -339,9 +338,14 @@ function MapLayers({
 }
 
 function MapLayersControl({
+    tileLayersLabel = "Map Type",
+    layerGroupsLabel = "Layers",
     className,
     ...props
-}: React.ComponentProps<"button">) {
+}: React.ComponentProps<"button"> & {
+    tileLayersLabel?: string
+    layerGroupsLabel?: string
+}) {
     const layersContext = useMapLayersContext()
     if (!layersContext) {
         throw new Error("MapLayersControl must be used within MapLayers")
@@ -351,7 +355,6 @@ function MapLayersControl({
         tileLayers,
         selectedTileLayer,
         setSelectedTileLayer,
-
         layerGroups,
         activeLayerGroups,
         setActiveLayerGroups,
@@ -369,6 +372,13 @@ function MapLayersControl({
         )
     }
 
+    const showTileLayersDropdown = tileLayers.length > 1
+    const showLayerGroupsDropdown = layerGroups.length > 0
+
+    if (!showTileLayersDropdown && !showLayerGroupsDropdown) {
+        return null
+    }
+
     return (
         <DropdownMenu>
             <DropdownMenuTrigger asChild>
@@ -384,9 +394,9 @@ function MapLayersControl({
                 </Button>
             </DropdownMenuTrigger>
             <DropdownMenuContent align="end">
-                {tileLayers.length > 0 && (
+                {showTileLayersDropdown && (
                     <>
-                        <DropdownMenuLabel>Map Type</DropdownMenuLabel>
+                        <DropdownMenuLabel>{tileLayersLabel}</DropdownMenuLabel>
                         <DropdownMenuRadioGroup
                             value={selectedTileLayer}
                             onValueChange={setSelectedTileLayer}>
@@ -400,12 +410,14 @@ function MapLayersControl({
                         </DropdownMenuRadioGroup>
                     </>
                 )}
-                {tileLayers.length > 0 && layerGroups.length > 0 && (
+                {showTileLayersDropdown && showLayerGroupsDropdown && (
                     <DropdownMenuSeparator />
                 )}
-                {layerGroups.length > 0 && (
+                {showLayerGroupsDropdown && (
                     <>
-                        <DropdownMenuLabel>Layers</DropdownMenuLabel>
+                        <DropdownMenuLabel>
+                            {layerGroupsLabel}
+                        </DropdownMenuLabel>
                         {layerGroups.map((layerGroup) => (
                             <DropdownMenuCheckboxItem
                                 key={layerGroup.name}

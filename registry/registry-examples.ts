@@ -134,6 +134,39 @@ export const examples: Registry["items"] = [
         ],
     },
     {
+        name: "map-with-layers-control",
+        type: "registry:example",
+        registryDependencies: ["map"],
+        files: [
+            {
+                path: "examples/map-with-layers-control.tsx",
+                type: "registry:example",
+            },
+        ],
+    },
+    {
+        name: "map-with-tile-layers-control",
+        type: "registry:example",
+        registryDependencies: ["map"],
+        files: [
+            {
+                path: "examples/map-with-tile-layers-control.tsx",
+                type: "registry:example",
+            },
+        ],
+    },
+    {
+        name: "map-with-layer-groups-control",
+        type: "registry:example",
+        registryDependencies: ["map"],
+        files: [
+            {
+                path: "examples/map-with-layer-groups-control.tsx",
+                type: "registry:example",
+            },
+        ],
+    },
+    {
         name: "map-with-locate-control",
         type: "registry:example",
         registryDependencies: ["map"],
