@@ -10,7 +10,7 @@ export const Index: Record<string, any> = {
     name: "map",
     description: "A map component.",
     type: "registry:ui",
-    registryDependencies: ["button","skeleton","dropdown-menu"],
+    registryDependencies: ["button","dropdown-menu"],
     files: [{
       path: "registry/new-york-v4/ui/map.tsx",
       type: "registry:ui",

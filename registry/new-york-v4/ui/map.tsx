@@ -12,7 +12,6 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/registry/new-york-v4/ui/dropdown-menu"
-import { Skeleton } from "@/registry/new-york-v4/ui/skeleton"
 import type { CheckboxItem } from "@radix-ui/react-dropdown-menu"
 import type {
     DivIconOptions,
@@ -60,7 +59,6 @@ const LeafletMapContainer = dynamic(
     async () => (await import("react-leaflet")).MapContainer,
     {
         ssr: false,
-        loading: () => <Skeleton className="size-full" />,
     }
 )
 const LeafletTileLayer = dynamic(

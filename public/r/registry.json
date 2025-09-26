@@ -10,7 +10,7 @@
             "description": "A map component.",
             "dependencies": ["leaflet", "react-leaflet", "next-themes"],
             "devDependencies": ["@types/leaflet"],
-            "registryDependencies": ["button", "skeleton", "dropdown-menu"],
+            "registryDependencies": ["button", "dropdown-menu"],
             "files": [
                 {
                     "path": "registry/new-york-v4/ui/map.tsx",
