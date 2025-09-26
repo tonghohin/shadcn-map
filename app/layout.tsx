@@ -1,8 +1,6 @@
 import type { Metadata } from "next"
 
-import { ActiveThemeProvider } from "@/components/active-theme"
 import { ThemeProvider } from "@/components/theme-provider"
-import { LayoutProvider } from "@/hooks/use-layout"
 import { META_THEME_COLORS, siteConfig } from "@/lib/config"
 import { fontVariables } from "@/lib/fonts"
 import { cn } from "@/lib/utils"
@@ -92,13 +90,9 @@ export default function RootLayout({
                     fontVariables
                 )}>
                 <ThemeProvider>
-                    <LayoutProvider>
-                        <ActiveThemeProvider>
-                            {children}
-                            <Toaster richColors />
-                            <ClarityScript />
-                        </ActiveThemeProvider>
-                    </LayoutProvider>
+                    {children}
+                    <Toaster richColors />
+                    <ClarityScript />
                 </ThemeProvider>
             </body>
         </html>
