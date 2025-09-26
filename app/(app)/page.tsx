@@ -1,11 +1,11 @@
 import { MapDemo } from "@/components/map-demo"
+import { siteConfig } from "@/lib/config"
 import { Button } from "@/registry/new-york-v4/ui/button"
 import { Metadata } from "next"
 import Link from "next/link"
 
-const title = "shadcn Map"
-const description =
-    "A map component built for shadcn/ui using Leaflet and React Leaflet."
+const title = "A map component for shadcn/ui"
+const description = siteConfig.description
 
 export const dynamic = "force-static"
 export const revalidate = false
@@ -36,7 +36,7 @@ export default function IndexPage() {
             <section className="container-wrapper flex flex-1 flex-col">
                 <div className="container flex flex-1 flex-col items-center gap-2 text-center xl:gap-4">
                     <h1 className="text-primary leading-tighter max-w-2xl text-4xl font-semibold tracking-tight text-balance lg:leading-[1.1] lg:font-semibold xl:text-5xl xl:tracking-tighter">
-                        {title}
+                        shadcn Map
                     </h1>
                     <p className="text-foreground max-w-3xl text-base text-balance sm:text-lg">
                         {description}

@@ -1,5 +1,5 @@
 export const siteConfig = {
-    name: "shadcn map",
+    name: "shadcn Map",
     url: "https://shadcn-map.vercel.app",
     description:
         "A map component built for shadcn/ui using Leaflet and React Leaflet",
