@@ -1,0 +1,32 @@
+---
+title: Layers Control
+description: Controls the visibility of different map layers.
+component: true
+---
+
+<ComponentPreview
+    name="map-with-layers-control"
+    description="A map with layers control"
+/>
+
+## Controlling Tile Layers
+
+To allow switching between multiple tile layers, wrap several `MapTileLayer` components inside a `MapLayers` container and include the `MapLayersControl` component to provide the UI for switching between them.
+
+If you want to keep the default tile, you can simply include a `<MapTileLayer />` without any props.
+
+<ComponentPreview
+    name="map-with-tile-layers-control"
+    description="A map with tile layers control"
+/>
+
+## Controlling Layer Groups
+
+To easily show or hide related markers or features on your map, wrap them in `MapLayerGroup` components inside a `MapLayers` container and include the `MapLayersControl` component to provide users with a UI for toggling the visibility of each group.
+
+Use the `defaultLayerGroups` prop to specify which layer groups should be visible by default.
+
+<ComponentPreview
+    name="map-with-layer-groups-control"
+    description="A map with layer groups control"
+/>

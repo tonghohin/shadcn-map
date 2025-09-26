@@ -2,7 +2,18 @@
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/registry/new-york-v4/ui/button"
+import {
+    DropdownMenu,
+    DropdownMenuCheckboxItem,
+    DropdownMenuContent,
+    DropdownMenuLabel,
+    DropdownMenuRadioGroup,
+    DropdownMenuRadioItem,
+    DropdownMenuSeparator,
+    DropdownMenuTrigger,
+} from "@/registry/new-york-v4/ui/dropdown-menu"
 import { Skeleton } from "@/registry/new-york-v4/ui/skeleton"
+import type { CheckboxItem } from "@radix-ui/react-dropdown-menu"
 import type {
     DivIconOptions,
     ErrorEvent,
@@ -12,8 +23,8 @@ import type {
 } from "leaflet"
 import "leaflet/dist/leaflet.css"
 import {
+    LayersIcon,
     LoaderCircleIcon,
-    LucideProps,
     MapPinIcon,
     MinusIcon,
     NavigationIcon,
@@ -21,11 +32,19 @@ import {
 } from "lucide-react"
 import { useTheme } from "next-themes"
 import dynamic from "next/dynamic"
-import { useEffect, useRef, useState, type ReactNode } from "react"
+import {
+    createContext,
+    useContext,
+    useEffect,
+    useRef,
+    useState,
+    type ReactNode,
+} from "react"
 import { renderToString } from "react-dom/server"
 import type {
     CircleMarkerProps,
     CircleProps,
+    LayerGroupProps,
     MapContainerProps,
     MarkerProps,
     PolygonProps,
@@ -96,16 +115,21 @@ const LeafletRectangle = dynamic(
         ssr: false,
     }
 )
+const LeafletLayerGroup = dynamic(
+    async () => (await import("react-leaflet")).LayerGroup,
+    {
+        ssr: false,
+    }
+)
 
 function Map({
+    zoom = 15,
     className,
     ...props
 }: MapContainerProps & { center: LatLngExpression }) {
-    const INITIAL_ZOOM = 15
-
     return (
         <LeafletMapContainer
-            zoom={INITIAL_ZOOM}
+            zoom={zoom}
             attributionControl={false}
             zoomControl={false}
             className={cn("size-full min-h-96 flex-1 rounded-md", className)}
@@ -114,27 +138,311 @@ function Map({
     )
 }
 
-function MapTileLayer({ attribution, url, ...props }: Partial<TileLayerProps>) {
+interface MapTileLayerOption {
+    name: string
+    url: string
+    attribution?: string
+}
+
+interface MapLayerGroupOption
+    extends Pick<React.ComponentProps<typeof CheckboxItem>, "disabled"> {
+    name: string
+}
+
+interface MapLayersContextType {
+    registerTileLayer: (layer: MapTileLayerOption) => void
+    tileLayers: MapTileLayerOption[]
+    selectedTileLayer: string
+    setSelectedTileLayer: (name: string) => void
+
+    registerLayerGroup: (layer: MapLayerGroupOption) => void
+    layerGroups: MapLayerGroupOption[]
+    activeLayerGroups: string[]
+    setActiveLayerGroups: (names: string[]) => void
+}
+
+const MapLayersContext = createContext<MapLayersContextType | null>(null)
+
+function useMapLayersContext() {
+    return useContext(MapLayersContext)
+}
+
+function MapTileLayer({
+    name = "Default",
+    url,
+    attribution,
+    darkUrl,
+    darkAttribution,
+    ...props
+}: Partial<TileLayerProps> & {
+    name?: string
+    darkUrl?: string
+    darkAttribution?: string
+}) {
+    const context = useContext(MapLayersContext)
+    const DEFAULT_URL =
+        "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png"
+    const DEFAULT_DARK_URL =
+        "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png"
+
     const { resolvedTheme } = useTheme()
-    const style = resolvedTheme === "dark" ? "dark_all" : "light_all"
-    const tileUrl =
-        url ?? `https://{s}.basemaps.cartocdn.com/${style}/{z}/{x}/{y}.png`
+    const resolvedUrl =
+        resolvedTheme === "dark"
+            ? (darkUrl ?? url ?? DEFAULT_DARK_URL)
+            : (url ?? DEFAULT_URL)
+    const resolvedAttribution =
+        resolvedTheme === "dark" && darkAttribution
+            ? darkAttribution
+            : (attribution ??
+              '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy; <a href="https://carto.com/attributions">CARTO</a>')
+
+    useEffect(() => {
+        if (context) {
+            context.registerTileLayer({
+                name,
+                url: resolvedUrl,
+                attribution: resolvedAttribution,
+            })
+        }
+    }, [context, name, url, attribution])
+
+    if (context && context.selectedTileLayer !== name) {
+        return null
+    }
 
     return (
         <LeafletTileLayer
-            attribution='&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy; <a href="https://carto.com/attributions">CARTO</a>'
-            url={tileUrl}
+            url={resolvedUrl}
+            attribution={resolvedAttribution}
             {...props}
         />
     )
 }
 
-function MapDefaultMarkerIcon({ ...props }: LucideProps) {
-    return <MapPinIcon className="size-6" {...props} />
+function MapLayerGroup({
+    name,
+    disabled,
+    ...props
+}: LayerGroupProps & MapLayerGroupOption) {
+    const context = useMapLayersContext()
+
+    useEffect(() => {
+        if (context) {
+            context.registerLayerGroup({
+                name,
+                disabled,
+            })
+        }
+    }, [context, name, disabled])
+
+    if (context && !context.activeLayerGroups.includes(name)) {
+        return null
+    }
+
+    return <LeafletLayerGroup {...props} />
+}
+
+function MapLayers({
+    defaultTileLayer,
+    defaultLayerGroups = [],
+    ...props
+}: Omit<React.ComponentProps<typeof MapLayersContext.Provider>, "value"> & {
+    defaultTileLayer?: string
+    defaultLayerGroups?: string[]
+}) {
+    const [tileLayers, setTileLayers] = useState<MapTileLayerOption[]>([])
+    const [selectedTileLayer, setSelectedTileLayer] = useState<string>(
+        defaultTileLayer || ""
+    )
+    const [layerGroups, setLayerGroups] = useState<MapLayerGroupOption[]>([])
+    const [activeLayerGroups, setActiveLayerGroups] =
+        useState<string[]>(defaultLayerGroups)
+
+    function registerTileLayer(tileLayer: MapTileLayerOption) {
+        setTileLayers((prevTileLayers) => {
+            if (prevTileLayers.some((layer) => layer.name === tileLayer.name)) {
+                return prevTileLayers
+            }
+            return [...prevTileLayers, tileLayer]
+        })
+    }
+
+    function registerLayerGroup(layerGroup: MapLayerGroupOption) {
+        setLayerGroups((prevLayerGroups) => {
+            if (
+                prevLayerGroups.some((group) => group.name === layerGroup.name)
+            ) {
+                return prevLayerGroups
+            }
+            return [...prevLayerGroups, layerGroup]
+        })
+    }
+
+    useEffect(() => {
+        // Error: Invalid defaultValue
+        if (
+            defaultTileLayer &&
+            tileLayers.length > 0 &&
+            !tileLayers.some((tileLayer) => tileLayer.name === defaultTileLayer)
+        ) {
+            throw new Error(
+                `Invalid defaultTileLayer "${defaultTileLayer}" provided to MapLayers. It must match a MapTileLayer's name prop.`
+            )
+        }
+
+        // Set initial selected tile layer
+        if (tileLayers.length > 0 && !selectedTileLayer) {
+            const validDefaultValue =
+                defaultTileLayer &&
+                tileLayers.some((layer) => layer.name === defaultTileLayer)
+                    ? defaultTileLayer
+                    : tileLayers[0].name
+            setSelectedTileLayer(validDefaultValue)
+        }
+
+        // Error: Invalid defaultActiveLayerGroups
+        if (
+            defaultLayerGroups.length > 0 &&
+            layerGroups.length > 0 &&
+            defaultLayerGroups.some(
+                (name) => !layerGroups.some((group) => group.name === name)
+            )
+        ) {
+            throw new Error(
+                `Invalid defaultLayerGroups value provided to MapLayers. All names must match a MapLayerGroup's name prop.`
+            )
+        }
+    }, [
+        tileLayers,
+        defaultTileLayer,
+        selectedTileLayer,
+        layerGroups,
+        defaultLayerGroups,
+    ])
+
+    return (
+        <MapLayersContext.Provider
+            value={{
+                registerTileLayer,
+                tileLayers,
+                selectedTileLayer,
+                setSelectedTileLayer,
+                registerLayerGroup,
+                layerGroups,
+                activeLayerGroups,
+                setActiveLayerGroups,
+            }}
+            {...props}
+        />
+    )
+}
+
+function MapLayersControl({
+    tileLayersLabel = "Map Type",
+    layerGroupsLabel = "Layers",
+    className,
+    ...props
+}: React.ComponentProps<"button"> & {
+    tileLayersLabel?: string
+    layerGroupsLabel?: string
+}) {
+    const layersContext = useMapLayersContext()
+    if (!layersContext) {
+        throw new Error("MapLayersControl must be used within MapLayers")
+    }
+
+    const {
+        tileLayers,
+        selectedTileLayer,
+        setSelectedTileLayer,
+        layerGroups,
+        activeLayerGroups,
+        setActiveLayerGroups,
+    } = layersContext
+
+    if (tileLayers.length === 0 && layerGroups.length === 0) {
+        return null
+    }
+
+    function handleLayerGroupToggle(name: string, checked: boolean) {
+        setActiveLayerGroups(
+            checked
+                ? [...activeLayerGroups, name]
+                : activeLayerGroups.filter((groupName) => groupName !== name)
+        )
+    }
+
+    const showTileLayersDropdown = tileLayers.length > 1
+    const showLayerGroupsDropdown = layerGroups.length > 0
+
+    if (!showTileLayersDropdown && !showLayerGroupsDropdown) {
+        return null
+    }
+
+    return (
+        <DropdownMenu>
+            <DropdownMenuTrigger asChild>
+                <Button
+                    type="button"
+                    variant="secondary"
+                    size="icon"
+                    aria-label="Select layers"
+                    title="Select layers"
+                    className={cn("absolute top-1 right-1 z-1000", className)}
+                    {...props}>
+                    <LayersIcon />
+                </Button>
+            </DropdownMenuTrigger>
+            <DropdownMenuContent align="end">
+                {showTileLayersDropdown && (
+                    <>
+                        <DropdownMenuLabel>{tileLayersLabel}</DropdownMenuLabel>
+                        <DropdownMenuRadioGroup
+                            value={selectedTileLayer}
+                            onValueChange={setSelectedTileLayer}>
+                            {tileLayers.map((tileLayer) => (
+                                <DropdownMenuRadioItem
+                                    key={tileLayer.name}
+                                    value={tileLayer.name}>
+                                    {tileLayer.name}
+                                </DropdownMenuRadioItem>
+                            ))}
+                        </DropdownMenuRadioGroup>
+                    </>
+                )}
+                {showTileLayersDropdown && showLayerGroupsDropdown && (
+                    <DropdownMenuSeparator />
+                )}
+                {showLayerGroupsDropdown && (
+                    <>
+                        <DropdownMenuLabel>
+                            {layerGroupsLabel}
+                        </DropdownMenuLabel>
+                        {layerGroups.map((layerGroup) => (
+                            <DropdownMenuCheckboxItem
+                                key={layerGroup.name}
+                                checked={activeLayerGroups.includes(
+                                    layerGroup.name
+                                )}
+                                disabled={layerGroup.disabled}
+                                onCheckedChange={(checked) =>
+                                    handleLayerGroupToggle(
+                                        layerGroup.name,
+                                        checked
+                                    )
+                                }>
+                                {layerGroup.name}
+                            </DropdownMenuCheckboxItem>
+                        ))}
+                    </>
+                )}
+            </DropdownMenuContent>
+        </DropdownMenu>
+    )
 }
 
 function MapMarker({
-    icon = <MapDefaultMarkerIcon />,
+    icon = <MapPinIcon className="size-6" />,
     bgPos,
     iconAnchor = [12, 12],
     popupAnchor,
@@ -160,6 +468,66 @@ function MapMarker({
                 ...(tooltipAnchor ? { tooltipAnchor } : {}),
             })}
             riseOnHover
+            {...props}
+        />
+    )
+}
+
+function MapCircle({ className, ...props }: CircleProps) {
+    return (
+        <LeafletCircle
+            className={cn(
+                "fill-foreground stroke-foreground stroke-2",
+                className
+            )}
+            {...props}
+        />
+    )
+}
+
+function MapCircleMarker({ className, ...props }: CircleMarkerProps) {
+    return (
+        <LeafletCircleMarker
+            className={cn(
+                "fill-foreground stroke-foreground stroke-2",
+                className
+            )}
+            {...props}
+        />
+    )
+}
+
+function MapPolyline({ className, ...props }: PolylineProps) {
+    return (
+        <LeafletPolyline
+            className={cn(
+                "fill-foreground stroke-foreground stroke-2",
+                className
+            )}
+            {...props}
+        />
+    )
+}
+
+function MapPolygon({ className, ...props }: PolygonProps) {
+    return (
+        <LeafletPolygon
+            className={cn(
+                "fill-foreground stroke-foreground stroke-2",
+                className
+            )}
+            {...props}
+        />
+    )
+}
+
+function MapRectangle({ className, ...props }: RectangleProps) {
+    return (
+        <LeafletRectangle
+            className={cn(
+                "fill-foreground stroke-foreground stroke-2",
+                className
+            )}
             {...props}
         />
     )
@@ -258,34 +626,6 @@ function MapLocatePulseIcon() {
     )
 }
 
-function useDebounceLoadingState(delay = 200) {
-    const [isLoading, setIsLoading] = useState(false)
-    const [showLoading, setShowLoading] = useState(false)
-    const timeoutRef = useRef<NodeJS.Timeout | null>(null)
-
-    useEffect(() => {
-        if (isLoading) {
-            timeoutRef.current = setTimeout(() => {
-                setShowLoading(true)
-            }, delay)
-        } else {
-            if (timeoutRef.current) {
-                clearTimeout(timeoutRef.current)
-                timeoutRef.current = null
-            }
-            setShowLoading(false)
-        }
-
-        return () => {
-            if (timeoutRef.current) {
-                clearTimeout(timeoutRef.current)
-            }
-        }
-    }, [isLoading, delay])
-
-    return [showLoading, setIsLoading] as const
-}
-
 function MapLocateControl({
     className,
     watch = false,
@@ -365,66 +705,6 @@ function MapLocateControl({
     )
 }
 
-function MapCircle({ className, ...props }: CircleProps) {
-    return (
-        <LeafletCircle
-            className={cn(
-                "fill-foreground stroke-foreground stroke-2",
-                className
-            )}
-            {...props}
-        />
-    )
-}
-
-function MapCircleMarker({ className, ...props }: CircleMarkerProps) {
-    return (
-        <LeafletCircleMarker
-            className={cn(
-                "fill-foreground stroke-foreground stroke-2",
-                className
-            )}
-            {...props}
-        />
-    )
-}
-
-function MapPolyline({ className, ...props }: PolylineProps) {
-    return (
-        <LeafletPolyline
-            className={cn(
-                "fill-foreground stroke-foreground stroke-2",
-                className
-            )}
-            {...props}
-        />
-    )
-}
-
-function MapPolygon({ className, ...props }: PolygonProps) {
-    return (
-        <LeafletPolygon
-            className={cn(
-                "fill-foreground stroke-foreground stroke-2",
-                className
-            )}
-            {...props}
-        />
-    )
-}
-
-function MapRectangle({ className, ...props }: RectangleProps) {
-    return (
-        <LeafletRectangle
-            className={cn(
-                "fill-foreground stroke-foreground stroke-2",
-                className
-            )}
-            {...props}
-        />
-    )
-}
-
 function useLeaflet() {
     const [L, setL] = useState<typeof import("leaflet") | null>(null)
 
@@ -440,11 +720,41 @@ function useLeaflet() {
     return L
 }
 
+function useDebounceLoadingState(delay = 200) {
+    const [isLoading, setIsLoading] = useState(false)
+    const [showLoading, setShowLoading] = useState(false)
+    const timeoutRef = useRef<NodeJS.Timeout | null>(null)
+
+    useEffect(() => {
+        if (isLoading) {
+            timeoutRef.current = setTimeout(() => {
+                setShowLoading(true)
+            }, delay)
+        } else {
+            if (timeoutRef.current) {
+                clearTimeout(timeoutRef.current)
+                timeoutRef.current = null
+            }
+            setShowLoading(false)
+        }
+
+        return () => {
+            if (timeoutRef.current) {
+                clearTimeout(timeoutRef.current)
+            }
+        }
+    }, [isLoading, delay])
+
+    return [showLoading, setIsLoading] as const
+}
+
 export {
     Map,
     MapCircle,
     MapCircleMarker,
-    MapDefaultMarkerIcon,
+    MapLayerGroup,
+    MapLayers,
+    MapLayersControl,
     MapLocateControl,
     MapMarker,
     MapPolygon,

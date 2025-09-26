@@ -13,6 +13,17 @@ export const examples: Registry["items"] = [
         ],
     },
     {
+        name: "map-with-custom-tiles",
+        type: "registry:example",
+        registryDependencies: ["map"],
+        files: [
+            {
+                path: "examples/map-with-custom-tiles.tsx",
+                type: "registry:example",
+            },
+        ],
+    },
+    {
         name: "map-with-markers",
         type: "registry:example",
         registryDependencies: ["map"],
@@ -24,56 +35,12 @@ export const examples: Registry["items"] = [
         ],
     },
     {
-        name: "map-with-popups-and-tooltips",
-        type: "registry:example",
-        registryDependencies: ["map"],
-        files: [
-            {
-                path: "examples/map-with-popups-and-tooltips.tsx",
-                type: "registry:example",
-            },
-        ],
-    },
-    {
         name: "map-with-custom-markers",
         type: "registry:example",
         registryDependencies: ["map"],
         files: [
             {
                 path: "examples/map-with-custom-markers.tsx",
-                type: "registry:example",
-            },
-        ],
-    },
-    {
-        name: "map-with-zoom-control",
-        type: "registry:example",
-        registryDependencies: ["map"],
-        files: [
-            {
-                path: "examples/map-with-zoom-control.tsx",
-                type: "registry:example",
-            },
-        ],
-    },
-    {
-        name: "map-with-locate-control",
-        type: "registry:example",
-        registryDependencies: ["map"],
-        files: [
-            {
-                path: "examples/map-with-locate-control.tsx",
-                type: "registry:example",
-            },
-        ],
-    },
-    {
-        name: "map-with-locate-control-callbacks",
-        type: "registry:example",
-        registryDependencies: ["map"],
-        files: [
-            {
-                path: "examples/map-with-locate-control-callbacks.tsx",
                 type: "registry:example",
             },
         ],
@@ -140,6 +107,83 @@ export const examples: Registry["items"] = [
         files: [
             {
                 path: "examples/map-with-styled-shapes.tsx",
+                type: "registry:example",
+            },
+        ],
+    },
+    {
+        name: "map-with-popups-and-tooltips",
+        type: "registry:example",
+        registryDependencies: ["map"],
+        files: [
+            {
+                path: "examples/map-with-popups-and-tooltips.tsx",
+                type: "registry:example",
+            },
+        ],
+    },
+    {
+        name: "map-with-zoom-control",
+        type: "registry:example",
+        registryDependencies: ["map"],
+        files: [
+            {
+                path: "examples/map-with-zoom-control.tsx",
+                type: "registry:example",
+            },
+        ],
+    },
+    {
+        name: "map-with-layers-control",
+        type: "registry:example",
+        registryDependencies: ["map"],
+        files: [
+            {
+                path: "examples/map-with-layers-control.tsx",
+                type: "registry:example",
+            },
+        ],
+    },
+    {
+        name: "map-with-tile-layers-control",
+        type: "registry:example",
+        registryDependencies: ["map"],
+        files: [
+            {
+                path: "examples/map-with-tile-layers-control.tsx",
+                type: "registry:example",
+            },
+        ],
+    },
+    {
+        name: "map-with-layer-groups-control",
+        type: "registry:example",
+        registryDependencies: ["map"],
+        files: [
+            {
+                path: "examples/map-with-layer-groups-control.tsx",
+                type: "registry:example",
+            },
+        ],
+    },
+    {
+        name: "map-with-locate-control",
+        type: "registry:example",
+        registryDependencies: ["map"],
+        files: [
+            {
+                path: "examples/map-with-locate-control.tsx",
+                type: "registry:example",
+            },
+        ],
+    },
+    {
+        name: "map-with-locate-control-callbacks",
+        type: "registry:example",
+        registryDependencies: ["map"],
+        files: [
+            {
+                path: "examples/map-with-locate-control-callbacks.tsx",
                 type: "registry:example",
             },
         ],

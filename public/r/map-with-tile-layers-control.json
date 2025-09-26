@@ -1,0 +1,13 @@
+{
+    "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+    "name": "map-with-tile-layers-control",
+    "type": "registry:example",
+    "registryDependencies": ["map"],
+    "files": [
+        {
+            "path": "registry/new-york-v4/examples/map-with-tile-layers-control.tsx",
+            "content": "import {\n    Map,\n    MapLayers,\n    MapLayersControl,\n    MapTileLayer,\n} from \"@/registry/new-york-v4/ui/map\"\nimport type { LatLngExpression } from \"leaflet\"\n\nexport function MapWithTileLayersControl() {\n    const TORONTO_COORDINATES = [43.6532, -79.3832] satisfies LatLngExpression\n\n    return (\n        <Map center={TORONTO_COORDINATES} zoom={3}>\n            <MapLayers defaultTileLayer=\"National Geographic\">\n                <MapLayersControl />\n                <MapTileLayer />\n                <MapTileLayer\n                    name=\"National Geographic\"\n                    url=\"https://server.arcgisonline.com/ArcGIS/rest/services/NatGeo_World_Map/MapServer/tile/{z}/{y}/{x}\"\n                    attribution=\"Tiles &copy; Esri &mdash; National Geographic, Esri, DeLorme, NAVTEQ, UNEP-WCMC, USGS, NASA, ESA, METI, NRCAN, GEBCO, NOAA, iPC\"\n                />\n                <MapTileLayer\n                    name=\"Satellite\"\n                    url=\"https://server.arcgisonline.com/ArcGIS/rest/services/World_Imagery/MapServer/tile/{z}/{y}/{x}\"\n                    attribution=\"Tiles &copy; Esri &mdash; Source: Esri, i-cubed, USDA, USGS, AEX, GeoEye, Getmapping, Aerogrid, IGN, IGP, UPR-EGP, and the GIS User Community\"\n                />\n            </MapLayers>\n        </Map>\n    )\n}\n",
+            "type": "registry:example"
+        }
+    ]
+}

@@ -2,11 +2,13 @@
     "title": "Examples",
     "pages": [
         "index",
+        "custom-tile",
         "marker",
         "custom-marker",
         "shapes",
         "popup-and-tooltip",
         "zoom-control",
+        "layers-control",
         "locate-control"
     ]
 }
