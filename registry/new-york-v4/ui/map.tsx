@@ -629,10 +629,7 @@ function MapZoomControl({ className, ...props }: React.ComponentProps<"div">) {
 
     return (
         <div
-            className={cn(
-                "absolute top-1 left-1 z-1000 grid size-fit gap-1",
-                className
-            )}
+            className={cn("absolute top-1 left-1 z-1000 grid gap-1", className)}
             {...props}>
             <Button
                 type="button"
