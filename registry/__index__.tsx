@@ -294,6 +294,24 @@ export const Index: Record<string, any> = {
     categories: undefined,
     meta: undefined,
   },
+  "map-with-feature-groups-control": {
+    name: "map-with-feature-groups-control",
+    description: "",
+    type: "registry:example",
+    registryDependencies: ["map"],
+    files: [{
+      path: "registry/new-york-v4/examples/map-with-feature-groups-control.tsx",
+      type: "registry:example",
+      target: ""
+    }],
+    component: React.lazy(async () => {
+      const mod = await import("@/registry/new-york-v4/examples/map-with-feature-groups-control.tsx")
+      const exportName = Object.keys(mod).find(key => typeof mod[key] === 'function' || typeof mod[key] === 'object') || item.name
+      return { default: mod.default || mod[exportName] }
+    }),
+    categories: undefined,
+    meta: undefined,
+  },
   "map-with-locate-control": {
     name: "map-with-locate-control",
     description: "",

@@ -38,6 +38,16 @@ The `MapLayerGroup` component is for grouping multiple map layers, which is usef
 | `disabled`     | `boolean`         | Optional. If `true`, the layer group’s checkbox in the layer control will be disabled, preventing users from toggling it. |
 | ...other props | `LayerGroupProps` | All other props from [React Leaflet LayerGroup](https://react-leaflet.js.org/docs/api-components/#layergroup).            |
 
+### MapFeatureGroup
+
+The `MapFeatureGroup` component is similar to `MapLayerGroup`, but with a few extra capabilities. You can bind popups or tooltips to all child layers at once, and events on the group will automatically propagate to its child layers.
+
+| Prop           | Type                | Description                                                                                                               |
+| -------------- | ------------------- | ------------------------------------------------------------------------------------------------------------------------- |
+| `name`         | `string`            | **Required.** A unique name for the layer group.                                                                          |
+| `disabled`     | `boolean`           | Optional. If `true`, the layer group’s checkbox in the layer control will be disabled, preventing users from toggling it. |
+| ...other props | `FeatureGroupProps` | All other props from [React Leaflet FeatureGroup](https://react-leaflet.js.org/docs/api-components/#featuregroup).        |
+
 ### MapLayers
 
 The `MapLayers` component provides a context for managing multiple tile layers and layer groups on the map.  

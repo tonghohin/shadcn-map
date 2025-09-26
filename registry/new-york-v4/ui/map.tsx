@@ -119,6 +119,12 @@ const LeafletLayerGroup = dynamic(
         ssr: false,
     }
 )
+const LeafletFeatureGroup = dynamic(
+    async () => (await import("react-leaflet")).FeatureGroup,
+    {
+        ssr: false,
+    }
+)
 
 function Map({
     zoom = 15,
@@ -238,6 +244,29 @@ function MapLayerGroup({
     }
 
     return <LeafletLayerGroup {...props} />
+}
+
+function MapFeatureGroup({
+    name,
+    disabled,
+    ...props
+}: LayerGroupProps & MapLayerGroupOption) {
+    const context = useMapLayersContext()
+
+    useEffect(() => {
+        if (context) {
+            context.registerLayerGroup({
+                name,
+                disabled,
+            })
+        }
+    }, [context, name, disabled])
+
+    if (context && !context.activeLayerGroups.includes(name)) {
+        return null
+    }
+
+    return <LeafletFeatureGroup {...props} />
 }
 
 function MapLayers({
@@ -753,6 +782,7 @@ export {
     Map,
     MapCircle,
     MapCircleMarker,
+    MapFeatureGroup,
     MapLayerGroup,
     MapLayers,
     MapLayersControl,

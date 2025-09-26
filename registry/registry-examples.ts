@@ -167,6 +167,17 @@ export const examples: Registry["items"] = [
         ],
     },
     {
+        name: "map-with-feature-groups-control",
+        type: "registry:example",
+        registryDependencies: ["map"],
+        files: [
+            {
+                path: "examples/map-with-feature-groups-control.tsx",
+                type: "registry:example",
+            },
+        ],
+    },
+    {
         name: "map-with-locate-control",
         type: "registry:example",
         registryDependencies: ["map"],
