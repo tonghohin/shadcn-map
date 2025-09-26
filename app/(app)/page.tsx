@@ -4,7 +4,7 @@ import { Button } from "@/registry/new-york-v4/ui/button"
 import { Metadata } from "next"
 import Link from "next/link"
 
-const title = "A map component for shadcn/ui"
+const title = "A Map Component for shadcn/ui"
 const description = siteConfig.description
 
 export const dynamic = "force-static"
