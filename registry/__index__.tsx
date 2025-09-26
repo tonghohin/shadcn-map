@@ -330,4 +330,40 @@ export const Index: Record<string, any> = {
     categories: undefined,
     meta: undefined,
   },
+  "map-with-custom-control-position": {
+    name: "map-with-custom-control-position",
+    description: "",
+    type: "registry:example",
+    registryDependencies: ["map"],
+    files: [{
+      path: "registry/new-york-v4/examples/map-with-custom-control-position.tsx",
+      type: "registry:example",
+      target: ""
+    }],
+    component: React.lazy(async () => {
+      const mod = await import("@/registry/new-york-v4/examples/map-with-custom-control-position.tsx")
+      const exportName = Object.keys(mod).find(key => typeof mod[key] === 'function' || typeof mod[key] === 'object') || item.name
+      return { default: mod.default || mod[exportName] }
+    }),
+    categories: undefined,
+    meta: undefined,
+  },
+  "map-with-complex-custom-control-position": {
+    name: "map-with-complex-custom-control-position",
+    description: "",
+    type: "registry:example",
+    registryDependencies: ["map"],
+    files: [{
+      path: "registry/new-york-v4/examples/map-with-complex-custom-control-position.tsx",
+      type: "registry:example",
+      target: ""
+    }],
+    component: React.lazy(async () => {
+      const mod = await import("@/registry/new-york-v4/examples/map-with-complex-custom-control-position.tsx")
+      const exportName = Object.keys(mod).find(key => typeof mod[key] === 'function' || typeof mod[key] === 'object') || item.name
+      return { default: mod.default || mod[exportName] }
+    }),
+    categories: undefined,
+    meta: undefined,
+  },
   }

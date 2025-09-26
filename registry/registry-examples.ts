@@ -188,4 +188,26 @@ export const examples: Registry["items"] = [
             },
         ],
     },
+    {
+        name: "map-with-custom-control-position",
+        type: "registry:example",
+        registryDependencies: ["map"],
+        files: [
+            {
+                path: "examples/map-with-custom-control-position.tsx",
+                type: "registry:example",
+            },
+        ],
+    },
+    {
+        name: "map-with-complex-custom-control-position",
+        type: "registry:example",
+        registryDependencies: ["map"],
+        files: [
+            {
+                path: "examples/map-with-complex-custom-control-position.tsx",
+                type: "registry:example",
+            },
+        ],
+    },
 ]

@@ -9,6 +9,7 @@
         "popup-and-tooltip",
         "zoom-control",
         "layers-control",
-        "locate-control"
+        "locate-control",
+        "custom-control-position"
     ]
 }
