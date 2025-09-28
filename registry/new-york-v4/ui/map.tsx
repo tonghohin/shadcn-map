@@ -125,12 +125,6 @@ const LeafletFeatureGroup = dynamic(
         ssr: false,
     }
 )
-const LeafletScaleControl = dynamic(
-    async () => (await import("react-leaflet")).ScaleControl,
-    {
-        ssr: false,
-    }
-)
 
 function Map({
     zoom = 15,
@@ -787,7 +781,6 @@ function useDebounceLoadingState(delay = 200) {
 }
 
 export {
-    LeafletScaleControl,
     Map,
     MapCircle,
     MapCircleMarker,

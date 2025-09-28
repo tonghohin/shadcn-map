@@ -197,7 +197,7 @@
   }
 
   .leaflet-tooltip {
-    @apply !bg-foreground !text-background !border-none !p-0 !px-3 !py-1.5 !rounded-md !shadow-none !animate-none
+    @apply !bg-foreground !text-background !animate-none !rounded-md !border-none !p-0 !px-3 !py-1.5 !shadow-none
   }
 
   .leaflet-popup-tip-container, .leaflet-tooltip-top:before, .leaflet-tooltip-bottom:before, .leaflet-tooltip-left:before, .leaflet-tooltip-right:before {
@@ -205,7 +205,7 @@
   }
 
   .leaflet-control-attribution {
-    @apply !bg-muted !text-inherit !px-[4px] !py-[2px] !leading-none text-[10px] rounded-md
+    @apply !bg-muted rounded-md !px-[4px] !py-[2px] text-[10px] !leading-none !text-inherit
   }
 }
 
