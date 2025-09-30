@@ -48,7 +48,6 @@ import {
     createContext,
     useContext,
     useEffect,
-    useMemo,
     useRef,
     useState,
     type ReactNode,
@@ -819,19 +818,14 @@ function MapDrawMarker({ ...props }: DrawOptions.MarkerOptions) {
     const { activeTool, setActiveTool } = drawContext
     const isActive = activeTool === "marker"
 
-    const markerIcon = useMemo(() => {
-        if (!L) return null
-        return L.divIcon({
-            iconAnchor: [12, 12],
-            html: renderToString(<MapPinIcon className="size-6" />),
-        })
-    }, [L])
-
     useEffect(() => {
-        if (!L || !markerIcon) return
+        if (!L) return
         if (isActive) {
             const control = new L.Draw.Marker(map as DrawMap, {
-                icon: markerIcon,
+                icon: L.divIcon({
+                    iconAnchor: [12, 12],
+                    html: renderToString(<MapPinIcon className="size-6" />),
+                }),
                 ...props,
             })
             control.enable()
@@ -840,7 +834,7 @@ function MapDrawMarker({ ...props }: DrawOptions.MarkerOptions) {
             controlRef.current?.disable()
             controlRef.current = null
         }
-    }, [isActive, L, map, markerIcon, props])
+    }, [isActive, L, map, props])
 
     function handleClick() {
         setActiveTool(isActive ? null : "marker")
@@ -878,25 +872,16 @@ function MapDrawPolyline({
     }
     const { L } = useLeaflet()
     const map = useMap()
+    const mapDrawIcon = useMapDrawIcon()
     const controlRef = useRef<Draw.Polyline | null>(null)
     const { activeTool, setActiveTool } = drawContext
     const isActive = activeTool === "polyline"
 
-    const drawIcon = useMemo(() => {
-        if (!L) return null
-        return L.divIcon({
-            iconAnchor: [8, 8],
-            html: renderToString(
-                <CircleIcon className="fill-primary size-4 transition-transform hover:scale-125" />
-            ),
-        })
-    }, [L])
-
     useEffect(() => {
-        if (!L || !drawIcon) return
+        if (!L || !mapDrawIcon) return
         if (isActive) {
             const control = new L.Draw.Polyline(map as DrawMap, {
-                icon: drawIcon,
+                icon: mapDrawIcon,
                 showLength,
                 drawError,
                 shapeOptions,
@@ -908,7 +893,7 @@ function MapDrawPolyline({
             controlRef.current?.disable()
             controlRef.current = null
         }
-    }, [isActive, L, map, drawIcon, props])
+    }, [isActive, L, map, mapDrawIcon, props])
 
     function handleClick() {
         setActiveTool(isActive ? null : "polyline")
@@ -1052,26 +1037,17 @@ function MapDrawPolygon({
     }
     const { L } = useLeaflet()
     const map = useMap()
+    const mapDrawIcon = useMapDrawIcon()
     const controlRef = useRef<Draw.Polygon | null>(null)
     const { activeTool, setActiveTool } = drawContext
     const isActive = activeTool === "polygon"
 
-    const drawIcon = useMemo(() => {
-        if (!L) return null
-        return L.divIcon({
-            iconAnchor: [8, 8],
-            html: renderToString(
-                <CircleIcon className="fill-primary size-4 transition-transform hover:scale-125" />
-            ),
-        })
-    }, [L])
-
     useEffect(() => {
-        if (!L || !drawIcon) return
+        if (!L || !mapDrawIcon) return
 
         if (isActive) {
             const control = new L.Draw.Polygon(map as DrawMap, {
-                icon: drawIcon,
+                icon: mapDrawIcon,
                 drawError,
                 shapeOptions,
                 ...props,
@@ -1082,7 +1058,7 @@ function MapDrawPolygon({
             controlRef.current?.disable()
             controlRef.current = null
         }
-    }, [isActive, L, map, drawIcon, props])
+    }, [isActive, L, map, mapDrawIcon, props])
 
     function handleClick() {
         setActiveTool(isActive ? null : "polygon")
@@ -1116,33 +1092,24 @@ function MapDrawEdit({
     }
     const { L } = useLeaflet()
     const map = useMap()
+    const mapDrawIcon = useMapDrawIcon()
     const controlRef = useRef<EditToolbar.Edit | null>(null)
     const { featureGroup, activeTool, setActiveTool } = drawContext
     const isActive = activeTool === "edit"
     const hasDrawnFeatures = featureGroup && featureGroup.getLayers().length > 0
 
-    const drawIcon = useMemo(() => {
-        if (!L) return null
-        return L.divIcon({
-            iconAnchor: [8, 8],
-            html: renderToString(
-                <CircleIcon className="fill-primary size-4 transition-transform hover:scale-125" />
-            ),
-        })
-    }, [L])
-
     useEffect(() => {
-        if (!L || !drawIcon || !featureGroup) return
+        if (!L || !mapDrawIcon || !featureGroup) return
 
         L.Edit.PolyVerticesEdit.mergeOptions({
-            icon: drawIcon,
-            touchIcon: drawIcon,
+            icon: mapDrawIcon,
+            touchIcon: mapDrawIcon,
         })
         L.Edit.SimpleShape.mergeOptions({
-            moveIcon: drawIcon,
-            resizeIcon: drawIcon,
-            touchMoveIcon: drawIcon,
-            touchResizeIcon: drawIcon,
+            moveIcon: mapDrawIcon,
+            resizeIcon: mapDrawIcon,
+            touchMoveIcon: mapDrawIcon,
+            touchResizeIcon: mapDrawIcon,
         })
         L.drawLocal.edit.handlers.edit.tooltip.subtext = ""
 
@@ -1159,7 +1126,7 @@ function MapDrawEdit({
             controlRef.current?.disable()
             controlRef.current = null
         }
-    }, [isActive, L, map, drawIcon, props])
+    }, [isActive, L, map, mapDrawIcon, props])
 
     function handleClick() {
         setActiveTool(isActive ? null : "edit")
@@ -1257,6 +1224,18 @@ function MapDrawDelete() {
             )}
         </div>
     )
+}
+
+function useMapDrawIcon() {
+    const { L } = useLeaflet()
+    if (!L) return null
+
+    return L.divIcon({
+        iconAnchor: [8, 8],
+        html: renderToString(
+            <CircleIcon className="fill-primary stroke-primary size-4 transition-transform hover:scale-125" />
+        ),
+    })
 }
 
 function useLeaflet() {
