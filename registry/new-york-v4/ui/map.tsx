@@ -29,12 +29,12 @@ import "leaflet-draw/dist/leaflet.draw.css"
 import "leaflet/dist/leaflet.css"
 import {
     CircleIcon,
-    EditIcon,
     LayersIcon,
     LoaderCircleIcon,
     MapPinIcon,
     MinusIcon,
     NavigationIcon,
+    PenLineIcon,
     PentagonIcon,
     PlusIcon,
     SquareIcon,
@@ -807,7 +807,7 @@ function MapDrawControl({
     )
 }
 
-function MapDrawButton<T extends Draw.Feature>({
+function MapDrawShapeButton<T extends Draw.Feature>({
     drawMode,
     createDrawTool,
     ...props
@@ -817,7 +817,7 @@ function MapDrawButton<T extends Draw.Feature>({
 }) {
     const drawContext = useMapDrawContext()
     if (!drawContext) {
-        throw new Error("MapDrawButton must be used within MapDrawControl")
+        throw new Error("MapDrawShapeButton must be used within MapDrawControl")
     }
     const { L } = useLeaflet()
     const map = useMap()
@@ -860,7 +860,7 @@ function MapDrawButton<T extends Draw.Feature>({
 
 function MapDrawMarker({ ...props }: DrawOptions.MarkerOptions) {
     return (
-        <MapDrawButton
+        <MapDrawShapeButton
             drawMode="marker"
             createDrawTool={(L, map) =>
                 new L.Draw.Marker(map, {
@@ -872,7 +872,7 @@ function MapDrawMarker({ ...props }: DrawOptions.MarkerOptions) {
                 })
             }>
             <MapPinIcon />
-        </MapDrawButton>
+        </MapDrawShapeButton>
     )
 }
 
@@ -891,7 +891,7 @@ function MapDrawPolyline({
     const mapDrawHandleIcon = useMapDrawHandleIcon()
 
     return (
-        <MapDrawButton
+        <MapDrawShapeButton
             drawMode="polyline"
             createDrawTool={(L, map) =>
                 new L.Draw.Polyline(map, {
@@ -903,7 +903,7 @@ function MapDrawPolyline({
                 })
             }>
             <WaypointsIcon />
-        </MapDrawButton>
+        </MapDrawShapeButton>
     )
 }
 
@@ -917,7 +917,7 @@ function MapDrawCircle({
     ...props
 }: DrawOptions.CircleOptions) {
     return (
-        <MapDrawButton
+        <MapDrawShapeButton
             drawMode="circle"
             createDrawTool={(L, map) =>
                 new L.Draw.Circle(map, {
@@ -927,7 +927,7 @@ function MapDrawCircle({
                 })
             }>
             <CircleIcon />
-        </MapDrawButton>
+        </MapDrawShapeButton>
     )
 }
 
@@ -941,7 +941,7 @@ function MapDrawRectangle({
     ...props
 }: DrawOptions.RectangleOptions) {
     return (
-        <MapDrawButton
+        <MapDrawShapeButton
             drawMode="rectangle"
             createDrawTool={(L, map) =>
                 new L.Draw.Rectangle(map, {
@@ -951,7 +951,7 @@ function MapDrawRectangle({
                 })
             }>
             <SquareIcon />
-        </MapDrawButton>
+        </MapDrawShapeButton>
     )
 }
 
@@ -969,7 +969,7 @@ function MapDrawPolygon({
     const mapDrawHandleIcon = useMapDrawHandleIcon()
 
     return (
-        <MapDrawButton
+        <MapDrawShapeButton
             drawMode="polygon"
             createDrawTool={(L, map) =>
                 new L.Draw.Polygon(map, {
@@ -980,7 +980,85 @@ function MapDrawPolygon({
                 })
             }>
             <PentagonIcon />
-        </MapDrawButton>
+        </MapDrawShapeButton>
+    )
+}
+
+export function MapDrawActionButton<
+    T extends EditToolbar.Edit | EditToolbar.Delete,
+>({
+    drawAction,
+    createDrawTool,
+    ...props
+}: React.ComponentProps<"button"> & {
+    drawAction: MapDrawAction
+    createDrawTool: (
+        L: typeof import("leaflet"),
+        map: DrawMap,
+        featureGroup: L.FeatureGroup
+    ) => T
+}) {
+    const drawContext = useMapDrawContext()
+    if (!drawContext)
+        throw new Error(
+            "MapDrawActionButton must be used within MapDrawControl"
+        )
+
+    const { L } = useLeaflet()
+    const map = useMap()
+    const controlRef = useRef<T | null>(null)
+    const { featureGroup, activeMode, setActiveMode } = drawContext
+    const isActive = activeMode === drawAction
+    const hasFeatures = featureGroup?.getLayers().length ?? 0 > 0
+
+    useEffect(() => {
+        if (!L || !featureGroup || !isActive) {
+            controlRef.current?.disable?.()
+            controlRef.current = null
+            return
+        }
+        const control = createDrawTool(L, map as DrawMap, featureGroup)
+        control.enable?.()
+        controlRef.current = control
+        return () => {
+            control.disable?.()
+            controlRef.current = null
+        }
+    }, [L, map, isActive, featureGroup, createDrawTool])
+
+    function handleClick() {
+        setActiveMode(isActive ? null : drawAction)
+    }
+
+    function handleUndo() {
+        controlRef.current?.revertLayers?.()
+        setActiveMode(null)
+    }
+
+    return (
+        <div className="flex gap-1">
+            <Button
+                type="button"
+                size="icon"
+                aria-label={`${drawAction === "edit" ? "Edit" : "Remove"} shapes`}
+                title={`${drawAction === "edit" ? "Edit" : "Remove"} shapes`}
+                variant={isActive ? "default" : "secondary"}
+                disabled={!hasFeatures}
+                onClick={handleClick}
+                {...props}
+            />
+            {isActive && (
+                <Button
+                    type="button"
+                    size="icon"
+                    variant="outline"
+                    aria-label={`Undo ${drawAction}`}
+                    title={`Undo ${drawAction}`}
+                    onClick={handleUndo}>
+                    <Undo2Icon />
+                </Button>
+            )}
+        </div>
     )
 }
 
@@ -992,20 +1070,11 @@ function MapDrawEdit({
     },
     ...props
 }: Omit<EditToolbar.EditHandlerOptions, "featureGroup">) {
-    const drawContext = useMapDrawContext()
-    if (!drawContext) {
-        throw new Error("MapDrawEdit must be used within MapDrawControl")
-    }
     const { L } = useLeaflet()
-    const map = useMap()
     const mapDrawHandleIcon = useMapDrawHandleIcon()
-    const controlRef = useRef<EditToolbar.Edit | null>(null)
-    const { featureGroup, activeMode, setActiveMode } = drawContext
-    const isActive = activeMode === "edit"
-    const hasDrawnFeatures = featureGroup && featureGroup.getLayers().length > 0
 
     useEffect(() => {
-        if (!L || !mapDrawHandleIcon || !featureGroup) return
+        if (!L || !mapDrawHandleIcon) return
 
         L.Edit.PolyVerticesEdit.mergeOptions({
             icon: mapDrawHandleIcon,
@@ -1017,118 +1086,39 @@ function MapDrawEdit({
             touchMoveIcon: mapDrawHandleIcon,
             touchResizeIcon: mapDrawHandleIcon,
         })
-        L.drawLocal.edit.handlers.edit.tooltip.subtext = ""
-
-        if (isActive) {
-            const control = new L.EditToolbar.Edit(map as DrawMap, {
-                featureGroup,
-                selectedPathOptions,
-                ...props,
-            })
-            control.enable()
-            controlRef.current = control
-        } else {
-            controlRef.current?.save()
-            controlRef.current?.disable()
-            controlRef.current = null
+        L.drawLocal.edit.handlers.edit.tooltip = {
+            text: "Drag handles or markers to edit.",
+            subtext: "",
         }
-    }, [isActive, L, map, mapDrawHandleIcon, props])
+        L.drawLocal.edit.handlers.remove.tooltip = {
+            text: "Click on a shape to remove",
+        }
+    }, [mapDrawHandleIcon])
 
-    function handleClick() {
-        setActiveMode(isActive ? null : "edit")
-    }
-
-    function handleUndo() {
-        controlRef.current?.revertLayers()
-        setActiveMode(null)
-    }
     return (
-        <div className="flex gap-1">
-            <Button
-                type="button"
-                size="icon"
-                aria-label="Edit features"
-                title="Edit features"
-                variant={isActive ? "default" : "secondary"}
-                disabled={!hasDrawnFeatures}
-                onClick={handleClick}>
-                <EditIcon />
-            </Button>
-            {isActive && (
-                <Button
-                    type="button"
-                    size="icon"
-                    aria-label="Undo edit"
-                    title="Undo edit"
-                    variant="outline"
-                    onClick={handleUndo}>
-                    <Undo2Icon />
-                </Button>
-            )}
-        </div>
+        <MapDrawActionButton
+            drawAction="edit"
+            createDrawTool={(L, map, featureGroup) =>
+                new L.EditToolbar.Edit(map, {
+                    featureGroup,
+                    selectedPathOptions,
+                    ...props,
+                })
+            }>
+            <PenLineIcon />
+        </MapDrawActionButton>
     )
 }
 
 function MapDrawDelete() {
-    const drawContext = useMapDrawContext()
-    if (!drawContext) {
-        throw new Error("MapDrawDelete must be used within MapDrawControl")
-    }
-    const { L } = useLeaflet()
-    const map = useMap()
-    const controlRef = useRef<EditToolbar.Delete | null>(null)
-    const { featureGroup, activeMode, setActiveMode } = drawContext
-    const isActive = activeMode === "delete"
-    const hasDrawnFeatures = featureGroup && featureGroup.getLayers().length > 0
-
-    useEffect(() => {
-        if (!L || !featureGroup) return
-
-        if (isActive) {
-            const control = new L.EditToolbar.Delete(map as DrawMap, {
-                featureGroup,
-            })
-            control.enable()
-            controlRef.current = control
-        } else {
-            controlRef.current?.save()
-            controlRef.current?.disable()
-            controlRef.current = null
-        }
-    }, [isActive, L, map])
-
-    function handleClick() {
-        setActiveMode(isActive ? null : "delete")
-    }
-
-    function handleUndo() {
-        controlRef.current?.revertLayers()
-        setActiveMode(null)
-    }
     return (
-        <div className="flex gap-1">
-            <Button
-                type="button"
-                size="icon"
-                aria-label="Delete features"
-                title="Delete features"
-                variant={isActive ? "default" : "secondary"}
-                disabled={!hasDrawnFeatures}
-                onClick={handleClick}>
-                <Trash2Icon />
-            </Button>
-            {isActive && (
-                <Button
-                    type="button"
-                    size="icon"
-                    aria-label="Undo delete"
-                    title="Undo delete"
-                    variant="outline"
-                    onClick={handleUndo}>
-                    <Undo2Icon />
-                </Button>
-            )}
-        </div>
+        <MapDrawActionButton
+            drawAction="delete"
+            createDrawTool={(L, map, featureGroup) =>
+                new L.EditToolbar.Delete(map, { featureGroup })
+            }>
+            <Trash2Icon />
+        </MapDrawActionButton>
     )
 }
 
