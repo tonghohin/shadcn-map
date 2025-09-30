@@ -1103,7 +1103,7 @@ function MapDrawEdit({
             subtext: "",
         }
         L.drawLocal.edit.handlers.remove.tooltip = {
-            text: "Click on a shape to remove",
+            text: "Click on a shape to remove.",
         }
     }, [mapDrawHandleIcon])
 

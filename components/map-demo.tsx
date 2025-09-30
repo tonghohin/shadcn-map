@@ -59,7 +59,7 @@ export function MapDemo() {
                 <MapDrawPolyline />
                 <MapDrawCircle />
                 <MapDrawRectangle />
-                <MapDrawPolygon />
+                <MapDrawPolygon allowIntersection={false} />
                 <MapDrawEdit />
                 <MapDrawDelete />
             </MapDrawControl>
