@@ -3,6 +3,14 @@
 import {
     Map,
     MapCircleMarker,
+    MapDrawCircle,
+    MapDrawControl,
+    MapDrawDelete,
+    MapDrawEdit,
+    MapDrawMarker,
+    MapDrawPolygon,
+    MapDrawPolyline,
+    MapDrawRectangle,
     MapLayerGroup,
     MapLayers,
     MapLayersControl,
@@ -46,6 +54,15 @@ export function MapDemo() {
                 onLocationError={(error) => toast.error(error.message)}
                 className="bottom-5"
             />
+            <MapDrawControl>
+                <MapDrawMarker />
+                <MapDrawPolyline />
+                <MapDrawCircle />
+                <MapDrawRectangle />
+                <MapDrawPolygon />
+                <MapDrawEdit />
+                <MapDrawDelete />
+            </MapDrawControl>
         </Map>
     )
 }
