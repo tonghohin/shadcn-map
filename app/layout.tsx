@@ -18,12 +18,13 @@ export const metadata: Metadata = {
     metadataBase: new URL(process.env.NEXT_PUBLIC_APP_URL!),
     description: siteConfig.description,
     keywords: [
+        "shadcn map",
+        "shadcn map component",
+        "shadcn/ui map",
+        "shadcn/ui",
         "map",
         "leaflet",
         "react leaflet",
-        "shadcn/ui",
-        "shadcn/ui map",
-        "shadcn map",
     ],
     authors: [
         {
