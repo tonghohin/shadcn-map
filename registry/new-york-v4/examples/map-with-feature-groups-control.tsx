@@ -32,9 +32,9 @@ export function MapWithFeatureGroupsControl() {
 
     return (
         <Map center={PLACES[0].coordinates} zoom={3}>
+            <MapTileLayer />
             <MapLayers defaultLayerGroups={PLACES.map((place) => place.name)}>
                 <MapLayersControl layerGroupsLabel="Safari" />
-                <MapTileLayer />
                 {PLACES.map((place) => (
                     <MapFeatureGroup
                         key={place.name}
