@@ -1,0 +1,13 @@
+{
+    "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+    "name": "map-with-draw-control-specific-shapes",
+    "type": "registry:example",
+    "registryDependencies": ["map"],
+    "files": [
+        {
+            "path": "registry/new-york-v4/examples/map-with-draw-control-specific-shapes.tsx",
+            "content": "import {\n    Map,\n    MapDrawCircle,\n    MapDrawControl,\n    MapDrawEdit,\n    MapDrawPolygon,\n    MapDrawRectangle,\n    MapTileLayer,\n} from \"@/registry/new-york-v4/ui/map\"\nimport type { LatLngExpression } from \"leaflet\"\n\nexport function MapWithDrawControlSpecificShapes() {\n    const TORONTO_COORDINATES = [43.6532, -79.3832] satisfies LatLngExpression\n\n    return (\n        <Map center={TORONTO_COORDINATES}>\n            <MapTileLayer />\n            <MapDrawControl>\n                <MapDrawCircle />\n                <MapDrawRectangle />\n                <MapDrawPolygon />\n                <MapDrawEdit />\n            </MapDrawControl>\n        </Map>\n    )\n}\n",
+            "type": "registry:example"
+        }
+    ]
+}

@@ -243,4 +243,15 @@ export const examples: Registry["items"] = [
             },
         ],
     },
+    {
+        name: "map-with-draw-control-specific-shapes",
+        type: "registry:example",
+        registryDependencies: ["map"],
+        files: [
+            {
+                path: "examples/map-with-draw-control-specific-shapes.tsx",
+                type: "registry:example",
+            },
+        ],
+    },
 ]
