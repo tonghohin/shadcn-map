@@ -231,6 +231,10 @@
   .leaflet-draw-guide-dash {
     @apply rounded-full
   }
+
+  .leaflet-edit-marker-selected {
+    @apply !border-transparent !bg-transparent
+  }
 }
 
 @utility section-soft {

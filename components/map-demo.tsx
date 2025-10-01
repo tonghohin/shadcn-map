@@ -3,14 +3,11 @@
 import {
     Map,
     MapCircleMarker,
-    MapDrawCircle,
     MapDrawControl,
     MapDrawDelete,
     MapDrawEdit,
-    MapDrawMarker,
     MapDrawPolygon,
     MapDrawPolyline,
-    MapDrawRectangle,
     MapLayerGroup,
     MapLayers,
     MapLayersControl,
@@ -55,10 +52,7 @@ export function MapDemo() {
                 className="bottom-5"
             />
             <MapDrawControl>
-                <MapDrawMarker />
                 <MapDrawPolyline />
-                <MapDrawCircle />
-                <MapDrawRectangle />
                 <MapDrawPolygon allowIntersection={false} />
                 <MapDrawEdit />
                 <MapDrawDelete />

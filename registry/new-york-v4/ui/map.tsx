@@ -466,15 +466,15 @@ function MapLayersControl({
 
 function MapMarker({
     icon = <MapPinIcon className="size-6" />,
-    bgPos,
     iconAnchor = [12, 12],
+    bgPos,
     popupAnchor,
     tooltipAnchor,
     ...props
 }: Omit<MarkerProps, "icon"> &
     Pick<
         DivIconOptions,
-        "bgPos" | "iconAnchor" | "popupAnchor" | "tooltipAnchor"
+        "iconAnchor" | "bgPos" | "popupAnchor" | "tooltipAnchor"
     > & {
         icon?: ReactNode
     }) {
@@ -877,6 +877,7 @@ function MapDrawMarker({ ...props }: DrawOptions.MarkerOptions) {
             createDrawTool={(L, map) =>
                 new L.Draw.Marker(map, {
                     icon: L.divIcon({
+                        className: "", // For fixing the moving bug when going in and out the edit mode
                         iconAnchor: [12, 12],
                         html: renderToString(<MapPinIcon className="size-6" />),
                     }),

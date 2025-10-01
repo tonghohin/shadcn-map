@@ -82,8 +82,8 @@ The `MapMarker` component renders a marker on the map. By default, it uses the `
 | Prop            | Type                        | Description                                                                                                |
 | --------------- | --------------------------- | ---------------------------------------------------------------------------------------------------------- |
 | `icon`          | `ReactNode`                 | Optional. Custom icon to display instead of the default marker. Defaults to `MapDefaultMarkerIcon`.        |
+| `iconAnchor`    | `[number, number]`          | Optional. The point of the icon which will correspond to marker’s location. Defaults to `[12, 12]`.        |
 | `bgPos`         | `[number, number]`          | Optional. Background position offset for the icon.                                                         |
-| `iconAnchor`    | `[number, number]`          | Optional. The point of the icon which will correspond to marker’s location.                                |
 | `popupAnchor`   | `[number, number]`          | Optional. Point from which the popup should open relative to the icon.                                     |
 | `tooltipAnchor` | `[number, number]`          | Optional. Point from which the tooltip should open relative to the icon.                                   |
 | ...other props  | `Omit<MarkerProps, "icon">` | All other props from [React Leaflet Marker](https://react-leaflet.js.org/docs/api-marker/), except `icon`. |
@@ -103,7 +103,7 @@ The `MapTooltip` component renders a tooltip. It provides default styling and an
 | Prop         | Type                                     | Description                                                                                         |
 | ------------ | ---------------------------------------- | --------------------------------------------------------------------------------------------------- |
 | `side`       | `"top" \| "right" \| "bottom" \| "left"` | Optional. Controls the position of the tooltip relative to the target element. Defaults to `"top"`. |
-| `sideOffset` | `number`                                 | Optional. Sets the distance between the tooltip and the target element. Defaults to `15`.           |
+| `sideOffset` | `number`                                 | Optional. The distance between the tooltip and the target element. Defaults to `15`.                |
 | ...props     | `TooltipProps`                           | All props from [React Leaflet Tooltip](https://react-leaflet.js.org/docs/api-components/#tooltip).  |
 
 ## Shapes

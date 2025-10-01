@@ -64,6 +64,9 @@ export const ui: Registry["items"] = [
                 ".leaflet-draw-guide-dash": {
                     "@apply rounded-full": {},
                 },
+                ".leaflet-edit-marker-selected": {
+                    "@apply !border-transparent !bg-transparent": {},
+                },
             },
         },
         files: [
