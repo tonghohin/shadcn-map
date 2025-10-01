@@ -221,4 +221,26 @@ export const examples: Registry["items"] = [
             },
         ],
     },
+    {
+        name: "map-with-draw-control",
+        type: "registry:example",
+        registryDependencies: ["map"],
+        files: [
+            {
+                path: "examples/map-with-draw-control.tsx",
+                type: "registry:example",
+            },
+        ],
+    },
+    {
+        name: "map-with-draw-control-callback",
+        type: "registry:example",
+        registryDependencies: ["map"],
+        files: [
+            {
+                path: "examples/map-with-draw-control-callback.tsx",
+                type: "registry:example",
+            },
+        ],
+    },
 ]

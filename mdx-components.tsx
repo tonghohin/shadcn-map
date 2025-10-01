@@ -5,7 +5,6 @@ import * as React from "react"
 import { Callout } from "@/components/callout"
 import { CodeBlockCommand } from "@/components/code-block-command"
 import { CodeCollapsibleWrapper } from "@/components/code-collapsible-wrapper"
-import { CodeTabs } from "@/components/code-tabs"
 import { ComponentPreview } from "@/components/component-preview"
 import { ComponentSource } from "@/components/component-source"
 import { CopyButton } from "@/components/copy-button"
@@ -264,21 +263,6 @@ export const mdxComponents = {
             </>
         )
     },
-    Step: ({ className, ...props }: React.ComponentProps<"h3">) => (
-        <h3
-            className={cn(
-                "font-heading mt-8 scroll-m-32 text-xl font-medium tracking-tight",
-                className
-            )}
-            {...props}
-        />
-    ),
-    Steps: ({ ...props }) => (
-        <div
-            className="[&>h3]:step steps mb-12 [counter-reset:step] *:[h3]:first:!mt-0"
-            {...props}
-        />
-    ),
     Image: ({
         src,
         className,
@@ -353,7 +337,6 @@ export const mdxComponents = {
     AlertTitle,
     AlertDescription,
     AspectRatio,
-    CodeTabs,
     ComponentPreview,
     ComponentSource,
     CodeCollapsibleWrapper,

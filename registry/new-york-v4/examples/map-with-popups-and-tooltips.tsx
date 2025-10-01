@@ -46,7 +46,7 @@ export function MapWithPopupAndTooltip() {
             ))}
             {TOOLTIP_CITIES.map((city) => (
                 <MapMarker key={city.name} position={city.coordinates}>
-                    <MapTooltip offset={[0, -15]}>
+                    <MapTooltip side="bottom">
                         Say hi to {city.name}!
                     </MapTooltip>
                 </MapMarker>

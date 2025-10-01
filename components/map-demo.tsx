@@ -3,6 +3,11 @@
 import {
     Map,
     MapCircleMarker,
+    MapDrawControl,
+    MapDrawDelete,
+    MapDrawEdit,
+    MapDrawPolygon,
+    MapDrawPolyline,
     MapLayerGroup,
     MapLayers,
     MapLayersControl,
@@ -34,10 +39,7 @@ export function MapDemo() {
                     </MapMarker>
                 </MapLayerGroup>
                 <MapLayerGroup name="Area">
-                    <MapCircleMarker
-                        center={TORONTO_COORDINATES}
-                        radius={100}
-                    />
+                    <MapCircleMarker center={TORONTO_COORDINATES} radius={80} />
                 </MapLayerGroup>
             </MapLayers>
             <MapZoomControl />
@@ -46,6 +48,12 @@ export function MapDemo() {
                 onLocationError={(error) => toast.error(error.message)}
                 className="bottom-5"
             />
+            <MapDrawControl>
+                <MapDrawPolyline />
+                <MapDrawPolygon allowIntersection={false} />
+                <MapDrawEdit />
+                <MapDrawDelete />
+            </MapDrawControl>
         </Map>
     )
 }

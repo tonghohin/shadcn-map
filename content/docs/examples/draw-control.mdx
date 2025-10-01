@@ -1,0 +1,20 @@
+---
+title: Draw Control
+description: Draws shapes on the map.
+component: true
+---
+
+<ComponentPreview
+    name="map-with-draw-control"
+    description="A map with draw control"
+/>
+
+## Accessing Drawn Shapes
+
+You can pass an optional `onLayersChange` callback to the draw control to get the current layers on the map.
+This allows you to handle the drawn shapes, such as saving their coordinates or performing further actions.
+
+<ComponentPreview
+    name="map-with-draw-control-callback"
+    description="A map with draw control callback"
+/>
