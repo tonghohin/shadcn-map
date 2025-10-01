@@ -10,70 +10,9 @@ Before installing, make sure you already have **[shadcn/ui](https://ui.shadcn.co
 
 ## Installation
 
-<CodeTabs>
-
-<TabsContent value="cli">
-
-<Steps>
-
-<Step>Run the following command to install `map.tsx`</Step>
-
 ```bash
 npx shadcn@latest add http://shadcn-map.vercel.app/r/map.json
 ```
-
-<Step>Add the following Tailwind CSS to your CSS file</Step>
-
-```css showLineNumbers title="app/globals.css"
-@layer base {
-    .leaflet-container {
-        @apply !bg-card !font-[inherit];
-    }
-
-    .leaflet-container a {
-        @apply !text-inherit;
-    }
-
-    .leaflet-div-icon {
-        @apply !border-none !bg-transparent;
-    }
-
-    .leaflet-popup-content-wrapper,
-    .leaflet-popup-content {
-        @apply ![all:unset];
-    }
-
-    .leaflet-popup {
-        @apply !animate-none;
-    }
-
-    .leaflet-popup-close-button {
-        @apply ring-offset-background focus:ring-ring bg-secondary rounded-xs opacity-70 transition-opacity hover:opacity-100 focus:ring-2 focus:outline-hidden;
-    }
-
-    .leaflet-tooltip {
-        @apply !bg-foreground !text-background !animate-none !rounded-md !border-none !p-0 !px-3 !py-1.5 !shadow-none;
-    }
-
-    .leaflet-popup-tip-container,
-    .leaflet-tooltip-top:before,
-    .leaflet-tooltip-bottom:before,
-    .leaflet-tooltip-left:before,
-    .leaflet-tooltip-right:before {
-        @apply hidden;
-    }
-
-    .leaflet-control-attribution {
-        @apply !bg-muted rounded-md !px-[4px] !py-[2px] text-[10px] !leading-none !text-inherit;
-    }
-}
-```
-
-</Steps>
-
-</TabsContent>
-
-</CodeTabs>
 
 ## Usage
 

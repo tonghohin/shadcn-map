@@ -908,7 +908,12 @@ function MapDrawPolyline({
             drawMode="polyline"
             createDrawTool={(L, map) =>
                 new L.Draw.Polyline(map, {
-                    ...(mapDrawHandleIcon ? { icon: mapDrawHandleIcon } : {}),
+                    ...(mapDrawHandleIcon
+                        ? {
+                              icon: mapDrawHandleIcon,
+                              touchIcon: mapDrawHandleIcon,
+                          }
+                        : {}),
                     showLength,
                     drawError,
                     shapeOptions,
@@ -986,7 +991,12 @@ function MapDrawPolygon({
             drawMode="polygon"
             createDrawTool={(L, map) =>
                 new L.Draw.Polygon(map, {
-                    ...(mapDrawHandleIcon ? { icon: mapDrawHandleIcon } : {}),
+                    ...(mapDrawHandleIcon
+                        ? {
+                              icon: mapDrawHandleIcon,
+                              touchIcon: mapDrawHandleIcon,
+                          }
+                        : {}),
                     drawError,
                     shapeOptions,
                     ...props,
@@ -997,9 +1007,7 @@ function MapDrawPolygon({
     )
 }
 
-export function MapDrawActionButton<
-    T extends EditToolbar.Edit | EditToolbar.Delete,
->({
+function MapDrawActionButton<T extends EditToolbar.Edit | EditToolbar.Delete>({
     drawAction,
     createDrawTool,
     ...props
@@ -1040,11 +1048,12 @@ export function MapDrawActionButton<
     }, [L, map, isActive, featureGroup, createDrawTool])
 
     function handleClick() {
+        controlRef.current?.save()
         setActiveMode(isActive ? null : drawAction)
     }
 
     function handleUndo() {
-        controlRef.current?.revertLayers?.()
+        controlRef.current?.revertLayers()
         setActiveMode(null)
     }
 
@@ -1092,6 +1101,9 @@ function MapDrawEdit({
         L.Edit.PolyVerticesEdit.mergeOptions({
             icon: mapDrawHandleIcon,
             touchIcon: mapDrawHandleIcon,
+            drawError: {
+                color: "var(--color-destructive)",
+            },
         })
         L.Edit.SimpleShape.mergeOptions({
             moveIcon: mapDrawHandleIcon,
@@ -1221,4 +1233,5 @@ export {
     MapTileLayer,
     MapTooltip,
     MapZoomControl,
+    useLeaflet,
 }

@@ -39,10 +39,7 @@ export function MapDemo() {
                     </MapMarker>
                 </MapLayerGroup>
                 <MapLayerGroup name="Area">
-                    <MapCircleMarker
-                        center={TORONTO_COORDINATES}
-                        radius={100}
-                    />
+                    <MapCircleMarker center={TORONTO_COORDINATES} radius={80} />
                 </MapLayerGroup>
             </MapLayers>
             <MapZoomControl />

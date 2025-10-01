@@ -167,4 +167,75 @@ The `MapLocateControl` component provides a button to locate the user on the map
 | `watch`           | `boolean`                           | Optional. Whether to continuously watch the user’s location. Defaults to `false`.                                                                      |
 | `onLocationFound` | `(location: LocationEvent) => void` | Optional. Callback fired when the user’s location is found. Receives the [Leaflet LocationEvent](https://leafletjs.com/reference.html#locationevent).  |
 | `onLocationError` | `(error: ErrorEvent) => void`       | Optional. Callback fired when there is an error locating the user. Receives the [Leaflet ErrorEvent](https://leafletjs.com/reference.html#errorevent). |
-| `...props`        | `React.ComponentProps<"button">`    | All other props for the `button` element.                                                                                                              |
+| ...props          | `React.ComponentProps<"button">`    | All props for the `button` element.                                                                                                                    |
+
+## Drawing
+
+### MapDrawControl
+
+The `MapDrawControl` component is required when you want to add drawing tools to the map.
+
+Place any draw controls (e.g. `MapDrawMarker`, `MapDrawPolyline`, `MapDrawPolygon`) inside it.
+
+| Prop             | Type                               | Description                                                                                                                                                               |
+| ---------------- | ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `onLayersChange` | `(layers: L.FeatureGroup) => void` | Optional. Callback fired whenever layers are created, edited, or deleted. Receives the current [Leaflet FeatureGroup](https://leafletjs.com/reference.html#featuregroup). |
+| ...props         | `React.ComponentProps<"div">`      | All props for the container `div`.                                                                                                                                        |
+
+### MapDrawMarker
+
+The `MapDrawMarker` component adds a button to the draw control for drawing markers on the map.
+
+| Prop     | Type                        | Description                                                                                                                       |
+| -------- | --------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| ...props | `DrawOptions.MarkerOptions` | All props from [Leaflet Draw Marker options](https://leaflet.github.io/Leaflet.draw/docs/leaflet-draw-latest.html#markeroptions). |
+
+### MapDrawPolyline
+
+The `MapDrawPolyline` component adds a button to the draw control for drawing polylines on the map.
+
+| Prop     | Type                          | Description                                                                                                                           |
+| -------- | ----------------------------- | ------------------------------------------------------------------------------------------------------------------------------------- |
+| ...props | `DrawOptions.PolylineOptions` | All props from [Leaflet Draw Polyline options](https://leaflet.github.io/Leaflet.draw/docs/leaflet-draw-latest.html#polylineoptions). |
+
+### MapDrawCircle
+
+The `MapDrawCircle` component adds a button to the draw control for drawing circles on the map.
+
+| Prop     | Type                        | Description                                                                                                                       |
+| -------- | --------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
+| ...props | `DrawOptions.CircleOptions` | All props from [Leaflet Draw Circle options](https://leaflet.github.io/Leaflet.draw/docs/leaflet-draw-latest.html#circleoptions). |
+
+### MapDrawRectangle
+
+The `MapDrawRectangle` component adds a button to the draw control for drawing rectangles on the map.
+
+| Prop     | Type                           | Description                                                                                                                             |
+| -------- | ------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------- |
+| ...props | `DrawOptions.RectangleOptions` | All props from [Leaflet Draw Rectangle options](https://leaflet.github.io/Leaflet.draw/docs/leaflet-draw-latest.html#rectangleoptions). |
+
+### MapDrawPolygon
+
+The `MapDrawPolygon` component adds a button to the draw control for drawing polygons on the map.
+
+| Prop     | Type                         | Description                                                                                                                         |
+| -------- | ---------------------------- | ----------------------------------------------------------------------------------------------------------------------------------- |
+| ...props | `DrawOptions.PolygonOptions` | All props from [Leaflet Draw Polygon options](https://leaflet.github.io/Leaflet.draw/docs/leaflet-draw-latest.html#polygonoptions). |
+
+### MapDrawEdit
+
+The `MapDrawEdit` component adds a button to the draw control for editing existing shapes on the map.
+When active, you can drag handles or markers to modify shapes, and an undo button appears to revert changes.
+
+| Prop     | Type                                                   | Description                                                                                                                                |
+| -------- | ------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------ |
+| ...props | `Omit<EditToolbar.EditHandlerOptions, "featureGroup">` | All props from [Leaflet Draw EditHandlerOptions](https://leaflet.github.io/Leaflet.draw/docs/leaflet-draw-latest.html#edithandleroptions). |
+
+### MapDrawDelete
+
+The `MapDrawDelete` component adds a button to the draw control for deleting existing shapes on the map.
+When active, clicking on a shape removes it. An undo button is available to revert deletions.
+
+| Prop     | Type                             | Description                       |
+| -------- | -------------------------------- | --------------------------------- |
+| ...props | `React.ComponentProps<"button">` | All props for the button element. |
