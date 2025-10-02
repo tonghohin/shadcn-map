@@ -14,6 +14,8 @@ import {
 } from "@/registry/new-york-v4/ui/dropdown-menu"
 import type { CheckboxItem } from "@radix-ui/react-dropdown-menu"
 import type {
+    Circle,
+    CircleMarker,
     DivIconOptions,
     Draw,
     DrawEvents,
@@ -21,10 +23,20 @@ import type {
     DrawOptions,
     EditToolbar,
     ErrorEvent,
+    FeatureGroup,
     LatLngExpression,
+    LayerGroup,
+    Map as LeafletMap,
     LocateOptions,
     LocationEvent,
+    Marker,
     PointExpression,
+    Polygon,
+    Polyline,
+    Popup,
+    Rectangle,
+    TileLayer,
+    Tooltip,
 } from "leaflet"
 import "leaflet-draw/dist/leaflet.draw.css"
 import "leaflet/dist/leaflet.css"
@@ -47,6 +59,7 @@ import { useTheme } from "next-themes"
 import dynamic from "next/dynamic"
 import {
     createContext,
+    Ref,
     useContext,
     useEffect,
     useRef,
@@ -122,7 +135,10 @@ function Map({
     zoom = 15,
     className,
     ...props
-}: Omit<MapContainerProps, "zoomControl"> & { center: LatLngExpression }) {
+}: Omit<MapContainerProps, "zoomControl"> & {
+    center: LatLngExpression
+    ref?: Ref<LeafletMap>
+}) {
     return (
         <LeafletMapContainer
             zoom={zoom}
@@ -176,6 +192,7 @@ function MapTileLayer({
     name?: string
     darkUrl?: string
     darkAttribution?: string
+    ref?: Ref<TileLayer>
 }) {
     const map = useMap()
     if (map.attributionControl) {
@@ -226,7 +243,7 @@ function MapLayerGroup({
     name,
     disabled,
     ...props
-}: LayerGroupProps & MapLayerGroupOption) {
+}: LayerGroupProps & MapLayerGroupOption & { ref?: Ref<LayerGroup> }) {
     const context = useMapLayersContext()
 
     useEffect(() => {
@@ -249,7 +266,7 @@ function MapFeatureGroup({
     name,
     disabled,
     ...props
-}: LayerGroupProps & MapLayerGroupOption) {
+}: LayerGroupProps & MapLayerGroupOption & { ref?: Ref<FeatureGroup> }) {
     const context = useMapLayersContext()
 
     useEffect(() => {
@@ -480,6 +497,7 @@ function MapMarker({
         "iconAnchor" | "bgPos" | "popupAnchor" | "tooltipAnchor"
     > & {
         icon?: ReactNode
+        ref?: Ref<Marker>
     }) {
     const { L } = useLeaflet()
     if (!L) return null
@@ -499,7 +517,10 @@ function MapMarker({
     )
 }
 
-function MapCircle({ className, ...props }: CircleProps) {
+function MapCircle({
+    className,
+    ...props
+}: CircleProps & { ref?: Ref<Circle> }) {
     return (
         <LeafletCircle
             className={cn(
@@ -511,7 +532,10 @@ function MapCircle({ className, ...props }: CircleProps) {
     )
 }
 
-function MapCircleMarker({ className, ...props }: CircleMarkerProps) {
+function MapCircleMarker({
+    className,
+    ...props
+}: CircleMarkerProps & { ref?: Ref<CircleMarker> }) {
     return (
         <LeafletCircleMarker
             className={cn(
@@ -523,7 +547,10 @@ function MapCircleMarker({ className, ...props }: CircleMarkerProps) {
     )
 }
 
-function MapPolyline({ className, ...props }: PolylineProps) {
+function MapPolyline({
+    className,
+    ...props
+}: PolylineProps & { ref?: Ref<Polyline> }) {
     return (
         <LeafletPolyline
             className={cn(
@@ -535,7 +562,10 @@ function MapPolyline({ className, ...props }: PolylineProps) {
     )
 }
 
-function MapPolygon({ className, ...props }: PolygonProps) {
+function MapPolygon({
+    className,
+    ...props
+}: PolygonProps & { ref?: Ref<Polygon> }) {
     return (
         <LeafletPolygon
             className={cn(
@@ -547,7 +577,10 @@ function MapPolygon({ className, ...props }: PolygonProps) {
     )
 }
 
-function MapRectangle({ className, ...props }: RectangleProps) {
+function MapRectangle({
+    className,
+    ...props
+}: RectangleProps & { ref?: Ref<Rectangle> }) {
     return (
         <LeafletRectangle
             className={cn(
@@ -559,7 +592,10 @@ function MapRectangle({ className, ...props }: RectangleProps) {
     )
 }
 
-function MapPopup({ className, ...props }: Omit<PopupProps, "content">) {
+function MapPopup({
+    className,
+    ...props
+}: Omit<PopupProps, "content"> & { ref?: Ref<Popup> }) {
     return (
         <LeafletPopup
             className={cn(
@@ -580,6 +616,7 @@ function MapTooltip({
 }: Omit<TooltipProps, "offset"> & {
     side?: "top" | "right" | "bottom" | "left"
     sideOffset?: number
+    ref?: Ref<Tooltip>
 }) {
     const ARROW_POSITION_CLASSES = {
         top: "bottom-0.5 left-1/2 -translate-x-1/2 translate-y-1/2",
