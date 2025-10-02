@@ -100,14 +100,23 @@ export function DocsCopyPage({ page, url }: { page: string; url: string }) {
         <Popover>
             <div className="bg-secondary group/buttons relative flex rounded-lg *:[[data-slot=button]]:focus-visible:relative *:[[data-slot=button]]:focus-visible:z-10">
                 <PopoverAnchor asChild>
-                    <Button
-                        variant="secondary"
-                        size="sm"
-                        className="h-8 shadow-none md:h-7 md:text-[0.8rem]"
-                        onClick={() => copyToClipboard(page)}>
-                        {isCopied ? <CheckIcon /> : <CopyIcon />}
-                        Copy Page
-                    </Button>
+                    <div className="flex">
+                        <Button
+                            variant="secondary"
+                            size="sm"
+                            className="h-8 shadow-none md:h-7 md:text-[0.8rem]"
+                            onClick={() => copyToClipboard(page)}>
+                            {isCopied ? <CheckIcon /> : <CopyIcon />}
+                            Copy Page
+                        </Button>
+                        <Separator
+                            orientation="vertical"
+                            className="!bg-foreground/10 absolute top-0 right-8 z-0 !h-8 peer-focus-visible:opacity-0 sm:right-7 sm:!h-7"
+                        />
+                        <PopoverTrigger asChild className="flex sm:hidden">
+                            {trigger}
+                        </PopoverTrigger>
+                    </div>
                 </PopoverAnchor>
                 <DropdownMenu>
                     <DropdownMenuTrigger asChild className="hidden sm:flex">
@@ -121,13 +130,7 @@ export function DocsCopyPage({ page, url }: { page: string; url: string }) {
                         ))}
                     </DropdownMenuContent>
                 </DropdownMenu>
-                <Separator
-                    orientation="vertical"
-                    className="!bg-foreground/10 absolute top-0 right-8 z-0 !h-8 peer-focus-visible:opacity-0 sm:right-7 sm:!h-7"
-                />
-                <PopoverTrigger asChild className="flex sm:hidden">
-                    {trigger}
-                </PopoverTrigger>
+
                 <PopoverContent
                     className="bg-background/70 dark:bg-background/60 w-52 !origin-center rounded-lg p-1 shadow-sm backdrop-blur-sm"
                     align="start">
