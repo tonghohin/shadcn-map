@@ -184,7 +184,7 @@
     @apply !bg-transparent !border-none
   }
 
-  .leaflet-popup-content-wrapper, .leaflet-popup-content {
+  .leaflet-popup-content-wrapper, .leaflet-popup-content, .leaflet-popup-content p {
     @apply ![all:unset]
   }
 

@@ -10,10 +10,10 @@ component: true
 
 The `Map` component is the main map container. It wraps `react-leaflet`’s `MapContainer` and provides default styles.
 
-| Prop           | Type                | Description                                                                                    |
-| -------------- | ------------------- | ---------------------------------------------------------------------------------------------- |
-| `center`       | `LatLngExpression`  | **Required.** The initial center of the map `[lat, lng]`.                                      |
-| ...other props | `MapContainerProps` | All other props from [React Leaflet MapContainer](https://react-leaflet.js.org/docs/api-map/). |
+| Prop           | Type                                     | Description                                                                                                          |
+| -------------- | ---------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
+| `center`       | `LatLngExpression`                       | **Required.** The initial center of the map `[lat, lng]`.                                                            |
+| ...other props | `Omit<MapContainerProps, "zoomControl">` | All other props from [React Leaflet MapContainer](https://react-leaflet.js.org/docs/api-map/), except `zoomControl`. |
 
 ### MapTileLayer
 
@@ -92,9 +92,9 @@ The `MapMarker` component renders a marker on the map. By default, it uses the `
 
 The `MapPopup` component renders a popup. It provides default styling and animations that match the shadcn/ui design system.
 
-| Prop     | Type         | Description                                                                                    |
-| -------- | ------------ | ---------------------------------------------------------------------------------------------- |
-| ...props | `PopupProps` | All props from [React Leaflet Popup](https://react-leaflet.js.org/docs/api-components/#popup). |
+| Prop     | Type                          | Description                                                                                                      |
+| -------- | ----------------------------- | ---------------------------------------------------------------------------------------------------------------- |
+| ...props | `Omit<PopupProps, "content">` | All props from [React Leaflet Popup](https://react-leaflet.js.org/docs/api-components/#popup), except `content`. |
 
 ### MapTooltip
 

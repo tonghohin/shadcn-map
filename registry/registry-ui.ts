@@ -26,9 +26,10 @@ export const ui: Registry["items"] = [
                 ".leaflet-div-icon": {
                     "@apply !bg-transparent !border-none": {},
                 },
-                ".leaflet-popup-content-wrapper, .leaflet-popup-content": {
-                    "@apply ![all:unset]": {},
-                },
+                ".leaflet-popup-content-wrapper, .leaflet-popup-content, .leaflet-popup-content p":
+                    {
+                        "@apply ![all:unset]": {},
+                    },
                 ".leaflet-popup": {
                     "@apply !animate-none": {},
                 },

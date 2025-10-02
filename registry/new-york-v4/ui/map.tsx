@@ -122,7 +122,7 @@ function Map({
     zoom = 15,
     className,
     ...props
-}: MapContainerProps & { center: LatLngExpression }) {
+}: Omit<MapContainerProps, "zoomControl"> & { center: LatLngExpression }) {
     return (
         <LeafletMapContainer
             zoom={zoom}
@@ -556,7 +556,7 @@ function MapRectangle({ className, ...props }: RectangleProps) {
     )
 }
 
-function MapPopup({ className, ...props }: PopupProps) {
+function MapPopup({ className, ...props }: Omit<PopupProps, "content">) {
     return (
         <LeafletPopup
             className={cn(
