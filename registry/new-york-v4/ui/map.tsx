@@ -3,6 +3,10 @@
 import { cn } from "@/lib/utils"
 import { Button } from "@/registry/new-york-v4/ui/button"
 import {
+    ButtonGroup,
+    ButtonGroupSeparator,
+} from "@/registry/new-york-v4/ui/button-group"
+import {
     DropdownMenu,
     DropdownMenuCheckboxItem,
     DropdownMenuContent,
@@ -664,8 +668,10 @@ function MapZoomControl({ className, ...props }: React.ComponentProps<"div">) {
     })
 
     return (
-        <div
-            className={cn("absolute top-1 left-1 z-1000 grid gap-1", className)}
+        <ButtonGroup
+            orientation="vertical"
+            aria-label="Zoom controls"
+            className={cn("absolute top-1 left-1 z-1000 h-fit", className)}
             {...props}>
             <Button
                 type="button"
@@ -677,6 +683,7 @@ function MapZoomControl({ className, ...props }: React.ComponentProps<"div">) {
                 onClick={() => map.zoomIn()}>
                 <PlusIcon />
             </Button>
+            <ButtonGroupSeparator orientation="horizontal" />
             <Button
                 type="button"
                 size="icon"
@@ -687,7 +694,7 @@ function MapZoomControl({ className, ...props }: React.ComponentProps<"div">) {
                 onClick={() => map.zoomOut()}>
                 <MinusIcon />
             </Button>
-        </div>
+        </ButtonGroup>
     )
 }
 
