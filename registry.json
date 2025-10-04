@@ -15,7 +15,7 @@
                 "next-themes"
             ],
             "devDependencies": ["@types/leaflet", "@types/leaflet-draw"],
-            "registryDependencies": ["button", "dropdown-menu"],
+            "registryDependencies": ["button", "button-group", "dropdown-menu"],
             "files": [
                 {
                     "path": "registry/new-york-v4/ui/map.tsx",

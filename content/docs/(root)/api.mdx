@@ -225,7 +225,7 @@ The `MapDrawPolygon` component adds a button to the draw control for drawing pol
 ### MapDrawEdit
 
 The `MapDrawEdit` component adds a button to the draw control for editing existing shapes on the map.
-When active, you can drag handles or markers to modify shapes, and an undo button appears to revert changes.
+When active, you can drag handles or markers to modify shapes.
 
 | Prop     | Type                                                   | Description                                                                                                                                |
 | -------- | ------------------------------------------------------ | ------------------------------------------------------------------------------------------------------------------------------------------ |
@@ -234,7 +234,15 @@ When active, you can drag handles or markers to modify shapes, and an undo butto
 ### MapDrawDelete
 
 The `MapDrawDelete` component adds a button to the draw control for deleting existing shapes on the map.
-When active, clicking on a shape removes it. An undo button is available to revert deletions.
+When active, clicking on a shape removes it.
+
+| Prop     | Type                             | Description                       |
+| -------- | -------------------------------- | --------------------------------- |
+| ...props | `React.ComponentProps<"button">` | All props for the button element. |
+
+### MapDrawUndo
+
+The `MapDrawUndo` component adds a button to the draw control for reverting the most recent edit or delete action performed on the map.
 
 | Prop     | Type                             | Description                       |
 | -------- | -------------------------------- | --------------------------------- |

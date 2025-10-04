@@ -8,6 +8,7 @@ import {
     MapDrawPolygon,
     MapDrawPolyline,
     MapDrawRectangle,
+    MapDrawUndo,
     MapTileLayer,
 } from "@/registry/new-york-v4/ui/map"
 import type { LatLngExpression } from "leaflet"
@@ -26,6 +27,7 @@ export function MapWithDrawControl() {
                 <MapDrawPolygon />
                 <MapDrawEdit />
                 <MapDrawDelete />
+                <MapDrawUndo />
             </MapDrawControl>
         </Map>
     )

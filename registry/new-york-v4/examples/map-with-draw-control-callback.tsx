@@ -11,6 +11,7 @@ import {
     MapDrawPolygon,
     MapDrawPolyline,
     MapDrawRectangle,
+    MapDrawUndo,
     MapTileLayer,
     useLeaflet,
 } from "@/registry/new-york-v4/ui/map"
@@ -58,6 +59,7 @@ export function MapWithDrawControlCallback() {
                 <MapDrawPolygon />
                 <MapDrawEdit />
                 <MapDrawDelete />
+                <MapDrawUndo />
             </MapDrawControl>
             <Badge className="absolute right-1 bottom-1 z-1000">
                 Shapes: {numberOfShapes}
