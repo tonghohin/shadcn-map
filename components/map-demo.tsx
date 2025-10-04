@@ -8,6 +8,7 @@ import {
     MapDrawEdit,
     MapDrawPolygon,
     MapDrawPolyline,
+    MapDrawUndo,
     MapLayerGroup,
     MapLayers,
     MapLayersControl,
@@ -53,6 +54,7 @@ export function MapDemo() {
                 <MapDrawPolygon allowIntersection={false} />
                 <MapDrawEdit />
                 <MapDrawDelete />
+                <MapDrawUndo />
             </MapDrawControl>
         </Map>
     )

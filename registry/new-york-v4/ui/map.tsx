@@ -2,10 +2,7 @@
 
 import { cn } from "@/lib/utils"
 import { Button } from "@/registry/new-york-v4/ui/button"
-import {
-    ButtonGroup,
-    ButtonGroupSeparator,
-} from "@/registry/new-york-v4/ui/button-group"
+import { ButtonGroup } from "@/registry/new-york-v4/ui/button-group"
 import {
     DropdownMenu,
     DropdownMenuCheckboxItem,
@@ -432,10 +429,13 @@ function MapLayersControl({
                 <Button
                     type="button"
                     variant="secondary"
-                    size="icon"
+                    size="icon-sm"
                     aria-label="Select layers"
                     title="Select layers"
-                    className={cn("absolute top-1 right-1 z-1000", className)}
+                    className={cn(
+                        "absolute top-1 right-1 z-1000 border",
+                        className
+                    )}
                     {...props}>
                     <LayersIcon />
                 </Button>
@@ -675,21 +675,22 @@ function MapZoomControl({ className, ...props }: React.ComponentProps<"div">) {
             {...props}>
             <Button
                 type="button"
-                size="icon"
+                size="icon-sm"
                 variant="secondary"
                 aria-label="Zoom in"
                 title="Zoom in"
+                className="border"
                 disabled={zoomLevel >= map.getMaxZoom()}
                 onClick={() => map.zoomIn()}>
                 <PlusIcon />
             </Button>
-            <ButtonGroupSeparator orientation="horizontal" />
             <Button
                 type="button"
-                size="icon"
+                size="icon-sm"
                 variant="secondary"
                 aria-label="Zoom out"
                 title="Zoom out"
+                className="border"
                 disabled={zoomLevel <= map.getMinZoom()}
                 onClick={() => map.zoomOut()}>
                 <MinusIcon />
@@ -753,7 +754,7 @@ function MapLocateControl({
         <>
             <Button
                 type="button"
-                size="icon"
+                size="icon-sm"
                 variant={position ? "default" : "secondary"}
                 onClick={position ? stopLocating : startLocating}
                 disabled={isLocating}
@@ -771,7 +772,10 @@ function MapLocateControl({
                           ? "Stop location tracking"
                           : "Start location tracking"
                 }
-                className={cn("absolute right-1 bottom-1 z-1000", className)}
+                className={cn(
+                    "absolute right-1 bottom-1 z-1000 border",
+                    className
+                )}
                 {...props}>
                 {isLocating ? (
                     <LoaderCircleIcon className="animate-spin" />
@@ -793,6 +797,8 @@ interface MapDrawContextType {
     readonly featureGroup: L.FeatureGroup | null
     activeMode: MapDrawMode
     setActiveMode: (mode: MapDrawMode) => void
+    readonly editControlRef: React.RefObject<EditToolbar.Edit | null>
+    readonly deleteControlRef: React.RefObject<EditToolbar.Delete | null>
 }
 
 const MapDrawContext = createContext<MapDrawContextType | null>(null)
@@ -811,6 +817,8 @@ function MapDrawControl({
     const { L, LeafletDraw } = useLeaflet()
     const map = useMap()
     const featureGroupRef = useRef<L.FeatureGroup | null>(null)
+    const editControlRef = useRef<EditToolbar.Edit | null>(null)
+    const deleteControlRef = useRef<EditToolbar.Delete | null>(null)
     const [activeMode, setActiveMode] = useState<MapDrawMode>(null)
 
     function handleDrawCreated(event: DrawEvents.Created) {
@@ -853,13 +861,13 @@ function MapDrawControl({
                 featureGroup: featureGroupRef.current,
                 activeMode,
                 setActiveMode,
+                editControlRef,
+                deleteControlRef,
             }}>
             <LeafletFeatureGroup ref={featureGroupRef} />
-            <div
-                className={cn(
-                    "absolute bottom-1 left-1 z-1000 grid gap-1",
-                    className
-                )}
+            <ButtonGroup
+                orientation="vertical"
+                className={cn("absolute bottom-1 left-1 z-1000", className)}
                 {...props}
             />
         </MapDrawContext.Provider>
@@ -869,6 +877,7 @@ function MapDrawControl({
 function MapDrawShapeButton<T extends Draw.Feature>({
     drawMode,
     createDrawTool,
+    className,
     ...props
 }: React.ComponentProps<"button"> & {
     drawMode: MapDrawShape
@@ -906,9 +915,10 @@ function MapDrawShapeButton<T extends Draw.Feature>({
     return (
         <Button
             type="button"
-            size="icon"
+            size="icon-sm"
             aria-label={`Draw ${drawMode}`}
             title={`Draw ${drawMode}`}
+            className={cn("border", className)}
             variant={isActive ? "default" : "secondary"}
             disabled={activeMode === "edit" || activeMode === "delete"}
             onClick={handleClick}
@@ -1057,6 +1067,8 @@ function MapDrawPolygon({
 function MapDrawActionButton<T extends EditToolbar.Edit | EditToolbar.Delete>({
     drawAction,
     createDrawTool,
+    controlRef,
+    className,
     ...props
 }: React.ComponentProps<"button"> & {
     drawAction: MapDrawAction
@@ -1065,6 +1077,7 @@ function MapDrawActionButton<T extends EditToolbar.Edit | EditToolbar.Delete>({
         map: DrawMap,
         featureGroup: L.FeatureGroup
     ) => T
+    controlRef: React.RefObject<T | null>
 }) {
     const drawContext = useMapDrawContext()
     if (!drawContext)
@@ -1074,7 +1087,6 @@ function MapDrawActionButton<T extends EditToolbar.Edit | EditToolbar.Delete>({
 
     const { L } = useLeaflet()
     const map = useMap()
-    const controlRef = useRef<T | null>(null)
     const { featureGroup, activeMode, setActiveMode } = drawContext
     const isActive = activeMode === drawAction
     const hasFeatures = featureGroup?.getLayers().length ?? 0 > 0
@@ -1099,35 +1111,18 @@ function MapDrawActionButton<T extends EditToolbar.Edit | EditToolbar.Delete>({
         setActiveMode(isActive ? null : drawAction)
     }
 
-    function handleUndo() {
-        controlRef.current?.revertLayers()
-        setActiveMode(null)
-    }
-
     return (
-        <div className="flex gap-1">
-            <Button
-                type="button"
-                size="icon"
-                aria-label={`${drawAction === "edit" ? "Edit" : "Remove"} shapes`}
-                title={`${drawAction === "edit" ? "Edit" : "Remove"} shapes`}
-                variant={isActive ? "default" : "secondary"}
-                disabled={!hasFeatures}
-                onClick={handleClick}
-                {...props}
-            />
-            {isActive && (
-                <Button
-                    type="button"
-                    size="icon"
-                    variant="outline"
-                    aria-label={`Undo ${drawAction}`}
-                    title={`Undo ${drawAction}`}
-                    onClick={handleUndo}>
-                    <Undo2Icon />
-                </Button>
-            )}
-        </div>
+        <Button
+            type="button"
+            size="icon-sm"
+            aria-label={`${drawAction === "edit" ? "Edit" : "Remove"} shapes`}
+            title={`${drawAction === "edit" ? "Edit" : "Remove"} shapes`}
+            variant={isActive ? "default" : "secondary"}
+            disabled={!hasFeatures}
+            onClick={handleClick}
+            className={cn("border", className)}
+            {...props}
+        />
     )
 }
 
@@ -1141,6 +1136,10 @@ function MapDrawEdit({
 }: Omit<EditToolbar.EditHandlerOptions, "featureGroup">) {
     const { L } = useLeaflet()
     const mapDrawHandleIcon = useMapDrawHandleIcon()
+    const drawContext = useMapDrawContext()
+    if (!drawContext) {
+        throw new Error("MapDrawEdit must be used within MapDrawControl")
+    }
 
     useEffect(() => {
         if (!L || !mapDrawHandleIcon) return
@@ -1170,6 +1169,7 @@ function MapDrawEdit({
     return (
         <MapDrawActionButton
             drawAction="edit"
+            controlRef={drawContext.editControlRef}
             createDrawTool={(L, map, featureGroup) =>
                 new L.EditToolbar.Edit(map, {
                     featureGroup,
@@ -1183,14 +1183,57 @@ function MapDrawEdit({
 }
 
 function MapDrawDelete() {
+    const drawContext = useMapDrawContext()
+    if (!drawContext) {
+        throw new Error("MapDrawDelete must be used within MapDrawControl")
+    }
+
     return (
         <MapDrawActionButton
             drawAction="delete"
+            controlRef={drawContext.deleteControlRef}
             createDrawTool={(L, map, featureGroup) =>
                 new L.EditToolbar.Delete(map, { featureGroup })
             }>
             <Trash2Icon />
         </MapDrawActionButton>
+    )
+}
+
+function MapDrawUndo({ className, ...props }: React.ComponentProps<"button">) {
+    const drawContext = useMapDrawContext()
+    if (!drawContext)
+        throw new Error("MapDrawUndo must be used within MapDrawControl")
+
+    const { activeMode, setActiveMode, editControlRef, deleteControlRef } =
+        drawContext
+
+    const isInEditMode = activeMode === "edit"
+    const isInDeleteMode = activeMode === "delete"
+    const isActive = isInEditMode || isInDeleteMode
+
+    function handleUndo() {
+        if (isInEditMode) {
+            editControlRef.current?.revertLayers()
+        } else if (isInDeleteMode) {
+            deleteControlRef.current?.revertLayers()
+        }
+        setActiveMode(null)
+    }
+
+    return (
+        <Button
+            type="button"
+            size="icon-sm"
+            variant="secondary"
+            aria-label={`Undo ${activeMode}`}
+            title={`Undo ${activeMode}`}
+            onClick={handleUndo}
+            disabled={!isActive}
+            className={cn("border", className)}
+            {...props}>
+            <Undo2Icon />
+        </Button>
     )
 }
 
@@ -1267,6 +1310,7 @@ export {
     MapDrawPolygon,
     MapDrawPolyline,
     MapDrawRectangle,
+    MapDrawUndo,
     MapFeatureGroup,
     MapLayerGroup,
     MapLayers,

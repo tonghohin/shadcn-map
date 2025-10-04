@@ -1,5 +1,9 @@
 import {
     Map,
+    MapDrawCircle,
+    MapDrawControl,
+    MapDrawEdit,
+    MapDrawUndo,
     MapLocateControl,
     MapTileLayer,
     MapZoomControl,
@@ -16,7 +20,11 @@ export function MapWithComplexCustomControlPosition() {
                 <MapZoomControl className="static" />
                 <MapLocateControl className="static" />
             </div>
-            <MapLocateControl className="bottom-20" />
+            <MapDrawControl className="top-20 right-1 left-auto">
+                <MapDrawCircle />
+                <MapDrawEdit />
+                <MapDrawUndo />
+            </MapDrawControl>
         </Map>
     )
 }
