@@ -4,7 +4,7 @@ import { Button } from "@/registry/new-york-v4/ui/button"
 import { Metadata } from "next"
 import Link from "next/link"
 
-const title = "A Map Component for shadcn/ui"
+const title = siteConfig.title
 const description = siteConfig.description
 
 export const dynamic = "force-static"
@@ -35,8 +35,8 @@ export default function IndexPage() {
         <div className="flex flex-1 flex-col">
             <section className="container-wrapper flex flex-1 flex-col">
                 <div className="container flex flex-1 flex-col items-center gap-2 text-center xl:gap-4">
-                    <h1 className="text-primary leading-tighter max-w-2xl text-4xl font-semibold tracking-tight text-balance lg:leading-[1.1] lg:font-semibold xl:text-5xl xl:tracking-tighter">
-                        shadcn Map
+                    <h1 className="text-primary leading-tighter max-w-4xl text-4xl font-semibold tracking-tight text-balance lg:leading-[1.1] lg:font-semibold xl:text-5xl xl:tracking-tighter">
+                        {title}
                     </h1>
                     <p className="text-foreground max-w-3xl text-base text-balance sm:text-lg">
                         {description}
