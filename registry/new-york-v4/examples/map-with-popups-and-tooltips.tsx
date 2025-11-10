@@ -25,7 +25,7 @@ export function MapWithPopupAndTooltip() {
             coordinates: [22.3193, 114.1694] satisfies LatLngExpression,
         },
         {
-            name: "Taiwan",
+            name: "Pattaya",
             coordinates: [12.9236, 100.8825] satisfies LatLngExpression,
         },
     ]
