@@ -1,5 +1,5 @@
 import { mdxComponents } from "@/mdx-components"
-import { findNeighbour } from "fumadocs-core/server"
+
 import Link from "next/link"
 import { notFound } from "next/navigation"
 
@@ -9,6 +9,7 @@ import { source } from "@/lib/source"
 import { absoluteUrl } from "@/lib/utils"
 import { Badge } from "@/registry/new-york-v4/ui/badge"
 import { Button } from "@/registry/new-york-v4/ui/button"
+import { findNeighbour } from "fumadocs-core/page-tree"
 import { ArrowLeftIcon, ArrowRightIcon, ArrowUpRightIcon } from "lucide-react"
 
 export const revalidate = false
