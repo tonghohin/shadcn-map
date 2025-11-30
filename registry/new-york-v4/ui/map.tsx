@@ -1259,10 +1259,12 @@ function useLeaflet() {
         if (L && LeafletDraw) return
         if (typeof window !== "undefined") {
             if (!L) {
-                setL(require("leaflet"))
+                import("leaflet").then((mod) => setL(mod.default || mod))
             }
             if (!LeafletDraw) {
-                setLeafletDraw(require("leaflet-draw"))
+                import("leaflet-draw").then((mod) =>
+                    setLeafletDraw(mod.default || mod)
+                )
             }
         }
     }, [L, LeafletDraw])
