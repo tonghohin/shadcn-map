@@ -1,7 +1,7 @@
 import { MapDemo } from "@/components/map-demo"
 import { siteConfig } from "@/lib/config"
 import { Button } from "@/registry/new-york-v4/ui/button"
-import { Metadata } from "next"
+import type { Metadata } from "next"
 import Link from "next/link"
 
 const title = siteConfig.title

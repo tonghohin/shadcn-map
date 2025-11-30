@@ -23,6 +23,7 @@
             "@/*": ["./*"],
             "react": ["./node_modules/@types/react"]
         },
+        "verbatimModuleSyntax": true,
         "allowUnreachableCode": false,
         "noFallthroughCasesInSwitch": true,
         "noUnusedLocals": true,
