@@ -24,13 +24,10 @@ export function GitHubLink() {
 
 export async function StarsCount() {
     const data = await fetch(
-        "https://api.github.com/repos/tonghohin/shadcn-map",
-        {
-            cache: "no-store",
-            next: { revalidate: 0 },
-        }
+        "https://api.github.com/repos/tonghohin/shadcn-map"
     )
     const json = await data.json()
+    if (!json.stargazers_count) return null
 
     return (
         <span className="text-muted-foreground text-xs tabular-nums">
