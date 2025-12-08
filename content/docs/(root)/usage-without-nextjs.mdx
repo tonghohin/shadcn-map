@@ -1,0 +1,83 @@
+---
+title: Usage Without Next.js
+description: How to use shadcn Map in non-Next.js environments.
+---
+
+The default map component uses `next/dynamic` for dynamic imports to disable server-side rendering (SSR). If you're using a non-Next.js environment like Vite or other React frameworks, you'll need to make some modifications.
+
+## Modify the Map Component
+
+After installing the component, update `@/components/ui/map.tsx`.
+
+First, replace the `next/dynamic` imports with direct imports from `react-leaflet`:
+
+```tsx title="@/components/ui/map.tsx" {2,5,8-19} showLineNumbers
+// Remove this import
+// import dynamic from "next/dynamic"
+
+// Replace dynamic imports with namespace import
+import * as ReactLeaflet from "react-leaflet"
+
+// Then update all references
+const LeafletMapContainer = ReactLeaflet.MapContainer
+const LeafletTileLayer = ReactLeaflet.TileLayer
+const LeafletMarker = ReactLeaflet.Marker
+const LeafletPopup = ReactLeaflet.Popup
+const LeafletTooltip = ReactLeaflet.Tooltip
+const LeafletCircle = ReactLeaflet.Circle
+const LeafletCircleMarker = ReactLeaflet.CircleMarker
+const LeafletPolyline = ReactLeaflet.Polyline
+const LeafletPolygon = ReactLeaflet.Polygon
+const LeafletRectangle = ReactLeaflet.Rectangle
+const LeafletLayerGroup = ReactLeaflet.LayerGroup
+const LeafletFeatureGroup = ReactLeaflet.FeatureGroup
+```
+
+Next, replace the `useLeaflet` hook near the bottom of the file with this version:
+
+```tsx title="@/components/ui/map.tsx" showLineNumbers
+function useLeaflet() {
+    const [L, setL] = useState<typeof import("leaflet") | null>(null)
+    const [LeafletDraw, setLeafletDraw] = useState<
+        typeof import("leaflet-draw") | null
+    >(null)
+
+    useEffect(() => {
+        if (L && LeafletDraw) return
+        if (typeof window !== "undefined") {
+            if (!L) {
+                import("leaflet").then((module) => {
+                    setL(module)
+                })
+            }
+            if (!LeafletDraw) {
+                import("leaflet-draw").then((module) => {
+                    setLeafletDraw(module)
+                })
+            }
+        }
+    }, [L, LeafletDraw])
+
+    return { L, LeafletDraw }
+}
+```
+
+## Fix TypeScript Errors
+
+You may encounter a `Namespace 'global.NodeJS' has no exported member 'Timeout'` error. This happens because Next.js includes `@types/node` by default, but other frameworks may not.
+
+Install `@types/node` and add it to your tsconfig:
+
+```bash
+npm install -D @types/node
+```
+
+Then add `"node"` to the `types` array in your `tsconfig.json`:
+
+```json title="tsconfig.json"
+{
+    "compilerOptions": {
+        "types": ["node"]
+    }
+}
+```

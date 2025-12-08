@@ -68,20 +68,21 @@ import {
     type Ref,
 } from "react"
 import { renderToString } from "react-dom/server"
-import type {
-    CircleMarkerProps,
-    CircleProps,
-    LayerGroupProps,
-    MapContainerProps,
-    MarkerProps,
-    PolygonProps,
-    PolylineProps,
-    PopupProps,
-    RectangleProps,
-    TileLayerProps,
-    TooltipProps,
+import {
+    useMap,
+    useMapEvents,
+    type CircleMarkerProps,
+    type CircleProps,
+    type LayerGroupProps,
+    type MapContainerProps,
+    type MarkerProps,
+    type PolygonProps,
+    type PolylineProps,
+    type PopupProps,
+    type RectangleProps,
+    type TileLayerProps,
+    type TooltipProps,
 } from "react-leaflet"
-import { useMap, useMapEvents } from "react-leaflet"
 
 const LeafletMapContainer = dynamic(
     async () => (await import("react-leaflet")).MapContainer,
