@@ -14,6 +14,7 @@ import {
     DropdownMenuTrigger,
 } from "@/registry/new-york-v4/ui/dropdown-menu"
 import type { CheckboxItem } from "@radix-ui/react-dropdown-menu"
+import { useFullScreenHandle } from "react-full-screen"
 import type {
     Circle,
     CircleMarker,
@@ -46,6 +47,8 @@ import {
     LayersIcon,
     LoaderCircleIcon,
     MapPinIcon,
+    Maximize,
+    Minimize,
     MinusIcon,
     NavigationIcon,
     PenLineIcon,
@@ -133,6 +136,30 @@ const LeafletFeatureGroup = dynamic(
     { ssr: false }
 )
 
+const FullScreenWrapper = dynamic(
+    () => import("react-full-screen").then(mod => ({ 
+        default: ({ children, handle }: any) => (
+            <mod.FullScreen handle={handle} className="relative flex size-full">
+                {children}
+            </mod.FullScreen>
+        )
+    })),
+    { 
+        ssr: false,
+        loading: ({ children }: any) => children
+    }
+)
+
+interface MapContextType {
+    fullscreenHandle: ReturnType<typeof useFullScreenHandle>
+}
+
+const MapContext = createContext<MapContextType | null>(null)
+
+function useMapContext() {
+    return useContext(MapContext)
+}
+
 function Map({
     zoom = 15,
     className,
@@ -141,17 +168,22 @@ function Map({
     center: LatLngExpression
     ref?: Ref<LeafletMap>
 }) {
+    const fullscreenHandle = useFullScreenHandle()
     return (
-        <LeafletMapContainer
-            zoom={zoom}
-            attributionControl={false}
-            zoomControl={false}
-            className={cn(
-                "z-50 size-full min-h-96 flex-1 rounded-md",
-                className
-            )}
-            {...props}
-        />
+        <MapContext.Provider value={{ fullscreenHandle }}>
+            <FullScreenWrapper handle={fullscreenHandle}>
+                <LeafletMapContainer
+                    zoom={zoom}
+                    attributionControl={false}
+                    zoomControl={false}
+                    className={cn(
+                        "z-50 size-full min-h-96 flex-1 rounded-md",
+                        className
+                    )}
+                    {...props}
+                />
+            </FullScreenWrapper>
+        </MapContext.Provider>
     )
 }
 
@@ -697,6 +729,27 @@ function MapZoomControl({ className, ...props }: React.ComponentProps<"div">) {
                 <MinusIcon />
             </Button>
         </ButtonGroup>
+    )
+}
+
+function MapFullscreenControl({ className, ...props }: React.ComponentProps<"button">) {
+    const { fullscreenHandle } = useMapContext() || {}
+    if (!fullscreenHandle) {
+        throw new Error("MapFullscreenControl component can only be used within Map")
+    }
+    return (
+        <Button
+            type="button"
+            size="icon-sm"
+            variant="secondary"
+            aria-label={fullscreenHandle.active ? "Exit fullscreen" : "Enter fullscreen"}
+            title={fullscreenHandle.active ? "Exit fullscreen" : "Enter fullscreen"}
+            className={cn("border absolute top-1 left-1 z-1000", className)}
+            onClick={() => fullscreenHandle.active ? fullscreenHandle.exit() : fullscreenHandle.enter()}
+            {...props}
+        >
+            { fullscreenHandle.active ? <Minimize /> : <Maximize /> }
+        </Button>
     )
 }
 
@@ -1325,5 +1378,6 @@ export {
     MapTileLayer,
     MapTooltip,
     MapZoomControl,
+    MapFullscreenControl,
     useLeaflet,
 }
