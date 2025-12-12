@@ -137,16 +137,19 @@ const LeafletFeatureGroup = dynamic(
 )
 
 const FullScreenWrapper = dynamic(
-    () => import("react-full-screen").then(mod => ({ 
-        default: ({ children, handle }: any) => (
-            <mod.FullScreen handle={handle} className="relative flex size-full">
-                {children}
-            </mod.FullScreen>
-        )
-    })),
-    { 
+    () =>
+        import("react-full-screen").then((mod) => ({
+            default: ({ children, handle }: any) => (
+                <mod.FullScreen
+                    handle={handle}
+                    className="relative flex size-full">
+                    {children}
+                </mod.FullScreen>
+            ),
+        })),
+    {
         ssr: false,
-        loading: ({ children }: any) => children
+        loading: ({ children }: any) => children,
     }
 )
 
@@ -732,23 +735,35 @@ function MapZoomControl({ className, ...props }: React.ComponentProps<"div">) {
     )
 }
 
-function MapFullscreenControl({ className, ...props }: React.ComponentProps<"button">) {
+function MapFullscreenControl({
+    className,
+    ...props
+}: React.ComponentProps<"button">) {
     const { fullscreenHandle } = useMapContext() || {}
     if (!fullscreenHandle) {
-        throw new Error("MapFullscreenControl component can only be used within Map")
+        throw new Error(
+            "MapFullscreenControl component can only be used within Map"
+        )
     }
     return (
         <Button
             type="button"
             size="icon-sm"
             variant="secondary"
-            aria-label={fullscreenHandle.active ? "Exit fullscreen" : "Enter fullscreen"}
-            title={fullscreenHandle.active ? "Exit fullscreen" : "Enter fullscreen"}
-            className={cn("border absolute top-1 left-1 z-1000", className)}
-            onClick={() => fullscreenHandle.active ? fullscreenHandle.exit() : fullscreenHandle.enter()}
-            {...props}
-        >
-            { fullscreenHandle.active ? <Minimize /> : <Maximize /> }
+            aria-label={
+                fullscreenHandle.active ? "Exit fullscreen" : "Enter fullscreen"
+            }
+            title={
+                fullscreenHandle.active ? "Exit fullscreen" : "Enter fullscreen"
+            }
+            className={cn("absolute top-1 left-1 z-1000 border", className)}
+            onClick={() =>
+                fullscreenHandle.active
+                    ? fullscreenHandle.exit()
+                    : fullscreenHandle.enter()
+            }
+            {...props}>
+            {fullscreenHandle.active ? <Minimize /> : <Maximize />}
         </Button>
     )
 }

@@ -264,5 +264,5 @@ export const examples: Registry["items"] = [
                 type: "registry:example",
             },
         ],
-    }
+    },
 ]
