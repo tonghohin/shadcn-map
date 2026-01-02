@@ -12,6 +12,7 @@ export const ui: Registry["items"] = [
             "react-leaflet",
             "leaflet-draw",
             "next-themes",
+            "react-full-screen",
         ],
         devDependencies: ["@types/leaflet", "@types/leaflet-draw"],
         registryDependencies: ["button", "button-group", "dropdown-menu"],

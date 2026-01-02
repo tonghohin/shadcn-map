@@ -8,6 +8,7 @@
         "shapes",
         "popup-and-tooltip",
         "zoom-control",
+        "fullscreen-control",
         "layers-control",
         "locate-control",
         "draw-control",
