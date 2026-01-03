@@ -65,6 +65,7 @@ import {
     useEffect,
     useRef,
     useState,
+    type ComponentType,
     type ReactNode,
     type Ref,
 } from "react"
@@ -138,10 +139,11 @@ const LeafletFeatureGroup = dynamic(
 const LeafletMarkerClusterGroup = dynamic(
     async () => await import("react-leaflet-markercluster"),
     { ssr: false }
-)
+) as ComponentType<MarkerClusterGroupProps>
 
 function Map({
     zoom = 15,
+    maxZoom = 18,
     className,
     ...props
 }: Omit<MapContainerProps, "zoomControl"> & {
@@ -151,6 +153,7 @@ function Map({
     return (
         <LeafletMapContainer
             zoom={zoom}
+            maxZoom={maxZoom}
             attributionControl={false}
             zoomControl={false}
             className={cn(
@@ -543,21 +546,23 @@ function MapMarkerClusterGroup({
     icon?: (markerCount: number) => ReactNode
 }) {
     const { L } = useLeaflet()
+    if (!L) return null
 
-    function iconCreateFunction(cluster: MarkerCluster) {
-        if (!L || !icon) return
-        const markerCount = cluster.getChildCount()
-        const iconNode = icon(markerCount)
-        return L.divIcon({
-            html: renderToString(iconNode),
-        })
-    }
+    const iconCreateFunction = icon
+        ? (cluster: MarkerCluster) => {
+              const markerCount = cluster.getChildCount()
+              const iconNode = icon(markerCount)
+              return L.divIcon({
+                  html: renderToString(iconNode),
+              })
+          }
+        : undefined
 
     return (
         <LeafletMarkerClusterGroup
             polygonOptions={polygonOptions}
             spiderLegPolylineOptions={spiderLegPolylineOptions}
-            iconCreateFunction={icon ? iconCreateFunction : undefined}
+            iconCreateFunction={iconCreateFunction}
             {...props}
         />
     )
