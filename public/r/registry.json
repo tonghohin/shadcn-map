@@ -15,7 +15,11 @@
                 "leaflet-draw",
                 "next-themes"
             ],
-            "devDependencies": ["@types/leaflet", "@types/leaflet-draw"],
+            "devDependencies": [
+                "@types/leaflet",
+                "@types/leaflet-draw",
+                "@types/leaflet.markercluster"
+            ],
             "registryDependencies": ["button", "button-group", "dropdown-menu"],
             "files": [
                 {
@@ -110,17 +114,6 @@
             ]
         },
         {
-            "name": "map-with-custom-markers",
-            "type": "registry:example",
-            "registryDependencies": ["map"],
-            "files": [
-                {
-                    "path": "registry/new-york-v4/examples/map-with-custom-markers.tsx",
-                    "type": "registry:example"
-                }
-            ]
-        },
-        {
             "name": "map-with-marker-cluster-group",
             "type": "registry:example",
             "registryDependencies": ["map"],
@@ -138,6 +131,17 @@
             "files": [
                 {
                     "path": "registry/new-york-v4/examples/map-with-custom-marker-cluster-group.tsx",
+                    "type": "registry:example"
+                }
+            ]
+        },
+        {
+            "name": "map-with-custom-markers",
+            "type": "registry:example",
+            "registryDependencies": ["map"],
+            "files": [
+                {
+                    "path": "registry/new-york-v4/examples/map-with-custom-markers.tsx",
                     "type": "registry:example"
                 }
             ]

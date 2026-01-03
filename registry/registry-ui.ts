@@ -14,7 +14,11 @@ export const ui: Registry["items"] = [
             "leaflet-draw",
             "next-themes",
         ],
-        devDependencies: ["@types/leaflet", "@types/leaflet-draw"],
+        devDependencies: [
+            "@types/leaflet",
+            "@types/leaflet-draw",
+            "@types/leaflet.markercluster",
+        ],
         registryDependencies: ["button", "button-group", "dropdown-menu"],
         css: {
             "@layer base": {
