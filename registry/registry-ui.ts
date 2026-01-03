@@ -10,6 +10,7 @@ export const ui: Registry["items"] = [
         dependencies: [
             "leaflet",
             "react-leaflet",
+            "react-leaflet-markercluster",
             "leaflet-draw",
             "next-themes",
         ],
@@ -67,6 +68,9 @@ export const ui: Registry["items"] = [
                 },
                 ".leaflet-edit-marker-selected": {
                     "@apply !border-transparent !bg-transparent": {},
+                },
+                ".marker-cluster div": {
+                    "@apply font-[inherit]": {},
                 },
             },
         },

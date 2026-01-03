@@ -88,6 +88,15 @@ The `MapMarker` component renders a marker on the map. By default, it uses the `
 | `tooltipAnchor` | `[number, number]`          | Optional. Point from which the tooltip should open relative to the icon.                                   |
 | ...other props  | `Omit<MarkerProps, "icon">` | All other props from [React Leaflet Marker](https://react-leaflet.js.org/docs/api-marker/), except `icon`. |
 
+### MapMarkerClusterGroup
+
+The `MapMarkerClusterGroup` component provides marker clustering functionality. It wraps `react-leaflet-markercluster` and enables grouping nearby markers into clusters to improve performance and readability.
+
+| Prop     | Type                                                  | Description                                                                                                                                     |
+| -------- | ----------------------------------------------------- | ----------------------------------------------------------------------------------------------------------------------------------------------- |
+| `icon`   | `(markerCount: number) => ReactNode`                  | Optional. A function that receives the total marker count and returns a React node to use as the custom cluster icon.                           |
+| ...props | `Omit<MarkerClusterGroupProps, "iconCreateFunction">` | All props from [Leaflet.markercluster](https://github.com/Leaflet/Leaflet.markercluster#all-options), except `iconCreateFunction` (use `icon`). |
+
 ### MapPopup
 
 The `MapPopup` component renders a popup. It provides default styling and animations that match the shadcn/ui design system.

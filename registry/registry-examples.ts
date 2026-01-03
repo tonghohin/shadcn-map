@@ -35,6 +35,28 @@ export const examples: Registry["items"] = [
         ],
     },
     {
+        name: "map-with-marker-cluster-group",
+        type: "registry:example",
+        registryDependencies: ["map"],
+        files: [
+            {
+                path: "examples/map-with-marker-cluster-group.tsx",
+                type: "registry:example",
+            },
+        ],
+    },
+    {
+        name: "map-with-custom-marker-cluster-group",
+        type: "registry:example",
+        registryDependencies: ["map"],
+        files: [
+            {
+                path: "examples/map-with-custom-marker-cluster-group.tsx",
+                type: "registry:example",
+            },
+        ],
+    },
+    {
         name: "map-with-custom-markers",
         type: "registry:example",
         registryDependencies: ["map"],

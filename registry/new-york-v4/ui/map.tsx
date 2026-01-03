@@ -31,6 +31,7 @@ import type {
     LocateOptions,
     LocationEvent,
     Marker,
+    MarkerCluster,
     PointExpression,
     Polygon,
     Polyline,
@@ -83,6 +84,8 @@ import {
     type TileLayerProps,
     type TooltipProps,
 } from "react-leaflet"
+import type { MarkerClusterGroupProps } from "react-leaflet-markercluster"
+import "react-leaflet-markercluster/styles"
 
 const LeafletMapContainer = dynamic(
     async () => (await import("react-leaflet")).MapContainer,
@@ -130,6 +133,10 @@ const LeafletLayerGroup = dynamic(
 )
 const LeafletFeatureGroup = dynamic(
     async () => (await import("react-leaflet")).FeatureGroup,
+    { ssr: false }
+)
+const LeafletMarkerClusterGroup = dynamic(
+    async () => await import("react-leaflet-markercluster"),
     { ssr: false }
 )
 
@@ -517,6 +524,40 @@ function MapMarker({
                 ...(tooltipAnchor ? { tooltipAnchor } : {}),
             })}
             riseOnHover
+            {...props}
+        />
+    )
+}
+
+function MapMarkerClusterGroup({
+    polygonOptions = {
+        className: "fill-foreground stroke-foreground stroke-2",
+    },
+    spiderLegPolylineOptions = {
+        className: "fill-foreground stroke-foreground stroke-2",
+    },
+    icon,
+    ...props
+}: Omit<MarkerClusterGroupProps, "iconCreateFunction"> & {
+    children: ReactNode
+    icon?: (markerCount: number) => ReactNode
+}) {
+    const { L } = useLeaflet()
+
+    function iconCreateFunction(cluster: MarkerCluster) {
+        if (!L || !icon) return
+        const markerCount = cluster.getChildCount()
+        const iconNode = icon(markerCount)
+        return L.divIcon({
+            html: renderToString(iconNode),
+        })
+    }
+
+    return (
+        <LeafletMarkerClusterGroup
+            polygonOptions={polygonOptions}
+            spiderLegPolylineOptions={spiderLegPolylineOptions}
+            iconCreateFunction={icon ? iconCreateFunction : undefined}
             {...props}
         />
     )
@@ -1318,6 +1359,7 @@ export {
     MapLayersControl,
     MapLocateControl,
     MapMarker,
+    MapMarkerClusterGroup,
     MapPolygon,
     MapPolyline,
     MapPopup,
