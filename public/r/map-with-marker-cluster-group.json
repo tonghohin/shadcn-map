@@ -1,0 +1,13 @@
+{
+    "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+    "name": "map-with-marker-cluster-group",
+    "type": "registry:example",
+    "registryDependencies": ["map"],
+    "files": [
+        {
+            "path": "registry/new-york-v4/examples/map-with-marker-cluster-group.tsx",
+            "content": "import {\n    Map,\n    MapMarker,\n    MapMarkerClusterGroup,\n    MapTileLayer,\n} from \"@/registry/new-york-v4/ui/map\"\nimport type { LatLngExpression } from \"leaflet\"\n\nexport default function MapWithMarkerClusterGroup() {\n    const TORONTO_COORDINATES = [43.6532, -79.3832] satisfies LatLngExpression\n    const CLUSTER_POINTS = [\n        { position: [43.6632, -79.3832] },\n        { position: [43.6642, -79.3842] },\n        { position: [43.6622, -79.3852] },\n        { position: [43.6652, -79.3822] },\n        { position: [43.6612, -79.3812] },\n        { position: [43.6432, -79.3932] },\n        { position: [43.6442, -79.3942] },\n        { position: [43.6422, -79.3952] },\n    ] satisfies { position: LatLngExpression }[]\n\n    return (\n        <Map center={TORONTO_COORDINATES} zoom={12}>\n            <MapTileLayer />\n            <MapMarkerClusterGroup>\n                {CLUSTER_POINTS.map((point, i) => (\n                    <MapMarker key={i} position={point.position} />\n                ))}\n            </MapMarkerClusterGroup>\n        </Map>\n    )\n}\n",
+            "type": "registry:example"
+        }
+    ]
+}

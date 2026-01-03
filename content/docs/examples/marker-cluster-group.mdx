@@ -1,0 +1,21 @@
+---
+title: Marker Cluster Group
+description: Group nearby markers into clusters.
+component: true
+---
+
+<ComponentPreview
+    name="map-with-marker-cluster-group"
+    description="A map with marker cluster group"
+/>
+
+## Custom Cluster Icon
+
+You can customize the cluster icon by providing a `icon` prop to the `MapMarkerClusterGroup` component. This prop accepts a function that receives the `markerCount`.
+
+Since you are passing a function as a prop, your component must be a client component by adding `"use client"` at the top of your file.
+
+<ComponentPreview
+    name="map-with-custom-marker-cluster-group"
+    description="A map with custom marker cluster group"
+/>

@@ -31,6 +31,7 @@ import type {
     LocateOptions,
     LocationEvent,
     Marker,
+    MarkerCluster,
     PointExpression,
     Polygon,
     Polyline,
@@ -64,6 +65,7 @@ import {
     useEffect,
     useRef,
     useState,
+    type ComponentType,
     type ReactNode,
     type Ref,
 } from "react"
@@ -83,6 +85,8 @@ import {
     type TileLayerProps,
     type TooltipProps,
 } from "react-leaflet"
+import type { MarkerClusterGroupProps } from "react-leaflet-markercluster"
+import "react-leaflet-markercluster/styles"
 
 const LeafletMapContainer = dynamic(
     async () => (await import("react-leaflet")).MapContainer,
@@ -132,9 +136,14 @@ const LeafletFeatureGroup = dynamic(
     async () => (await import("react-leaflet")).FeatureGroup,
     { ssr: false }
 )
+const LeafletMarkerClusterGroup = dynamic(
+    async () => await import("react-leaflet-markercluster"),
+    { ssr: false }
+) as ComponentType<MarkerClusterGroupProps>
 
 function Map({
     zoom = 15,
+    maxZoom = 18,
     className,
     ...props
 }: Omit<MapContainerProps, "zoomControl"> & {
@@ -144,6 +153,7 @@ function Map({
     return (
         <LeafletMapContainer
             zoom={zoom}
+            maxZoom={maxZoom}
             attributionControl={false}
             zoomControl={false}
             className={cn(
@@ -517,6 +527,42 @@ function MapMarker({
                 ...(tooltipAnchor ? { tooltipAnchor } : {}),
             })}
             riseOnHover
+            {...props}
+        />
+    )
+}
+
+function MapMarkerClusterGroup({
+    polygonOptions = {
+        className: "fill-foreground stroke-foreground stroke-2",
+    },
+    spiderLegPolylineOptions = {
+        className: "fill-foreground stroke-foreground stroke-2",
+    },
+    icon,
+    ...props
+}: Omit<MarkerClusterGroupProps, "iconCreateFunction"> & {
+    children: ReactNode
+    icon?: (markerCount: number) => ReactNode
+}) {
+    const { L } = useLeaflet()
+    if (!L) return null
+
+    const iconCreateFunction = icon
+        ? (cluster: MarkerCluster) => {
+              const markerCount = cluster.getChildCount()
+              const iconNode = icon(markerCount)
+              return L.divIcon({
+                  html: renderToString(iconNode),
+              })
+          }
+        : undefined
+
+    return (
+        <LeafletMarkerClusterGroup
+            polygonOptions={polygonOptions}
+            spiderLegPolylineOptions={spiderLegPolylineOptions}
+            iconCreateFunction={iconCreateFunction}
             {...props}
         />
     )
@@ -1318,6 +1364,7 @@ export {
     MapLayersControl,
     MapLocateControl,
     MapMarker,
+    MapMarkerClusterGroup,
     MapPolygon,
     MapPolyline,
     MapPopup,

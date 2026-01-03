@@ -1,0 +1,13 @@
+{
+    "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+    "name": "map-with-custom-marker-cluster-group",
+    "type": "registry:example",
+    "registryDependencies": ["map"],
+    "files": [
+        {
+            "path": "registry/new-york-v4/examples/map-with-custom-marker-cluster-group.tsx",
+            "content": "\"use client\"\n\nimport {\n    Map,\n    MapMarker,\n    MapMarkerClusterGroup,\n    MapTileLayer,\n} from \"@/registry/new-york-v4/ui/map\"\nimport type { LatLngExpression } from \"leaflet\"\n\nexport default function MapWithCustomMarkerClusterGroup() {\n    const TORONTO_COORDINATES = [43.6532, -79.3832] satisfies LatLngExpression\n    const CLUSTER_POINTS = [\n        { position: [43.6632, -79.3732] },\n        { position: [43.6652, -79.3752] },\n        { position: [43.6612, -79.3712] },\n        { position: [43.6432, -79.3932] },\n        { position: [43.6412, -79.3952] },\n        { position: [43.6452, -79.3912] },\n        { position: [43.6732, -79.4032] },\n        { position: [43.6752, -79.4052] },\n        { position: [43.6712, -79.4012] },\n        { position: [43.6772, -79.4072] },\n        { position: [43.6332, -79.3632] },\n        { position: [43.6312, -79.3612] },\n        { position: [43.6532, -79.3832] },\n        { position: [43.6582, -79.3882] },\n        { position: [43.6482, -79.3782] },\n    ] satisfies { position: LatLngExpression }[]\n\n    return (\n        <Map center={TORONTO_COORDINATES} zoom={12}>\n            <MapTileLayer />\n            <MapMarkerClusterGroup\n                showCoverageOnHover={false}\n                icon={(markerCount) => (\n                    <div className=\"bg-popover text-popover-foreground flex size-10 items-center justify-center rounded-full border font-semibold\">\n                        {markerCount}\n                    </div>\n                )}>\n                {CLUSTER_POINTS.map((point, i) => (\n                    <MapMarker key={i} position={point.position} />\n                ))}\n            </MapMarkerClusterGroup>\n        </Map>\n    )\n}\n",
+            "type": "registry:example"
+        }
+    ]
+}

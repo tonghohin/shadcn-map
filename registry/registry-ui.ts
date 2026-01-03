@@ -10,10 +10,15 @@ export const ui: Registry["items"] = [
         dependencies: [
             "leaflet",
             "react-leaflet",
+            "react-leaflet-markercluster",
             "leaflet-draw",
             "next-themes",
         ],
-        devDependencies: ["@types/leaflet", "@types/leaflet-draw"],
+        devDependencies: [
+            "@types/leaflet",
+            "@types/leaflet-draw",
+            "@types/leaflet.markercluster",
+        ],
         registryDependencies: ["button", "button-group", "dropdown-menu"],
         css: {
             "@layer base": {
@@ -67,6 +72,9 @@ export const ui: Registry["items"] = [
                 },
                 ".leaflet-edit-marker-selected": {
                     "@apply !border-transparent !bg-transparent": {},
+                },
+                ".marker-cluster div": {
+                    "@apply font-[inherit]": {},
                 },
             },
         },

@@ -25,7 +25,7 @@ export function GitHubLink() {
 export async function StarsCount() {
     const data = await fetch(
         "https://api.github.com/repos/tonghohin/shadcn-map",
-        { next: { revalidate: 86400 } }
+        { cache: "no-store" }
     )
     const json = await data.json()
     if (!json.stargazers_count) return null
