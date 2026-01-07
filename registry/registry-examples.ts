@@ -276,4 +276,59 @@ export const examples: Registry["items"] = [
             },
         ],
     },
+    {
+        name: "map-with-search-control",
+        type: "registry:example",
+        registryDependencies: ["map"],
+        files: [
+            {
+                path: "examples/map-with-search-control.tsx",
+                type: "registry:example",
+            },
+        ],
+    },
+    {
+        name: "map-with-search-control-place-select",
+        type: "registry:example",
+        registryDependencies: ["map"],
+        files: [
+            {
+                path: "examples/map-with-search-control-place-select.tsx",
+                type: "registry:example",
+            },
+        ],
+    },
+    {
+        name: "map-with-search-control-results-change",
+        type: "registry:example",
+        registryDependencies: ["map"],
+        files: [
+            {
+                path: "examples/map-with-search-control-results-change.tsx",
+                type: "registry:example",
+            },
+        ],
+    },
+    {
+        name: "map-with-search-control-configurations",
+        type: "registry:example",
+        registryDependencies: ["map"],
+        files: [
+            {
+                path: "examples/map-with-search-control-configurations.tsx",
+                type: "registry:example",
+            },
+        ],
+    },
+    {
+        name: "map-with-custom-control-container",
+        type: "registry:example",
+        registryDependencies: ["map"],
+        files: [
+            {
+                path: "examples/map-with-custom-control-container.tsx",
+                type: "registry:example",
+            },
+        ],
+    },
 ]

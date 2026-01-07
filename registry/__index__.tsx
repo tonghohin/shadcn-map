@@ -10,7 +10,7 @@ export const Index: Record<string, any> = {
     name: "map",
     description: "A map component.",
     type: "registry:ui",
-    registryDependencies: ["button","button-group","dropdown-menu"],
+    registryDependencies: ["button","button-group","dropdown-menu","https://shadcn-place-autocomplete.vercel.app/r/place-autocomplete.json"],
     files: [{
       path: "registry/new-york-v4/ui/map.tsx",
       type: "registry:ui",
@@ -468,6 +468,96 @@ export const Index: Record<string, any> = {
     }],
     component: React.lazy(async () => {
       const mod = await import("@/registry/new-york-v4/examples/map-with-draw-control-specific-shapes.tsx")
+      const exportName = Object.keys(mod).find(key => typeof mod[key] === 'function' || typeof mod[key] === 'object') || item.name
+      return { default: mod.default || mod[exportName] }
+    }),
+    categories: undefined,
+    meta: undefined,
+  },
+  "map-with-search-control": {
+    name: "map-with-search-control",
+    description: "",
+    type: "registry:example",
+    registryDependencies: ["map"],
+    files: [{
+      path: "registry/new-york-v4/examples/map-with-search-control.tsx",
+      type: "registry:example",
+      target: ""
+    }],
+    component: React.lazy(async () => {
+      const mod = await import("@/registry/new-york-v4/examples/map-with-search-control.tsx")
+      const exportName = Object.keys(mod).find(key => typeof mod[key] === 'function' || typeof mod[key] === 'object') || item.name
+      return { default: mod.default || mod[exportName] }
+    }),
+    categories: undefined,
+    meta: undefined,
+  },
+  "map-with-search-control-place-select": {
+    name: "map-with-search-control-place-select",
+    description: "",
+    type: "registry:example",
+    registryDependencies: ["map"],
+    files: [{
+      path: "registry/new-york-v4/examples/map-with-search-control-place-select.tsx",
+      type: "registry:example",
+      target: ""
+    }],
+    component: React.lazy(async () => {
+      const mod = await import("@/registry/new-york-v4/examples/map-with-search-control-place-select.tsx")
+      const exportName = Object.keys(mod).find(key => typeof mod[key] === 'function' || typeof mod[key] === 'object') || item.name
+      return { default: mod.default || mod[exportName] }
+    }),
+    categories: undefined,
+    meta: undefined,
+  },
+  "map-with-search-control-results-change": {
+    name: "map-with-search-control-results-change",
+    description: "",
+    type: "registry:example",
+    registryDependencies: ["map"],
+    files: [{
+      path: "registry/new-york-v4/examples/map-with-search-control-results-change.tsx",
+      type: "registry:example",
+      target: ""
+    }],
+    component: React.lazy(async () => {
+      const mod = await import("@/registry/new-york-v4/examples/map-with-search-control-results-change.tsx")
+      const exportName = Object.keys(mod).find(key => typeof mod[key] === 'function' || typeof mod[key] === 'object') || item.name
+      return { default: mod.default || mod[exportName] }
+    }),
+    categories: undefined,
+    meta: undefined,
+  },
+  "map-with-search-control-configurations": {
+    name: "map-with-search-control-configurations",
+    description: "",
+    type: "registry:example",
+    registryDependencies: ["map"],
+    files: [{
+      path: "registry/new-york-v4/examples/map-with-search-control-configurations.tsx",
+      type: "registry:example",
+      target: ""
+    }],
+    component: React.lazy(async () => {
+      const mod = await import("@/registry/new-york-v4/examples/map-with-search-control-configurations.tsx")
+      const exportName = Object.keys(mod).find(key => typeof mod[key] === 'function' || typeof mod[key] === 'object') || item.name
+      return { default: mod.default || mod[exportName] }
+    }),
+    categories: undefined,
+    meta: undefined,
+  },
+  "map-with-custom-control-container": {
+    name: "map-with-custom-control-container",
+    description: "",
+    type: "registry:example",
+    registryDependencies: ["map"],
+    files: [{
+      path: "registry/new-york-v4/examples/map-with-custom-control-container.tsx",
+      type: "registry:example",
+      target: ""
+    }],
+    component: React.lazy(async () => {
+      const mod = await import("@/registry/new-york-v4/examples/map-with-custom-control-container.tsx")
       const exportName = Object.keys(mod).find(key => typeof mod[key] === 'function' || typeof mod[key] === 'object') || item.name
       return { default: mod.default || mod[exportName] }
     }),

@@ -178,6 +178,23 @@ The `MapLocateControl` component provides a button to locate the user on the map
 | `onLocationError` | `(error: ErrorEvent) => void`       | Optional. Callback fired when there is an error locating the user. Receives the [Leaflet ErrorEvent](https://leafletjs.com/reference.html#errorevent). |
 | ...props          | `React.ComponentProps<"button">`    | All props for the `button` element.                                                                                                                    |
 
+### MapSearchControl
+
+The `MapSearchControl` component uses [Shadcn Place Autocomplete](https://shadcn-place-autocomplete.vercel.app/) under the hood. It provides an autocomplete search input for finding addresses and places and apply the results to the map.
+
+| Prop     | Type                     | Description                                                                                |
+| -------- | ------------------------ | ------------------------------------------------------------------------------------------ |
+| ...props | `PlaceAutocompleteProps` | All props from [Shadcn Place Autocomplete](https://shadcn-place-autocomplete.vercel.app/). |
+
+### MapControlContainer
+
+The `MapControlContainer` component is a wrapper for map controls that automatically prevents clicks and scroll events from propagating to the map.  
+It is useful for buttons, search inputs, or any other UI elements placed on the map that should **not trigger map zooming, panning, or other interactions**.
+
+| Prop     | Type                          | Description                        |
+| -------- | ----------------------------- | ---------------------------------- |
+| ...props | `React.ComponentProps<"div">` | All props for the container `div`. |
+
 ## Drawing
 
 ### MapDrawControl
@@ -190,14 +207,6 @@ Place any draw controls (e.g. `MapDrawMarker`, `MapDrawPolyline`, `MapDrawPolygo
 | ---------------- | ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `onLayersChange` | `(layers: L.FeatureGroup) => void` | Optional. Callback fired whenever layers are created, edited, or deleted. Receives the current [Leaflet FeatureGroup](https://leafletjs.com/reference.html#featuregroup). |
 | ...props         | `React.ComponentProps<"div">`      | All props for the container `div`.                                                                                                                                        |
-
-### MapDrawMarker
-
-The `MapDrawMarker` component adds a button to the draw control for drawing markers on the map.
-
-| Prop     | Type                        | Description                                                                                                                       |
-| -------- | --------------------------- | --------------------------------------------------------------------------------------------------------------------------------- |
-| ...props | `DrawOptions.MarkerOptions` | All props from [Leaflet Draw Marker options](https://leaflet.github.io/Leaflet.draw/docs/leaflet-draw-latest.html#markeroptions). |
 
 ### MapDrawPolyline
 

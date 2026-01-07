@@ -13,6 +13,10 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/registry/new-york-v4/ui/dropdown-menu"
+import {
+    PlaceAutocomplete,
+    type PlaceAutocompleteProps,
+} from "@/registry/new-york-v4/ui/place-autocomplete"
 import type { CheckboxItem } from "@radix-ui/react-dropdown-menu"
 import type {
     Circle,
@@ -715,34 +719,35 @@ function MapZoomControl({ className, ...props }: React.ComponentProps<"div">) {
     })
 
     return (
-        <ButtonGroup
-            orientation="vertical"
-            aria-label="Zoom controls"
-            className={cn("absolute top-1 left-1 z-1000 h-fit", className)}
-            {...props}>
-            <Button
-                type="button"
-                size="icon-sm"
-                variant="secondary"
-                aria-label="Zoom in"
-                title="Zoom in"
-                className="border"
-                disabled={zoomLevel >= map.getMaxZoom()}
-                onClick={() => map.zoomIn()}>
-                <PlusIcon />
-            </Button>
-            <Button
-                type="button"
-                size="icon-sm"
-                variant="secondary"
-                aria-label="Zoom out"
-                title="Zoom out"
-                className="border"
-                disabled={zoomLevel <= map.getMinZoom()}
-                onClick={() => map.zoomOut()}>
-                <MinusIcon />
-            </Button>
-        </ButtonGroup>
+        <MapControlContainer className={cn("top-1 left-1", className)}>
+            <ButtonGroup
+                orientation="vertical"
+                aria-label="Zoom controls"
+                {...props}>
+                <Button
+                    type="button"
+                    size="icon-sm"
+                    variant="secondary"
+                    aria-label="Zoom in"
+                    title="Zoom in"
+                    className="border"
+                    disabled={zoomLevel >= map.getMaxZoom()}
+                    onClick={() => map.zoomIn()}>
+                    <PlusIcon />
+                </Button>
+                <Button
+                    type="button"
+                    size="icon-sm"
+                    variant="secondary"
+                    aria-label="Zoom out"
+                    title="Zoom out"
+                    className="border"
+                    disabled={zoomLevel <= map.getMinZoom()}
+                    onClick={() => map.zoomOut()}>
+                    <MinusIcon />
+                </Button>
+            </ButtonGroup>
+        </MapControlContainer>
     )
 }
 
@@ -793,12 +798,10 @@ function MapLocateControl({
         setIsLocating(false)
     }
 
-    useEffect(() => {
-        return () => stopLocating()
-    }, [])
+    useEffect(() => () => stopLocating(), [])
 
     return (
-        <>
+        <MapControlContainer className={cn("right-1 bottom-1", className)}>
             <Button
                 type="button"
                 size="icon-sm"
@@ -819,10 +822,7 @@ function MapLocateControl({
                           ? "Stop location tracking"
                           : "Start location tracking"
                 }
-                className={cn(
-                    "absolute right-1 bottom-1 z-1000 border",
-                    className
-                )}
+                className="border"
                 {...props}>
                 {isLocating ? (
                     <LoaderCircleIcon className="animate-spin" />
@@ -833,7 +833,16 @@ function MapLocateControl({
             {position && (
                 <MapMarker position={position} icon={<MapLocatePulseIcon />} />
             )}
-        </>
+        </MapControlContainer>
+    )
+}
+
+function MapSearchControl({ className, ...props }: PlaceAutocompleteProps) {
+    return (
+        <MapControlContainer
+            className={cn("top-1 left-1 z-1001 w-60", className)}>
+            <PlaceAutocomplete {...props} />
+        </MapControlContainer>
     )
 }
 
@@ -912,11 +921,9 @@ function MapDrawControl({
                 deleteControlRef,
             }}>
             <LeafletFeatureGroup ref={featureGroupRef} />
-            <ButtonGroup
-                orientation="vertical"
-                className={cn("absolute bottom-1 left-1 z-1000", className)}
-                {...props}
-            />
+            <MapControlContainer className={cn("bottom-1 left-1", className)}>
+                <ButtonGroup orientation="vertical" {...props} />
+            </MapControlContainer>
         </MapDrawContext.Provider>
     )
 }
@@ -1284,6 +1291,30 @@ function MapDrawUndo({ className, ...props }: React.ComponentProps<"button">) {
     )
 }
 
+function MapControlContainer({
+    className,
+    ...props
+}: React.ComponentPropsWithoutRef<"div">) {
+    const { L } = useLeaflet()
+    const containerRef = useRef<HTMLDivElement>(null)
+
+    useEffect(() => {
+        if (!L) return
+        const element = containerRef.current
+        if (!element) return
+        L.DomEvent.disableClickPropagation(element)
+        L.DomEvent.disableScrollPropagation(element)
+    }, [L])
+
+    return (
+        <div
+            ref={containerRef}
+            className={cn("absolute z-1000 size-fit cursor-default", className)}
+            {...props}
+        />
+    )
+}
+
 function useMapDrawHandleIcon() {
     const { L } = useLeaflet()
     if (!L) return null
@@ -1349,6 +1380,7 @@ export {
     Map,
     MapCircle,
     MapCircleMarker,
+    MapControlContainer,
     MapDrawCircle,
     MapDrawControl,
     MapDrawDelete,
@@ -1369,6 +1401,7 @@ export {
     MapPolyline,
     MapPopup,
     MapRectangle,
+    MapSearchControl,
     MapTileLayer,
     MapTooltip,
     MapZoomControl,

@@ -16,11 +16,14 @@ import {
     MapMarker,
     MapMarkerClusterGroup,
     MapPopup,
+    MapSearchControl,
     MapTileLayer,
     MapZoomControl,
 } from "@/registry/new-york-v4/ui/map"
 import type { LatLngExpression } from "leaflet"
-import { PinIcon } from "lucide-react"
+import { MapPinIcon, PinIcon } from "lucide-react"
+import React from "react"
+import { useMap } from "react-leaflet"
 import { toast } from "sonner"
 
 export function MapDemo() {
@@ -83,12 +86,15 @@ export function MapDemo() {
                     </MapMarkerClusterGroup>
                 </MapLayerGroup>
             </MapLayers>
-            <MapZoomControl />
-            <MapLocateControl
-                watch
-                onLocationError={(error) => toast.error(error.message)}
-                className="bottom-5"
-            />
+            <MapSearchControlWrapper />
+            <div className="absolute right-1 bottom-5 z-1000 grid gap-1">
+                <MapLocateControl
+                    className="static"
+                    watch
+                    onLocationError={(error) => toast.error(error.message)}
+                />
+                <MapZoomControl className="static" />
+            </div>
             <MapDrawControl>
                 <MapDrawPolyline />
                 <MapDrawPolygon allowIntersection={false} />
@@ -97,5 +103,31 @@ export function MapDemo() {
                 <MapDrawUndo />
             </MapDrawControl>
         </Map>
+    )
+}
+
+function MapSearchControlWrapper() {
+    const map = useMap()
+    const [selectedPosition, setSelectedPosition] =
+        React.useState<LatLngExpression | null>(null)
+
+    React.useEffect(() => {
+        if (!selectedPosition) return
+        map.panTo(selectedPosition)
+    }, [selectedPosition])
+
+    return (
+        <>
+            <MapSearchControl
+                onPlaceSelect={(feature) =>
+                    setSelectedPosition(
+                        feature.geometry.coordinates.toReversed() as LatLngExpression
+                    )
+                }
+            />
+            {selectedPosition && (
+                <MapMarker position={selectedPosition} icon={<MapPinIcon />} />
+            )}
+        </>
     )
 }

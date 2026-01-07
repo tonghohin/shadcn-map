@@ -19,7 +19,12 @@ export const ui: Registry["items"] = [
             "@types/leaflet-draw",
             "@types/leaflet.markercluster",
         ],
-        registryDependencies: ["button", "button-group", "dropdown-menu"],
+        registryDependencies: [
+            "button",
+            "button-group",
+            "dropdown-menu",
+            "https://shadcn-place-autocomplete.vercel.app/r/place-autocomplete.json",
+        ],
         css: {
             "@layer base": {
                 ".leaflet-container": {

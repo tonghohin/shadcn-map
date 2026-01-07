@@ -1,0 +1,13 @@
+{
+    "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+    "name": "map-with-custom-control-container",
+    "type": "registry:example",
+    "registryDependencies": ["map"],
+    "files": [
+        {
+            "path": "registry/new-york-v4/examples/map-with-custom-control-container.tsx",
+            "content": "import {\n    Map,\n    MapControlContainer,\n    MapMarker,\n    MapTileLayer,\n} from \"@/registry/new-york-v4/ui/map\"\nimport type { LatLngExpression } from \"leaflet\"\nimport { CircleIcon } from \"lucide-react\"\n\nexport function MapWithCustomControlContainer() {\n    const STATUS_CLASS_NAME = {\n        active: \"text-green-700 fill-green-700\",\n        inactive: \"text-destructive fill-destructive\",\n        warning: \"text-yellow-600 fill-yellow-600\",\n    }\n    const LOCATIONS = [\n        {\n            id: 1,\n            coordinates: [40.785091, -73.968285],\n            status: \"active\",\n        },\n        {\n            id: 2,\n            coordinates: [40.758896, -73.98513],\n            status: \"inactive\",\n        },\n        {\n            id: 3,\n            coordinates: [40.748817, -73.985428],\n            status: \"warning\",\n        },\n    ] satisfies {\n        id: number\n        coordinates: LatLngExpression\n        status: \"active\" | \"inactive\" | \"warning\"\n    }[]\n\n    return (\n        <Map center={LOCATIONS[1].coordinates} zoom={12}>\n            <MapTileLayer />\n            {LOCATIONS.map((location) => (\n                <MapMarker\n                    key={location.id}\n                    position={location.coordinates}\n                    icon={\n                        <CircleIcon\n                            size={8}\n                            className={STATUS_CLASS_NAME[location.status]}\n                        />\n                    }\n                />\n            ))}\n            <MapControlContainer className=\"bg-popover text-popover-foreground bottom-1 left-1 flex flex-col gap-2 rounded-md border p-2 shadow\">\n                {([\"active\", \"inactive\", \"warning\"] as const).map((status) => (\n                    <p key={status} className=\"flex items-center gap-2\">\n                        <CircleIcon\n                            size={8}\n                            className={STATUS_CLASS_NAME[status]}\n                        />\n                        {status.charAt(0).toUpperCase() + status.slice(1)}\n                    </p>\n                ))}\n            </MapControlContainer>\n        </Map>\n    )\n}\n",
+            "type": "registry:example"
+        }
+    ]
+}
