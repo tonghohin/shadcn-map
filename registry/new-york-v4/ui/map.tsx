@@ -719,34 +719,35 @@ function MapZoomControl({ className, ...props }: React.ComponentProps<"div">) {
     })
 
     return (
-        <ButtonGroup
-            orientation="vertical"
-            aria-label="Zoom controls"
-            className={cn("absolute top-1 left-1 z-1000 h-fit", className)}
-            {...props}>
-            <Button
-                type="button"
-                size="icon-sm"
-                variant="secondary"
-                aria-label="Zoom in"
-                title="Zoom in"
-                className="border"
-                disabled={zoomLevel >= map.getMaxZoom()}
-                onClick={() => map.zoomIn()}>
-                <PlusIcon />
-            </Button>
-            <Button
-                type="button"
-                size="icon-sm"
-                variant="secondary"
-                aria-label="Zoom out"
-                title="Zoom out"
-                className="border"
-                disabled={zoomLevel <= map.getMinZoom()}
-                onClick={() => map.zoomOut()}>
-                <MinusIcon />
-            </Button>
-        </ButtonGroup>
+        <MapControlContainer className={cn("top-1 left-1", className)}>
+            <ButtonGroup
+                orientation="vertical"
+                aria-label="Zoom controls"
+                {...props}>
+                <Button
+                    type="button"
+                    size="icon-sm"
+                    variant="secondary"
+                    aria-label="Zoom in"
+                    title="Zoom in"
+                    className="border"
+                    disabled={zoomLevel >= map.getMaxZoom()}
+                    onClick={() => map.zoomIn()}>
+                    <PlusIcon />
+                </Button>
+                <Button
+                    type="button"
+                    size="icon-sm"
+                    variant="secondary"
+                    aria-label="Zoom out"
+                    title="Zoom out"
+                    className="border"
+                    disabled={zoomLevel <= map.getMinZoom()}
+                    onClick={() => map.zoomOut()}>
+                    <MinusIcon />
+                </Button>
+            </ButtonGroup>
+        </MapControlContainer>
     )
 }
 
@@ -797,12 +798,10 @@ function MapLocateControl({
         setIsLocating(false)
     }
 
-    useEffect(() => {
-        return () => stopLocating()
-    }, [])
+    useEffect(() => () => stopLocating(), [])
 
     return (
-        <>
+        <MapControlContainer className={cn("right-1 bottom-1", className)}>
             <Button
                 type="button"
                 size="icon-sm"
@@ -823,10 +822,7 @@ function MapLocateControl({
                           ? "Stop location tracking"
                           : "Start location tracking"
                 }
-                className={cn(
-                    "absolute right-1 bottom-1 z-1000 border",
-                    className
-                )}
+                className="border"
                 {...props}>
                 {isLocating ? (
                     <LoaderCircleIcon className="animate-spin" />
@@ -837,7 +833,7 @@ function MapLocateControl({
             {position && (
                 <MapMarker position={position} icon={<MapLocatePulseIcon />} />
             )}
-        </>
+        </MapControlContainer>
     )
 }
 
@@ -925,11 +921,9 @@ function MapDrawControl({
                 deleteControlRef,
             }}>
             <LeafletFeatureGroup ref={featureGroupRef} />
-            <ButtonGroup
-                orientation="vertical"
-                className={cn("absolute bottom-1 left-1 z-1000", className)}
-                {...props}
-            />
+            <MapControlContainer className={cn("bottom-1 left-1", className)}>
+                <ButtonGroup orientation="vertical" {...props} />
+            </MapControlContainer>
         </MapDrawContext.Provider>
     )
 }
@@ -1315,7 +1309,7 @@ function MapControlContainer({
     return (
         <div
             ref={containerRef}
-            className={cn("absolute z-1000", className)}
+            className={cn("absolute z-1000 size-fit", className)}
             {...props}
         />
     )
