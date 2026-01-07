@@ -1,0 +1,13 @@
+{
+    "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+    "name": "map-with-search-control-results-change",
+    "type": "registry:example",
+    "registryDependencies": ["map"],
+    "files": [
+        {
+            "path": "registry/new-york-v4/examples/map-with-search-control-results-change.tsx",
+            "content": "\"use client\"\n\nimport {\n    Map,\n    MapMarker,\n    MapSearchControl,\n    MapTileLayer,\n} from \"@/registry/new-york-v4/ui/map\"\nimport type { PlaceFeature } from \"@/registry/new-york-v4/ui/place-autocomplete\"\nimport type { LatLngExpression } from \"leaflet\"\nimport { MapPinIcon } from \"lucide-react\"\nimport React from \"react\"\n\nexport function MapWithSearchControlResultsChange() {\n    const TORONTO_COORDINATES = [43.6532, -79.3832] satisfies LatLngExpression\n\n    const [searchResults, setSearchResults] = React.useState<PlaceFeature[]>([])\n\n    return (\n        <Map center={TORONTO_COORDINATES} zoom={2}>\n            <MapTileLayer />\n            <MapSearchControl\n                onResultsChange={(results) => setSearchResults(results)}\n            />\n            {searchResults.map((result) => (\n                <MapMarker\n                    key={result.properties.osm_id}\n                    position={\n                        result.geometry.coordinates.toReversed() as LatLngExpression\n                    }\n                    icon={<MapPinIcon />}\n                />\n            ))}\n        </Map>\n    )\n}\n",
+            "type": "registry:example"
+        }
+    ]
+}

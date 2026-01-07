@@ -13,6 +13,10 @@ import {
     DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "@/registry/new-york-v4/ui/dropdown-menu"
+import {
+    PlaceAutocomplete,
+    type PlaceAutocompleteProps,
+} from "@/registry/new-york-v4/ui/place-autocomplete"
 import type { CheckboxItem } from "@radix-ui/react-dropdown-menu"
 import type {
     Circle,
@@ -837,6 +841,15 @@ function MapLocateControl({
     )
 }
 
+function MapSearchControl({ className, ...props }: PlaceAutocompleteProps) {
+    return (
+        <MapControlContainer
+            className={cn("top-1 left-1 z-1001 w-60", className)}>
+            <PlaceAutocomplete {...props} />
+        </MapControlContainer>
+    )
+}
+
 type MapDrawShape = "marker" | "polyline" | "circle" | "rectangle" | "polygon"
 type MapDrawAction = "edit" | "delete"
 type MapDrawMode = MapDrawShape | MapDrawAction | null
@@ -1284,6 +1297,30 @@ function MapDrawUndo({ className, ...props }: React.ComponentProps<"button">) {
     )
 }
 
+function MapControlContainer({
+    className,
+    ...props
+}: React.ComponentPropsWithoutRef<"div">) {
+    const { L } = useLeaflet()
+    const containerRef = useRef<HTMLDivElement>(null)
+
+    useEffect(() => {
+        if (!L) return
+        const element = containerRef.current
+        if (!element) return
+        L.DomEvent.disableClickPropagation(element)
+        L.DomEvent.disableScrollPropagation(element)
+    }, [L])
+
+    return (
+        <div
+            ref={containerRef}
+            className={cn("absolute z-1000", className)}
+            {...props}
+        />
+    )
+}
+
 function useMapDrawHandleIcon() {
     const { L } = useLeaflet()
     if (!L) return null
@@ -1349,6 +1386,7 @@ export {
     Map,
     MapCircle,
     MapCircleMarker,
+    MapControlContainer,
     MapDrawCircle,
     MapDrawControl,
     MapDrawDelete,
@@ -1369,6 +1407,7 @@ export {
     MapPolyline,
     MapPopup,
     MapRectangle,
+    MapSearchControl,
     MapTileLayer,
     MapTooltip,
     MapZoomControl,

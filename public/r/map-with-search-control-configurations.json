@@ -1,0 +1,13 @@
+{
+    "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+    "name": "map-with-search-control-configurations",
+    "type": "registry:example",
+    "registryDependencies": ["map"],
+    "files": [
+        {
+            "path": "registry/new-york-v4/examples/map-with-search-control-configurations.tsx",
+            "content": "import {\n    Map,\n    MapSearchControl,\n    MapTileLayer,\n} from \"@/registry/new-york-v4/ui/map\"\nimport type { LatLngExpression } from \"leaflet\"\n\nexport function MapWithSearchControlConfigurations() {\n    const TORONTO_COORDINATES = [43.6532, -79.3832] satisfies LatLngExpression\n\n    return (\n        <Map center={TORONTO_COORDINATES} zoom={2}>\n            <MapTileLayer />\n            <MapSearchControl limit={10} lang=\"en\" />\n        </Map>\n    )\n}\n",
+            "type": "registry:example"
+        }
+    ]
+}

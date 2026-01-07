@@ -1,0 +1,41 @@
+---
+title: Search Control
+description: Search for places on the map.
+component: true
+---
+
+<ComponentPreview
+    name="map-with-search-control"
+    description="A map with search control"
+/>
+
+## Accessing Selected Place
+
+You can pass an optional `onPlaceSelect` callback to the search control to receive the place selected by the user from the autocomplete results.
+
+If you need to perform actions on the map after a place is selected (such as panning, zooming, or adding a marker), you must wrap the search control in a **client-side wrapper component** because `useMap` can only be used inside a `Map` container.
+
+In the example below, a client wrapper component listens for place selection, pans the map to the selected location, and renders a marker.
+
+<ComponentPreview
+    name="map-with-search-control-place-select"
+    description="A map with search control that handles selected place"
+/>
+
+## Accessing Search Results
+
+You can pass an optional `onResultsChange` callback to the search control to receive the search results. You can use this callback to access the results and, for example, display markers on the map for each result.
+
+<ComponentPreview
+    name="map-with-search-control-results-change"
+    description="A map with search control that handles search results change"
+/>
+
+## Search Configurations
+
+You can configure the search using props supported by [Shadcn Place Autocomplete](https://shadcn-place-autocomplete.vercel.app/), such as limiting the number of results, setting the preferred language, or adjusting other autocomplete behavior.
+
+<ComponentPreview
+    name="map-with-search-control-configurations"
+    description="A map with search control that uses search configurations"
+/>

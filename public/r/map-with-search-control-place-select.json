@@ -1,0 +1,13 @@
+{
+    "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+    "name": "map-with-search-control-place-select",
+    "type": "registry:example",
+    "registryDependencies": ["map"],
+    "files": [
+        {
+            "path": "registry/new-york-v4/examples/map-with-search-control-place-select.tsx",
+            "content": "\"use client\"\n\nimport {\n    Map,\n    MapMarker,\n    MapSearchControl,\n    MapTileLayer,\n} from \"@/registry/new-york-v4/ui/map\"\nimport type { LatLngExpression } from \"leaflet\"\nimport { MapPinIcon } from \"lucide-react\"\nimport React from \"react\"\nimport { useMap } from \"react-leaflet\"\n\nexport function MapWithSearchControlPlaceSelect() {\n    const TORONTO_COORDINATES = [43.6532, -79.3832] satisfies LatLngExpression\n\n    return (\n        <Map center={TORONTO_COORDINATES}>\n            <MapTileLayer />\n            <MapSearchControlWrapper />\n        </Map>\n    )\n}\n\nfunction MapSearchControlWrapper() {\n    const map = useMap()\n    const [selectedPosition, setSelectedPosition] =\n        React.useState<LatLngExpression | null>(null)\n\n    React.useEffect(() => {\n        if (!selectedPosition) return\n        map.panTo(selectedPosition)\n    }, [selectedPosition])\n\n    return (\n        <>\n            <MapSearchControl\n                onPlaceSelect={(feature) =>\n                    setSelectedPosition(\n                        feature.geometry.coordinates.toReversed() as LatLngExpression\n                    )\n                }\n            />\n            {selectedPosition && (\n                <MapMarker position={selectedPosition} icon={<MapPinIcon />} />\n            )}\n        </>\n    )\n}\n",
+            "type": "registry:example"
+        }
+    ]
+}

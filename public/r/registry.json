@@ -20,7 +20,12 @@
                 "@types/leaflet-draw",
                 "@types/leaflet.markercluster"
             ],
-            "registryDependencies": ["button", "button-group", "dropdown-menu"],
+            "registryDependencies": [
+                "button",
+                "button-group",
+                "dropdown-menu",
+                "https://shadcn-place-autocomplete.vercel.app/r/place-autocomplete.json"
+            ],
             "files": [
                 {
                     "path": "registry/new-york-v4/ui/map.tsx",
@@ -351,6 +356,50 @@
             "files": [
                 {
                     "path": "registry/new-york-v4/examples/map-with-draw-control-specific-shapes.tsx",
+                    "type": "registry:example"
+                }
+            ]
+        },
+        {
+            "name": "map-with-search-control",
+            "type": "registry:example",
+            "registryDependencies": ["map"],
+            "files": [
+                {
+                    "path": "registry/new-york-v4/examples/map-with-search-control.tsx",
+                    "type": "registry:example"
+                }
+            ]
+        },
+        {
+            "name": "map-with-search-control-place-select",
+            "type": "registry:example",
+            "registryDependencies": ["map"],
+            "files": [
+                {
+                    "path": "registry/new-york-v4/examples/map-with-search-control-place-select.tsx",
+                    "type": "registry:example"
+                }
+            ]
+        },
+        {
+            "name": "map-with-search-control-results-change",
+            "type": "registry:example",
+            "registryDependencies": ["map"],
+            "files": [
+                {
+                    "path": "registry/new-york-v4/examples/map-with-search-control-results-change.tsx",
+                    "type": "registry:example"
+                }
+            ]
+        },
+        {
+            "name": "map-with-search-control-configurations",
+            "type": "registry:example",
+            "registryDependencies": ["map"],
+            "files": [
+                {
+                    "path": "registry/new-york-v4/examples/map-with-search-control-configurations.tsx",
                     "type": "registry:example"
                 }
             ]
