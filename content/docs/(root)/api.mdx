@@ -186,6 +186,15 @@ The `MapSearchControl` component uses [Shadcn Place Autocomplete](https://shadcn
 | -------- | ------------------------ | ------------------------------------------------------------------------------------------ |
 | ...props | `PlaceAutocompleteProps` | All props from [Shadcn Place Autocomplete](https://shadcn-place-autocomplete.vercel.app/). |
 
+### MapControlContainer
+
+The `MapControlContainer` component is a wrapper for map controls that automatically prevents clicks and scroll events from propagating to the map.  
+It is useful for buttons, search inputs, or any other UI elements placed on the map that should **not trigger map zooming, panning, or other interactions**.
+
+| Prop     | Type                          | Description                        |
+| -------- | ----------------------------- | ---------------------------------- |
+| ...props | `React.ComponentProps<"div">` | All props for the container `div`. |
+
 ## Drawing
 
 ### MapDrawControl

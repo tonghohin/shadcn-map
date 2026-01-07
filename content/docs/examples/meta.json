@@ -13,6 +13,7 @@
         "locate-control",
         "search-control",
         "draw-control",
-        "custom-control-position"
+        "custom-control-position",
+        "custom-control-container"
     ]
 }

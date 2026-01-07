@@ -1309,7 +1309,7 @@ function MapControlContainer({
     return (
         <div
             ref={containerRef}
-            className={cn("absolute z-1000 size-fit", className)}
+            className={cn("absolute z-1000 size-fit cursor-default", className)}
             {...props}
         />
     )

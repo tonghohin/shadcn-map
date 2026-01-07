@@ -1,0 +1,13 @@
+---
+title: Custom Control Container
+description: Prevents unintended map interactions when interacting with the controls.
+component: true
+---
+
+You are encouraged to wrap any custom UI on the map with `MapControlContainer`.
+Without this container, interacting with the UI—such as double-clicking, dragging, or scrolling—can unintentionally trigger map actions, like panning or zooming.
+
+<ComponentPreview
+    name="map-with-custom-control-container"
+    description="A map with a custom control container"
+/>

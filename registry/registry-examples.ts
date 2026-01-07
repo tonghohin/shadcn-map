@@ -320,4 +320,15 @@ export const examples: Registry["items"] = [
             },
         ],
     },
+    {
+        name: "map-with-custom-control-container",
+        type: "registry:example",
+        registryDependencies: ["map"],
+        files: [
+            {
+                path: "examples/map-with-custom-control-container.tsx",
+                type: "registry:example",
+            },
+        ],
+    },
 ]
