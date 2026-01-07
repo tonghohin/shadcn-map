@@ -6,7 +6,7 @@
     "files": [
         {
             "path": "registry/new-york-v4/examples/map-with-custom-control-position.tsx",
-            "content": "import {\n    Map,\n    MapLocateControl,\n    MapTileLayer,\n    MapZoomControl,\n} from \"@/registry/new-york-v4/ui/map\"\nimport type { LatLngExpression } from \"leaflet\"\n\nexport function MapWithCustomControlPosition() {\n    const TORONTO_COORDINATES = [43.6532, -79.3832] satisfies LatLngExpression\n\n    return (\n        <Map center={TORONTO_COORDINATES}>\n            <MapTileLayer />\n            <MapZoomControl className=\"top-auto right-1 bottom-1 left-auto\" />\n            <MapLocateControl className=\"top-1\" />\n        </Map>\n    )\n}\n",
+            "content": "import {\n    Map,\n    MapLocateControl,\n    MapTileLayer,\n    MapZoomControl,\n} from \"@/registry/new-york-v4/ui/map\"\nimport type { LatLngExpression } from \"leaflet\"\n\nexport function MapWithCustomControlPosition() {\n    const TORONTO_COORDINATES = [43.6532, -79.3832] satisfies LatLngExpression\n\n    return (\n        <Map center={TORONTO_COORDINATES}>\n            <MapTileLayer />\n            <MapZoomControl className=\"top-auto right-1 bottom-1 left-auto\" />\n            <MapLocateControl className=\"top-1 bottom-auto\" />\n        </Map>\n    )\n}\n",
             "type": "registry:example"
         }
     ]
