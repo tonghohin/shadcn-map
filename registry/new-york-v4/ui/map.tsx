@@ -62,9 +62,10 @@ import {
     WaypointsIcon,
 } from "lucide-react"
 import { useTheme } from "next-themes"
-import dynamic from "next/dynamic"
-import {
+import React, {
+    Suspense,
     createContext,
+    lazy,
     useContext,
     useEffect,
     useRef,
@@ -92,58 +93,95 @@ import {
 import type { MarkerClusterGroupProps } from "react-leaflet-markercluster"
 import "react-leaflet-markercluster/styles"
 
-const LeafletMapContainer = dynamic(
-    async () => (await import("react-leaflet")).MapContainer,
-    { ssr: false }
+function createLazyComponent<T extends ComponentType<any>>(
+    factory: () => Promise<{ default: T }>
+) {
+    const LazyComponent = lazy(factory)
+
+    return (props: React.ComponentProps<T>) => {
+        const [isMounted, setIsMounted] = useState(false)
+
+        useEffect(() => {
+            setIsMounted(true)
+        }, [])
+
+        if (!isMounted) {
+            return null
+        }
+
+        return (
+            <Suspense>
+                <LazyComponent {...props} />
+            </Suspense>
+        )
+    }
+}
+
+const LeafletMapContainer = createLazyComponent(() =>
+    import("react-leaflet").then((mod) => ({
+        default: mod.MapContainer,
+    }))
 )
-const LeafletTileLayer = dynamic(
-    async () => (await import("react-leaflet")).TileLayer,
-    { ssr: false }
+const LeafletTileLayer = createLazyComponent(() =>
+    import("react-leaflet").then((mod) => ({
+        default: mod.TileLayer,
+    }))
 )
-const LeafletMarker = dynamic(
-    async () => (await import("react-leaflet")).Marker,
-    { ssr: false }
+const LeafletMarker = createLazyComponent(() =>
+    import("react-leaflet").then((mod) => ({
+        default: mod.Marker,
+    }))
 )
-const LeafletPopup = dynamic(
-    async () => (await import("react-leaflet")).Popup,
-    { ssr: false }
+const LeafletPopup = createLazyComponent(() =>
+    import("react-leaflet").then((mod) => ({
+        default: mod.Popup,
+    }))
 )
-const LeafletTooltip = dynamic(
-    async () => (await import("react-leaflet")).Tooltip,
-    { ssr: false }
+const LeafletTooltip = createLazyComponent(() =>
+    import("react-leaflet").then((mod) => ({
+        default: mod.Tooltip,
+    }))
 )
-const LeafletCircle = dynamic(
-    async () => (await import("react-leaflet")).Circle,
-    { ssr: false }
+const LeafletCircle = createLazyComponent(() =>
+    import("react-leaflet").then((mod) => ({
+        default: mod.Circle,
+    }))
 )
-const LeafletCircleMarker = dynamic(
-    async () => (await import("react-leaflet")).CircleMarker,
-    { ssr: false }
+const LeafletCircleMarker = createLazyComponent(() =>
+    import("react-leaflet").then((mod) => ({
+        default: mod.CircleMarker,
+    }))
 )
-const LeafletPolyline = dynamic(
-    async () => (await import("react-leaflet")).Polyline,
-    { ssr: false }
+const LeafletPolyline = createLazyComponent(() =>
+    import("react-leaflet").then((mod) => ({
+        default: mod.Polyline,
+    }))
 )
-const LeafletPolygon = dynamic(
-    async () => (await import("react-leaflet")).Polygon,
-    { ssr: false }
+const LeafletPolygon = createLazyComponent(() =>
+    import("react-leaflet").then((mod) => ({
+        default: mod.Polygon,
+    }))
 )
-const LeafletRectangle = dynamic(
-    async () => (await import("react-leaflet")).Rectangle,
-    { ssr: false }
+const LeafletRectangle = createLazyComponent(() =>
+    import("react-leaflet").then((mod) => ({
+        default: mod.Rectangle,
+    }))
 )
-const LeafletLayerGroup = dynamic(
-    async () => (await import("react-leaflet")).LayerGroup,
-    { ssr: false }
+const LeafletLayerGroup = createLazyComponent(() =>
+    import("react-leaflet").then((mod) => ({
+        default: mod.LayerGroup,
+    }))
 )
-const LeafletFeatureGroup = dynamic(
-    async () => (await import("react-leaflet")).FeatureGroup,
-    { ssr: false }
+const LeafletFeatureGroup = createLazyComponent(() =>
+    import("react-leaflet").then((mod) => ({
+        default: mod.FeatureGroup,
+    }))
 )
-const LeafletMarkerClusterGroup = dynamic(
-    async () => await import("react-leaflet-markercluster"),
-    { ssr: false }
-) as ComponentType<MarkerClusterGroupProps>
+const LeafletMarkerClusterGroup = createLazyComponent(async () =>
+    import("react-leaflet-markercluster").then((mod) => ({
+        default: mod.default,
+    }))
+)
 
 function Map({
     zoom = 15,
@@ -1351,7 +1389,7 @@ function useLeaflet() {
 function useDebounceLoadingState(delay = 200) {
     const [isLoading, setIsLoading] = useState(false)
     const [showLoading, setShowLoading] = useState(false)
-    const timeoutRef = useRef<NodeJS.Timeout | null>(null)
+    const timeoutRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
     useEffect(() => {
         if (isLoading) {
