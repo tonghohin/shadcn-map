@@ -9,9 +9,10 @@ export const ui: Registry["items"] = [
         type: "registry:ui",
         dependencies: [
             "leaflet",
+            "leaflet-draw",
+            "leaflet.markercluster",
             "react-leaflet",
             "react-leaflet-markercluster",
-            "leaflet-draw",
             "next-themes",
         ],
         devDependencies: [
