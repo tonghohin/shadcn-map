@@ -1371,15 +1371,21 @@ function useLeaflet() {
         typeof import("leaflet-draw") | null
     >(null)
 
+    async function loadLeaflet() {
+        if (!L) {
+            const leaflet = await import("leaflet")
+            setL(leaflet)
+        }
+        if (!LeafletDraw) {
+            const leafletDraw = await import("leaflet-draw")
+            setLeafletDraw(leafletDraw)
+        }
+    }
+
     useEffect(() => {
         if (L && LeafletDraw) return
         if (typeof window !== "undefined") {
-            if (!L) {
-                setL(require("leaflet"))
-            }
-            if (!LeafletDraw) {
-                setLeafletDraw(require("leaflet-draw"))
-            }
+            loadLeaflet()
         }
     }, [L, LeafletDraw])
 
