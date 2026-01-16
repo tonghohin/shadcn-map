@@ -1,4 +1,4 @@
 {
     "title": "Basics",
-    "pages": ["index", "api", "usage-without-nextjs"]
+    "pages": ["index", "api"]
 }
