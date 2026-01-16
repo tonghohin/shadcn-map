@@ -10,9 +10,10 @@
             "description": "A map component.",
             "dependencies": [
                 "leaflet",
+                "leaflet-draw",
+                "leaflet.markercluster",
                 "react-leaflet",
                 "react-leaflet-markercluster",
-                "leaflet-draw",
                 "next-themes"
             ],
             "devDependencies": [

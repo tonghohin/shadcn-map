@@ -45,6 +45,9 @@ import type {
     Tooltip,
 } from "leaflet"
 import "leaflet-draw/dist/leaflet.draw.css"
+import type {} from "leaflet.markercluster"
+import "leaflet.markercluster/dist/MarkerCluster.css"
+import "leaflet.markercluster/dist/MarkerCluster.Default.css"
 import "leaflet/dist/leaflet.css"
 import {
     CircleIcon,
@@ -91,7 +94,6 @@ import {
     type TooltipProps,
 } from "react-leaflet"
 import type { MarkerClusterGroupProps } from "react-leaflet-markercluster"
-import "react-leaflet-markercluster/styles"
 
 function createLazyComponent<T extends ComponentType<any>>(
     factory: () => Promise<{ default: T }>
