@@ -167,6 +167,14 @@ The `MapZoomControl` component provides custom zoom buttons for the map.
 | -------- | ----------------------------- | ---------------------------------- |
 | ...props | `React.ComponentProps<"div">` | All props for the container `div`. |
 
+### MapFullscreenControl
+
+The `MapFullscreenControl` component provides a button to toggle fullscreen mode for the map. It uses the `leaflet.fullscreen` library under the hood for robust cross-browser support.
+
+| Prop     | Type                             | Description                         |
+| -------- | -------------------------------- | ----------------------------------- |
+| ...props | `React.ComponentProps<"button">` | All props for the `button` element. |
+
 ### MapLocateControl
 
 The `MapLocateControl` component provides a button to locate the user on the map.

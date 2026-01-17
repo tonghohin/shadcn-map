@@ -331,4 +331,15 @@ export const examples: Registry["items"] = [
             },
         ],
     },
+    {
+        name: "map-with-fullscreen-control",
+        type: "registry:example",
+        registryDependencies: ["map"],
+        files: [
+            {
+                path: "examples/map-with-fullscreen-control.tsx",
+                type: "registry:example",
+            },
+        ],
+    },
 ]
