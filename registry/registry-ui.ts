@@ -11,6 +11,7 @@ export const ui: Registry["items"] = [
             "leaflet",
             "leaflet-draw",
             "leaflet.markercluster",
+            "leaflet.fullscreen",
             "react-leaflet",
             "react-leaflet-markercluster",
             "next-themes",

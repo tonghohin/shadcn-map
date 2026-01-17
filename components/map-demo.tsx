@@ -9,6 +9,7 @@ import {
     MapDrawPolygon,
     MapDrawPolyline,
     MapDrawUndo,
+    MapFullscreenControl,
     MapLayerGroup,
     MapLayers,
     MapLayersControl,
@@ -58,7 +59,10 @@ export function MapDemo() {
             attributionControl
             className="border">
             <MapLayers defaultLayerGroups={["Pin", "Area", "Clustered"]}>
-                <MapLayersControl />
+                <div className="absolute top-1 right-1 z-1000 grid gap-1">
+                    <MapLayersControl className="static" />
+                    <MapFullscreenControl className="static" />
+                </div>
                 <MapTileLayer />
                 <MapTileLayer
                     name="Satellite"

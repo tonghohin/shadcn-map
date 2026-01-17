@@ -45,6 +45,7 @@ import type {
     Tooltip,
 } from "leaflet"
 import "leaflet-draw/dist/leaflet.draw.css"
+import "leaflet.fullscreen/dist/Control.FullScreen.css"
 import type {} from "leaflet.markercluster"
 import "leaflet.markercluster/dist/MarkerCluster.css"
 import "leaflet.markercluster/dist/MarkerCluster.Default.css"
@@ -54,6 +55,8 @@ import {
     LayersIcon,
     LoaderCircleIcon,
     MapPinIcon,
+    MaximizeIcon,
+    MinimizeIcon,
     MinusIcon,
     NavigationIcon,
     PenLineIcon,
@@ -791,6 +794,58 @@ function MapZoomControl({ className, ...props }: React.ComponentProps<"div">) {
     )
 }
 
+function MapFullscreenControl({
+    className,
+    ...props
+}: React.ComponentProps<"button">) {
+    const map = useMap()
+    const [isFullscreen, setIsFullscreen] = useState(false)
+
+    const { L } = useLeaflet()
+
+    useEffect(() => {
+        if (!L) return
+
+        const fullscreenControl = new L.Control.FullScreen()
+        fullscreenControl.addTo(map)
+
+        const container = fullscreenControl.getContainer()
+        if (container) {
+            container.style.display = "none"
+        }
+
+        const handleEnter = () => setIsFullscreen(true)
+        const handleExit = () => setIsFullscreen(false)
+
+        map.on("enterFullscreen", handleEnter)
+        map.on("exitFullscreen", handleExit)
+
+        return () => {
+            fullscreenControl.remove()
+            map.off("enterFullscreen", handleEnter)
+            map.off("exitFullscreen", handleExit)
+        }
+    }, [L, map])
+
+    return (
+        <MapControlContainer className={cn("top-1 right-1", className)}>
+            <Button
+                type="button"
+                size="icon-sm"
+                variant="secondary"
+                onClick={() => map.toggleFullscreen()}
+                aria-label={
+                    isFullscreen ? "Exit fullscreen" : "Enter fullscreen"
+                }
+                title={isFullscreen ? "Exit fullscreen" : "Enter fullscreen"}
+                className="border"
+                {...props}>
+                {isFullscreen ? <MinimizeIcon /> : <MaximizeIcon />}
+            </Button>
+        </MapControlContainer>
+    )
+}
+
 function MapLocatePulseIcon() {
     return (
         <div className="absolute -top-1 -right-1 flex size-3 rounded-full">
@@ -1376,9 +1431,17 @@ function useLeaflet() {
     useEffect(() => {
         async function loadLeaflet() {
             const leaflet = await import("leaflet")
+            const leafletFullscreen = await import("leaflet.fullscreen")
             const leafletDraw = await import("leaflet-draw")
+
+            const L_object = leaflet.default
+            if (L_object.Control && !L_object.Control.FullScreen) {
+                L_object.Control.FullScreen =
+                    leafletFullscreen.default || leafletFullscreen
+            }
+
             setLeafletDraw(leafletDraw)
-            setL(leaflet.default)
+            setL(L_object)
         }
 
         if (L && LeafletDraw) return
@@ -1433,6 +1496,7 @@ export {
     MapDrawRectangle,
     MapDrawUndo,
     MapFeatureGroup,
+    MapFullscreenControl,
     MapLayerGroup,
     MapLayers,
     MapLayersControl,

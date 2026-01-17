@@ -12,6 +12,7 @@
                 "leaflet",
                 "leaflet-draw",
                 "leaflet.markercluster",
+                "leaflet.fullscreen",
                 "react-leaflet",
                 "react-leaflet-markercluster",
                 "next-themes"
@@ -412,6 +413,17 @@
             "files": [
                 {
                     "path": "registry/new-york-v4/examples/map-with-custom-control-container.tsx",
+                    "type": "registry:example"
+                }
+            ]
+        },
+        {
+            "name": "map-with-fullscreen-control",
+            "type": "registry:example",
+            "registryDependencies": ["map"],
+            "files": [
+                {
+                    "path": "registry/new-york-v4/examples/map-with-fullscreen-control.tsx",
                     "type": "registry:example"
                 }
             ]
