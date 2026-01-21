@@ -1238,7 +1238,7 @@ function MapDrawActionButton<T extends EditToolbar.Edit | EditToolbar.Delete>({
     const map = useMap()
     const { featureGroup, activeMode, setActiveMode } = drawContext
     const isActive = activeMode === drawAction
-    const hasFeatures = featureGroup?.getLayers().length ?? 0 > 0
+    const hasFeatures = (featureGroup?.getLayers().length ?? 0) > 0
 
     useEffect(() => {
         if (!L || !featureGroup || !isActive) {
