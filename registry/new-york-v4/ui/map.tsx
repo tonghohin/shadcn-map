@@ -950,6 +950,7 @@ interface MapDrawContextType {
     setActiveMode: (mode: MapDrawMode) => void
     readonly editControlRef: React.RefObject<EditToolbar.Edit | null>
     readonly deleteControlRef: React.RefObject<EditToolbar.Delete | null>
+    readonly layersCount: number
 }
 
 const MapDrawContext = createContext<MapDrawContextType | null>(null)
@@ -971,23 +972,32 @@ function MapDrawControl({
     const editControlRef = useRef<EditToolbar.Edit | null>(null)
     const deleteControlRef = useRef<EditToolbar.Delete | null>(null)
     const [activeMode, setActiveMode] = useState<MapDrawMode>(null)
+    const [layersCount, setLayersCount] = useState(0)
+
+    function updateLayersCount() {
+        if (featureGroupRef.current) {
+            setLayersCount(featureGroupRef.current.getLayers().length)
+        }
+    }
 
     function handleDrawCreated(event: DrawEvents.Created) {
         if (!featureGroupRef.current) return
         const { layer } = event
         featureGroupRef.current.addLayer(layer)
         onLayersChange?.(featureGroupRef.current)
+        updateLayersCount()
         setActiveMode(null)
     }
 
     function handleDrawEditedOrDeleted() {
         if (!featureGroupRef.current) return
         onLayersChange?.(featureGroupRef.current)
+        updateLayersCount()
         setActiveMode(null)
     }
 
     useEffect(() => {
-        if (!L || !LeafletDraw) return
+        if (!L || !LeafletDraw || !map) return
 
         map.on(
             L.Draw.Event.CREATED,
@@ -1014,6 +1024,7 @@ function MapDrawControl({
                 setActiveMode,
                 editControlRef,
                 deleteControlRef,
+                layersCount,
             }}>
             <LeafletFeatureGroup ref={featureGroupRef} />
             <MapControlContainer className={cn("bottom-1 left-1", className)}>
@@ -1236,9 +1247,9 @@ function MapDrawActionButton<T extends EditToolbar.Edit | EditToolbar.Delete>({
 
     const { L } = useLeaflet()
     const map = useMap()
-    const { featureGroup, activeMode, setActiveMode } = drawContext
+    const { featureGroup, activeMode, setActiveMode, layersCount } = drawContext
     const isActive = activeMode === drawAction
-    const hasFeatures = (featureGroup?.getLayers().length ?? 0) > 0
+    const hasFeatures = layersCount > 0
 
     useEffect(() => {
         if (!L || !featureGroup || !isActive) {
@@ -1354,12 +1365,16 @@ function MapDrawUndo({ className, ...props }: React.ComponentProps<"button">) {
     if (!drawContext)
         throw new Error("MapDrawUndo must be used within MapDrawControl")
 
-    const { activeMode, setActiveMode, editControlRef, deleteControlRef } =
-        drawContext
-
+    const {
+        activeMode,
+        setActiveMode,
+        editControlRef,
+        deleteControlRef,
+        layersCount,
+    } = drawContext
     const isInEditMode = activeMode === "edit"
     const isInDeleteMode = activeMode === "delete"
-    const isActive = isInEditMode || isInDeleteMode
+    const isActive = (isInEditMode || isInDeleteMode) && layersCount > 0
 
     function handleUndo() {
         if (isInEditMode) {
