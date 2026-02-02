@@ -20,7 +20,7 @@ export function MapWithComplexCustomControlPosition() {
                 <MapZoomControl className="static" />
                 <MapLocateControl className="static" />
             </div>
-            <MapDrawControl className="top-20 right-1 left-auto">
+            <MapDrawControl position="top-20 right-1">
                 <MapDrawCircle />
                 <MapDrawEdit />
                 <MapDrawUndo />

@@ -71,6 +71,7 @@ The control is only visible if there are **multiple tile layers** or **layer gro
 | ------------------ | -------------------------------- | ------------------------------------------------------------------------------------------------ |
 | `tileLayersLabel`  | `string`                         | Optional. Custom label for the tile layers section in the dropdown menu. Defaults to `Map Type`. |
 | `layerGroupsLabel` | `string`                         | Optional. Custom label for the layer groups section in the dropdown menu. Defaults to `Layers`.  |
+| `position`         | `string`                         | Optional. Custom position for the control. Defaults to `top-1 right-1`.                          |
 | ...props           | `React.ComponentProps<"button">` | All props for the control button element.                                                        |
 
 ## Marker and Popup
@@ -163,17 +164,19 @@ The `MapRectangle` component renders a rectangle on the map.
 
 The `MapZoomControl` component provides custom zoom buttons for the map.
 
-| Prop     | Type                          | Description                        |
-| -------- | ----------------------------- | ---------------------------------- |
-| ...props | `React.ComponentProps<"div">` | All props for the container `div`. |
+| Prop       | Type                          | Description                                                            |
+| ---------- | ----------------------------- | ---------------------------------------------------------------------- |
+| `position` | `string`                      | Optional. Custom position for the control. Defaults to `top-1 left-1`. |
+| ...props   | `React.ComponentProps<"div">` | All props for the container `div`.                                     |
 
 ### MapFullscreenControl
 
 The `MapFullscreenControl` component provides a button to toggle fullscreen mode for the map. It uses the `leaflet.fullscreen` library under the hood for robust cross-browser support.
 
-| Prop     | Type                             | Description                         |
-| -------- | -------------------------------- | ----------------------------------- |
-| ...props | `React.ComponentProps<"button">` | All props for the `button` element. |
+| Prop       | Type                             | Description                                                             |
+| ---------- | -------------------------------- | ----------------------------------------------------------------------- |
+| `position` | `string`                         | Optional. Custom position for the control. Defaults to `top-1 right-1`. |
+| ...props   | `React.ComponentProps<"button">` | All props for the `button` element.                                     |
 
 ### MapLocateControl
 
@@ -184,15 +187,17 @@ The `MapLocateControl` component provides a button to locate the user on the map
 | `watch`           | `boolean`                           | Optional. Whether to continuously watch the user’s location. Defaults to `false`.                                                                      |
 | `onLocationFound` | `(location: LocationEvent) => void` | Optional. Callback fired when the user’s location is found. Receives the [Leaflet LocationEvent](https://leafletjs.com/reference.html#locationevent).  |
 | `onLocationError` | `(error: ErrorEvent) => void`       | Optional. Callback fired when there is an error locating the user. Receives the [Leaflet ErrorEvent](https://leafletjs.com/reference.html#errorevent). |
+| `position`        | `string`                            | Optional. Custom position for the control. Defaults to `right-1 bottom-1`.                                                                             |
 | ...props          | `React.ComponentProps<"button">`    | All props for the `button` element.                                                                                                                    |
 
 ### MapSearchControl
 
 The `MapSearchControl` component uses [Shadcn Place Autocomplete](https://shadcn-place-autocomplete.vercel.app/) under the hood. It provides an autocomplete search input for finding addresses and places and apply the results to the map.
 
-| Prop     | Type                     | Description                                                                                |
-| -------- | ------------------------ | ------------------------------------------------------------------------------------------ |
-| ...props | `PlaceAutocompleteProps` | All props from [Shadcn Place Autocomplete](https://shadcn-place-autocomplete.vercel.app/). |
+| Prop       | Type                     | Description                                                                                |
+| ---------- | ------------------------ | ------------------------------------------------------------------------------------------ |
+| `position` | `string`                 | Optional. Custom position for the control. Defaults to `top-1 left-1`.                     |
+| ...props   | `PlaceAutocompleteProps` | All props from [Shadcn Place Autocomplete](https://shadcn-place-autocomplete.vercel.app/). |
 
 ### MapControlContainer
 
@@ -214,6 +219,7 @@ Place any draw controls (e.g. `MapDrawMarker`, `MapDrawPolyline`, `MapDrawPolygo
 | Prop             | Type                               | Description                                                                                                                                                               |
 | ---------------- | ---------------------------------- | ------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
 | `onLayersChange` | `(layers: L.FeatureGroup) => void` | Optional. Callback fired whenever layers are created, edited, or deleted. Receives the current [Leaflet FeatureGroup](https://leafletjs.com/reference.html#featuregroup). |
+| `position`       | `string`                           | Optional. Custom position for the control. Defaults to `bottom-1 left-1`.                                                                                                 |
 | ...props         | `React.ComponentProps<"div">`      | All props for the container `div`.                                                                                                                                        |
 
 ### MapDrawPolyline

@@ -442,11 +442,13 @@ function MapLayers({
 function MapLayersControl({
     tileLayersLabel = "Map Type",
     layerGroupsLabel = "Layers",
+    position = "top-1 right-1",
     className,
     ...props
 }: React.ComponentProps<"button"> & {
     tileLayersLabel?: string
     layerGroupsLabel?: string
+    position?: string
 }) {
     const layersContext = useMapLayersContext()
     if (!layersContext) {
@@ -491,7 +493,8 @@ function MapLayersControl({
                     aria-label="Select layers"
                     title="Select layers"
                     className={cn(
-                        "absolute top-1 right-1 z-1000 border",
+                        "absolute z-1000 border",
+                        position,
                         className
                     )}
                     {...props}>
@@ -751,7 +754,11 @@ function MapTooltip({
     )
 }
 
-function MapZoomControl({ className, ...props }: React.ComponentProps<"div">) {
+function MapZoomControl({
+    position = "top-1 left-1",
+    className,
+    ...props
+}: React.ComponentProps<"div"> & { position?: string }) {
     const map = useMap()
     const [zoomLevel, setZoomLevel] = useState(map.getZoom())
 
@@ -762,7 +769,7 @@ function MapZoomControl({ className, ...props }: React.ComponentProps<"div">) {
     })
 
     return (
-        <MapControlContainer className={cn("top-1 left-1", className)}>
+        <MapControlContainer className={cn(position, className)}>
             <ButtonGroup
                 orientation="vertical"
                 aria-label="Zoom controls"
@@ -795,9 +802,10 @@ function MapZoomControl({ className, ...props }: React.ComponentProps<"div">) {
 }
 
 function MapFullscreenControl({
+    position = "top-1 right-1",
     className,
     ...props
-}: React.ComponentProps<"button">) {
+}: React.ComponentProps<"button"> & { position?: string }) {
     const map = useMap()
     const [isFullscreen, setIsFullscreen] = useState(false)
 
@@ -828,7 +836,7 @@ function MapFullscreenControl({
     }, [L, map])
 
     return (
-        <MapControlContainer className={cn("top-1 right-1", className)}>
+        <MapControlContainer className={cn(position, className)}>
             <Button
                 type="button"
                 size="icon-sm"
@@ -856,30 +864,31 @@ function MapLocatePulseIcon() {
 }
 
 function MapLocateControl({
-    className,
     watch = false,
     onLocationFound,
     onLocationError,
+    position = "right-1 bottom-1",
+    className,
     ...props
 }: React.ComponentProps<"button"> &
     Pick<LocateOptions, "watch"> & {
         onLocationFound?: (location: LocationEvent) => void
         onLocationError?: (error: ErrorEvent) => void
-    }) {
+    } & { position?: string }) {
     const map = useMap()
     const [isLocating, setIsLocating] = useDebounceLoadingState(200)
-    const [position, setPosition] = useState<LatLngExpression | null>(null)
+    const [location, setLocation] = useState<LatLngExpression | null>(null)
 
     function startLocating() {
         setIsLocating(true)
         map.locate({ setView: true, maxZoom: map.getMaxZoom(), watch })
         map.on("locationfound", (location: LocationEvent) => {
-            setPosition(location.latlng)
+            setLocation(location.latlng)
             setIsLocating(false)
             onLocationFound?.(location)
         })
         map.on("locationerror", (error: ErrorEvent) => {
-            setPosition(null)
+            setLocation(null)
             setIsLocating(false)
             onLocationError?.(error)
         })
@@ -889,31 +898,31 @@ function MapLocateControl({
         map.stopLocate()
         map.off("locationfound")
         map.off("locationerror")
-        setPosition(null)
+        setLocation(null)
         setIsLocating(false)
     }
 
     useEffect(() => () => stopLocating(), [])
 
     return (
-        <MapControlContainer className={cn("right-1 bottom-1", className)}>
+        <MapControlContainer className={cn(position, className)}>
             <Button
                 type="button"
                 size="icon-sm"
-                variant={position ? "default" : "secondary"}
-                onClick={position ? stopLocating : startLocating}
+                variant={location ? "default" : "secondary"}
+                onClick={location ? stopLocating : startLocating}
                 disabled={isLocating}
                 title={
                     isLocating
                         ? "Locating..."
-                        : position
+                        : location
                           ? "Stop tracking"
                           : "Track location"
                 }
                 aria-label={
                     isLocating
                         ? "Locating..."
-                        : position
+                        : location
                           ? "Stop location tracking"
                           : "Start location tracking"
                 }
@@ -925,17 +934,20 @@ function MapLocateControl({
                     <NavigationIcon />
                 )}
             </Button>
-            {position && (
-                <MapMarker position={position} icon={<MapLocatePulseIcon />} />
+            {location && (
+                <MapMarker position={location} icon={<MapLocatePulseIcon />} />
             )}
         </MapControlContainer>
     )
 }
 
-function MapSearchControl({ className, ...props }: PlaceAutocompleteProps) {
+function MapSearchControl({
+    position = "top-1 left-1",
+    className,
+    ...props
+}: PlaceAutocompleteProps & { position?: string }) {
     return (
-        <MapControlContainer
-            className={cn("top-1 left-1 z-1001 w-60", className)}>
+        <MapControlContainer className={cn("z-1001 w-60", position, className)}>
             <PlaceAutocomplete {...props} />
         </MapControlContainer>
     )
@@ -960,11 +972,13 @@ function useMapDrawContext() {
 }
 
 function MapDrawControl({
-    className,
     onLayersChange,
+    position = "bottom-1 left-1",
+    className,
     ...props
 }: React.ComponentProps<"div"> & {
     onLayersChange?: (layers: L.FeatureGroup) => void
+    position?: string
 }) {
     const { L, LeafletDraw } = useLeaflet()
     const map = useMap()
@@ -1027,7 +1041,7 @@ function MapDrawControl({
                 layersCount,
             }}>
             <LeafletFeatureGroup ref={featureGroupRef} />
-            <MapControlContainer className={cn("bottom-1 left-1", className)}>
+            <MapControlContainer className={cn(position, className)}>
                 <ButtonGroup orientation="vertical" {...props} />
             </MapControlContainer>
         </MapDrawContext.Provider>

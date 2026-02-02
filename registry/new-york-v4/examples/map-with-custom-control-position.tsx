@@ -12,8 +12,8 @@ export function MapWithCustomControlPosition() {
     return (
         <Map center={TORONTO_COORDINATES}>
             <MapTileLayer />
-            <MapZoomControl className="top-auto right-1 bottom-1 left-auto" />
-            <MapLocateControl className="top-1 bottom-auto" />
+            <MapZoomControl position="right-1 bottom-1" />
+            <MapLocateControl position="top-1 left-1" />
         </Map>
     )
 }
