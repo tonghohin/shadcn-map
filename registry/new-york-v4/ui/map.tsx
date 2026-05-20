@@ -17,7 +17,6 @@ import {
     PlaceAutocomplete,
     type PlaceAutocompleteProps,
 } from "@/registry/new-york-v4/ui/place-autocomplete"
-import type { CheckboxItem } from "@radix-ui/react-dropdown-menu"
 import type {
     Circle,
     CircleMarker,
@@ -219,7 +218,10 @@ interface MapTileLayerOption {
 }
 
 interface MapLayerGroupOption
-    extends Pick<React.ComponentProps<typeof CheckboxItem>, "disabled"> {
+    extends Pick<
+        React.ComponentProps<typeof DropdownMenuCheckboxItem>,
+        "disabled"
+    > {
     name: string
 }
 
@@ -450,6 +452,7 @@ function MapLayersControl({
     layerGroupsLabel?: string
     position?: string
 }) {
+    const map = useMap()
     const layersContext = useMapLayersContext()
     if (!layersContext) {
         throw new Error("MapLayersControl must be used within MapLayers")
@@ -501,7 +504,10 @@ function MapLayersControl({
                     <LayersIcon />
                 </Button>
             </DropdownMenuTrigger>
-            <DropdownMenuContent align="end" className="z-1000">
+            <DropdownMenuContent
+                align="end"
+                className="z-1000"
+                container={map.getContainer()}>
                 {showTileLayersDropdown && (
                     <>
                         <DropdownMenuLabel>{tileLayersLabel}</DropdownMenuLabel>
