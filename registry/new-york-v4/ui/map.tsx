@@ -262,9 +262,9 @@ function MapTileLayer({
 
     const context = useContext(MapLayersContext)
     const DEFAULT_URL =
-        "https://tiles.stadiamaps.com/tiles/alidade_smooth/{z}/{x}/{y}{r}.png"
+        "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png"
     const DEFAULT_DARK_URL =
-        "https://tiles.stadiamaps.com/tiles/alidade_smooth_dark/{z}/{x}/{y}{r}.png"
+        "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png"
 
     const { resolvedTheme } = useTheme()
     const resolvedUrl =
@@ -275,7 +275,7 @@ function MapTileLayer({
         resolvedTheme === "dark" && darkAttribution
             ? darkAttribution
             : (attribution ??
-              '&copy; <a href="https://www.stadiamaps.com/" target="_blank">Stadia Maps</a> &copy; <a href="https://openmaptiles.org/" target="_blank">OpenMapTiles</a> &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors')
+              '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy; <a href="https://carto.com/attributions">CARTO</a>')
 
     useEffect(() => {
         if (context) {
