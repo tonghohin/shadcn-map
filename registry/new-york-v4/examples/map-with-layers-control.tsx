@@ -80,8 +80,9 @@ export function MapWithLayersControl() {
                 <MapLayersControl />
                 <MapTileLayer />
                 <MapTileLayer
-                    name="Liberty"
+                    name="Colorful"
                     vectorStyleUrl="https://tiles.openfreemap.org/styles/liberty"
+                    darkVectorStyleUrl="https://tiles.openfreemap.org/styles/fiord"
                 />
                 {PLACES.map((placesGroup) => (
                     <MapLayerGroup
