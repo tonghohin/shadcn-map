@@ -10,23 +10,39 @@ component: true
 
 The `Map` component is the main map container. It wraps `react-leaflet`’s `MapContainer` and provides default styles.
 
-| Prop           | Type                                     | Description                                                                                                          |
-| -------------- | ---------------------------------------- | -------------------------------------------------------------------------------------------------------------------- |
-| `center`       | `LatLngExpression`                       | **Required.** The initial center of the map `[lat, lng]`.                                                            |
-| ...other props | `Omit<MapContainerProps, "zoomControl">` | All other props from [React Leaflet MapContainer](https://react-leaflet.js.org/docs/api-map/), except `zoomControl`. |
+| Prop                 | Type                                     | Description                                                                                                                                  |
+| -------------------- | ---------------------------------------- | -------------------------------------------------------------------------------------------------------------------------------------------- |
+| `center`             | `LatLngExpression`                       | **Required.** The initial center of the map `[lat, lng]`.                                                                                    |
+| `minZoom`            | `number`                                 | Optional. Minimum zoom level of the map. Defaults to `1`.                                                                                    |
+| `maxBounds`          | `LatLngBoundsExpression`                 | Optional. Restricts the view to the given bounds. Defaults to `[[180, -Infinity], [-180, Infinity]]`, which prevents panning past the poles. |
+| `maxBoundsViscosity` | `number`                                 | Optional. How solid the bounds are when dragging. Defaults to `1` (fully solid).                                                             |
+| ...other props       | `Omit<MapContainerProps, "zoomControl">` | All other props from [React Leaflet MapContainer](https://react-leaflet.js.org/docs/api-map/), except `zoomControl`.                         |
 
 ### MapTileLayer
 
-The `MapTileLayer` component adds a tile layer to the map. **It is required for the map to be rendered.** It automatically switches between light and dark map styles based on the current theme from `next-themes`. You can provide custom URLs and attributions for both light and dark modes using the `url`, `darkUrl`, `attribution`, and `darkAttribution` props.
+The `MapTileLayer` component adds a base map to the map. **It is required for the map to be rendered.** It automatically switches between light and dark map styles based on the current theme from `next-themes`.
 
-| Prop              | Type             | Description                                                                                                         |
-| ----------------- | ---------------- | ------------------------------------------------------------------------------------------------------------------- |
-| `url`             | `string`         | Optional. URL of the tile server for light mode. Defaults to Carto’s light tiles.                                   |
-| `attribution`     | `string`         | Optional. HTML string for map attribution in light mode. Defaults to OpenStreetMap and CARTO attribution.           |
-| `darkUrl`         | `string`         | Optional. URL of the tile server for dark mode. Defaults to Carto’s dark tiles.                                     |
-| `darkAttribution` | `string`         | Optional. HTML string for map attribution in dark mode. Defaults to OpenStreetMap and CARTO attribution.            |
-| `name`            | `string`         | Optional. Name of the layer, only required when using multiple tile layers with `MapLayers`. Defaults to `Default`. |
-| ...other props    | `TileLayerProps` | All other props from [React Leaflet TileLayer](https://react-leaflet.js.org/docs/api-components/#tilelayer).        |
+By default, it renders [OpenFreeMap](https://openfreemap.org) vector tiles, which require no API key. Vector tiles are rendered with [MapLibre GL](https://maplibre.org) and require WebGL. On devices without WebGL support, it falls back to [OpenStreetMap](https://www.openstreetmap.org) raster tiles. Vector tiles use the attribution defined in their style, while raster tiles use the `rasterAttribution` and `darkRasterAttribution` props.
+
+| Prop                    | Type             | Description                                                                                                                                                                      |
+| ----------------------- | ---------------- | -------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `vectorStyleUrl`        | `string`         | Optional. URL of a [MapLibre style](https://maplibre.org/maplibre-style-spec/) for light mode. Defaults to OpenFreeMap’s Positron style.                                         |
+| `darkVectorStyleUrl`    | `string`         | Optional. URL of a MapLibre style for dark mode. Defaults to `vectorStyleUrl`, or OpenFreeMap’s Dark style if neither is provided.                                               |
+| `rasterUrl`             | `string`         | Optional. URL template of a raster tile server for light mode. Defaults to OpenStreetMap.                                 |
+| `darkRasterUrl`         | `string`         | Optional. URL template of a raster tile server for dark mode. Defaults to OpenStreetMap.                                                                                         |
+| `rasterAttribution`     | `string`         | Optional. HTML string for the raster tiles attribution in light mode. Defaults to OpenStreetMap attribution for the default tiles, and none if you provide your own `rasterUrl`. |
+| `darkRasterAttribution` | `string`         | Optional. HTML string for the raster tiles attribution in dark mode. Defaults to `rasterAttribution`.                                                                            |
+| `name`                  | `string`         | Optional. Name of the layer, only required when using multiple tile layers with `MapLayers`. Defaults to `Default`.                                                              |
+| ...other props          | `TileLayerProps` | All other props from [React Leaflet TileLayer](https://react-leaflet.js.org/docs/api-components/#tilelayer). They only apply to raster tiles, as does `ref`.                     |
+
+Which tiles are rendered depends on the props you provide and whether the device supports WebGL:
+
+| Props provided         | WebGL supported          | WebGL not supported        |
+| ---------------------- | ------------------------ | -------------------------- |
+| None                   | OpenFreeMap vector tiles | OpenStreetMap raster tiles |
+| Raster only            | Your raster tiles        | Your raster tiles          |
+| Vector only            | Your vector tiles        | OpenStreetMap raster tiles |
+| Both vector and raster | Your vector tiles        | Your raster tiles          |
 
 ### MapLayerGroup
 

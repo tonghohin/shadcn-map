@@ -4,7 +4,18 @@ description: Load tiles from different providers or your own tile server.
 component: true
 ---
 
+Pass a raster tile URL template to `rasterUrl` to load tiles from a different provider or your own tile server. Use `darkRasterUrl` to provide different tiles for dark mode.
+
 <ComponentPreview
     name="map-with-custom-tiles"
     description="A map with custom tile"
+/>
+
+## Vector Tiles
+
+Pass a [MapLibre style](https://maplibre.org/maplibre-style-spec/) URL to `vectorStyleUrl` to render vector tiles. Vector tiles require WebGL, so you can also pass a `rasterUrl` to use as a fallback on devices without WebGL support.
+
+<ComponentPreview
+    name="map-with-custom-vector-tiles"
+    description="A map with vector tiles and a raster fallback"
 />

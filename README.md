@@ -1,6 +1,6 @@
 # shadcn/ui Map
 
-A map component built with Leaflet and React Leaflet, designed to integrate with shadcn/ui.
+A map component built with [Leaflet](https://leafletjs.com) and [React Leaflet](https://react-leaflet.js.org), designed to integrate with shadcn/ui. Base maps are rendered as vector tiles from [OpenFreeMap](https://openfreemap.org) with [MapLibre GL](https://maplibre.org), falling back to [OpenStreetMap](https://www.openstreetmap.org) raster tiles when WebGL is not supported. No API key required.
 
 ## Documentation
 

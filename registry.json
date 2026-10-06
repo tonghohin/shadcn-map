@@ -1,432 +1,509 @@
 {
-    "name": "shadcn/map",
-    "homepage": "https://shadcn-map.vercel.app",
-    "items": [
+  "name": "shadcn/map",
+  "homepage": "https://shadcn-map.vercel.app",
+  "items": [
+    {
+      "name": "map",
+      "type": "registry:ui",
+      "title": "Map",
+      "author": "Hin",
+      "description": "A map component.",
+      "dependencies": [
+        "leaflet",
+        "leaflet-draw",
+        "leaflet.markercluster",
+        "leaflet.fullscreen",
+        "react-leaflet",
+        "react-leaflet-markercluster",
+        "next-themes",
+        "maplibre-gl@^5",
+        "@maplibre/maplibre-gl-leaflet"
+      ],
+      "devDependencies": [
+        "@types/leaflet",
+        "@types/leaflet-draw",
+        "@types/leaflet.markercluster"
+      ],
+      "registryDependencies": [
+        "button",
+        "button-group",
+        "dropdown-menu",
+        "https://shadcn-place-autocomplete.vercel.app/r/place-autocomplete.json"
+      ],
+      "files": [
         {
-            "name": "map",
-            "type": "registry:ui",
-            "title": "Map",
-            "author": "Hin",
-            "description": "A map component.",
-            "dependencies": [
-                "leaflet",
-                "leaflet-draw",
-                "leaflet.markercluster",
-                "leaflet.fullscreen",
-                "react-leaflet",
-                "react-leaflet-markercluster",
-                "next-themes"
-            ],
-            "devDependencies": [
-                "@types/leaflet",
-                "@types/leaflet-draw",
-                "@types/leaflet.markercluster"
-            ],
-            "registryDependencies": [
-                "button",
-                "button-group",
-                "dropdown-menu",
-                "https://shadcn-place-autocomplete.vercel.app/r/place-autocomplete.json"
-            ],
-            "files": [
-                {
-                    "path": "registry/new-york-v4/ui/map.tsx",
-                    "type": "registry:ui"
-                }
-            ],
-            "css": {
-                "@layer base": {
-                    ".leaflet-container": {
-                        "@apply !bg-card !font-[inherit]": {}
-                    },
-                    ".leaflet-container a": {
-                        "@apply !text-inherit": {}
-                    },
-                    ".leaflet-div-icon": {
-                        "@apply !bg-transparent !border-none": {}
-                    },
-                    ".leaflet-popup-content-wrapper, .leaflet-popup-content, .leaflet-popup-content p": {
-                        "@apply ![all:unset]": {}
-                    },
-                    ".leaflet-popup": {
-                        "@apply !animate-none": {}
-                    },
-                    ".leaflet-popup-close-button": {
-                        "@apply ring-offset-background focus:ring-ring bg-secondary rounded-xs opacity-70 transition-opacity hover:opacity-100 focus:ring-2 focus:outline-hidden": {}
-                    },
-                    ".leaflet-tooltip, .leaflet-draw-tooltip": {
-                        "@apply !bg-foreground !text-background !animate-none !rounded-md !border-none !p-0 !px-3 !py-1.5 !shadow-none": {}
-                    },
-                    ".leaflet-draw-tooltip:before": {
-                        "@apply bg-foreground !top-1/2 !right-0.5 size-2.5 translate-x-1/2 -translate-y-1/2 rotate-45 rounded-[2px] !border-none": {}
-                    },
-                    ".leaflet-error-draw-tooltip": {
-                        "@apply !bg-destructive !text-white": {}
-                    },
-                    ".leaflet-error-draw-tooltip:before": {
-                        "@apply bg-destructive": {}
-                    },
-                    ".leaflet-draw-tooltip-subtext": {
-                        "@apply !text-background": {}
-                    },
-                    ".leaflet-popup-tip-container, .leaflet-tooltip-top:before, .leaflet-tooltip-bottom:before, .leaflet-tooltip-left:before, .leaflet-tooltip-right:before": {
-                        "@apply hidden": {}
-                    },
-                    ".leaflet-control-attribution": {
-                        "@apply !bg-muted rounded-md !px-[4px] !py-[2px] text-[10px] !leading-none !text-inherit": {}
-                    },
-                    ".leaflet-draw-guide-dash": {
-                        "@apply rounded-full": {}
-                    },
-                    ".leaflet-edit-marker-selected": {
-                        "@apply !border-transparent !bg-transparent": {}
-                    },
-                    ".marker-cluster div": {
-                        "@apply font-[inherit]": {}
-                    }
-                }
-            }
-        },
-        {
-            "name": "basic-map",
-            "type": "registry:example",
-            "registryDependencies": ["map"],
-            "files": [
-                {
-                    "path": "registry/new-york-v4/examples/basic-map.tsx",
-                    "type": "registry:example"
-                }
-            ]
-        },
-        {
-            "name": "map-with-custom-tiles",
-            "type": "registry:example",
-            "registryDependencies": ["map"],
-            "files": [
-                {
-                    "path": "registry/new-york-v4/examples/map-with-custom-tiles.tsx",
-                    "type": "registry:example"
-                }
-            ]
-        },
-        {
-            "name": "map-with-markers",
-            "type": "registry:example",
-            "registryDependencies": ["map"],
-            "files": [
-                {
-                    "path": "registry/new-york-v4/examples/map-with-markers.tsx",
-                    "type": "registry:example"
-                }
-            ]
-        },
-        {
-            "name": "map-with-marker-cluster-group",
-            "type": "registry:example",
-            "registryDependencies": ["map"],
-            "files": [
-                {
-                    "path": "registry/new-york-v4/examples/map-with-marker-cluster-group.tsx",
-                    "type": "registry:example"
-                }
-            ]
-        },
-        {
-            "name": "map-with-custom-marker-cluster-group",
-            "type": "registry:example",
-            "registryDependencies": ["map"],
-            "files": [
-                {
-                    "path": "registry/new-york-v4/examples/map-with-custom-marker-cluster-group.tsx",
-                    "type": "registry:example"
-                }
-            ]
-        },
-        {
-            "name": "map-with-custom-markers",
-            "type": "registry:example",
-            "registryDependencies": ["map"],
-            "files": [
-                {
-                    "path": "registry/new-york-v4/examples/map-with-custom-markers.tsx",
-                    "type": "registry:example"
-                }
-            ]
-        },
-        {
-            "name": "map-with-circle",
-            "type": "registry:example",
-            "registryDependencies": ["map"],
-            "files": [
-                {
-                    "path": "registry/new-york-v4/examples/map-with-circle.tsx",
-                    "type": "registry:example"
-                }
-            ]
-        },
-        {
-            "name": "map-with-circle-marker",
-            "type": "registry:example",
-            "registryDependencies": ["map"],
-            "files": [
-                {
-                    "path": "registry/new-york-v4/examples/map-with-circle-marker.tsx",
-                    "type": "registry:example"
-                }
-            ]
-        },
-        {
-            "name": "map-with-polyline",
-            "type": "registry:example",
-            "registryDependencies": ["map"],
-            "files": [
-                {
-                    "path": "registry/new-york-v4/examples/map-with-polyline.tsx",
-                    "type": "registry:example"
-                }
-            ]
-        },
-        {
-            "name": "map-with-polygon",
-            "type": "registry:example",
-            "registryDependencies": ["map"],
-            "files": [
-                {
-                    "path": "registry/new-york-v4/examples/map-with-polygon.tsx",
-                    "type": "registry:example"
-                }
-            ]
-        },
-        {
-            "name": "map-with-rectangle",
-            "type": "registry:example",
-            "registryDependencies": ["map"],
-            "files": [
-                {
-                    "path": "registry/new-york-v4/examples/map-with-rectangle.tsx",
-                    "type": "registry:example"
-                }
-            ]
-        },
-        {
-            "name": "map-with-styled-shapes",
-            "type": "registry:example",
-            "registryDependencies": ["map"],
-            "files": [
-                {
-                    "path": "registry/new-york-v4/examples/map-with-styled-shapes.tsx",
-                    "type": "registry:example"
-                }
-            ]
-        },
-        {
-            "name": "map-with-popups-and-tooltips",
-            "type": "registry:example",
-            "registryDependencies": ["map"],
-            "files": [
-                {
-                    "path": "registry/new-york-v4/examples/map-with-popups-and-tooltips.tsx",
-                    "type": "registry:example"
-                }
-            ]
-        },
-        {
-            "name": "map-with-zoom-control",
-            "type": "registry:example",
-            "registryDependencies": ["map"],
-            "files": [
-                {
-                    "path": "registry/new-york-v4/examples/map-with-zoom-control.tsx",
-                    "type": "registry:example"
-                }
-            ]
-        },
-        {
-            "name": "map-with-layers-control",
-            "type": "registry:example",
-            "registryDependencies": ["map"],
-            "files": [
-                {
-                    "path": "registry/new-york-v4/examples/map-with-layers-control.tsx",
-                    "type": "registry:example"
-                }
-            ]
-        },
-        {
-            "name": "map-with-tile-layers-control",
-            "type": "registry:example",
-            "registryDependencies": ["map"],
-            "files": [
-                {
-                    "path": "registry/new-york-v4/examples/map-with-tile-layers-control.tsx",
-                    "type": "registry:example"
-                }
-            ]
-        },
-        {
-            "name": "map-with-layer-groups-control",
-            "type": "registry:example",
-            "registryDependencies": ["map"],
-            "files": [
-                {
-                    "path": "registry/new-york-v4/examples/map-with-layer-groups-control.tsx",
-                    "type": "registry:example"
-                }
-            ]
-        },
-        {
-            "name": "map-with-feature-groups-control",
-            "type": "registry:example",
-            "registryDependencies": ["map"],
-            "files": [
-                {
-                    "path": "registry/new-york-v4/examples/map-with-feature-groups-control.tsx",
-                    "type": "registry:example"
-                }
-            ]
-        },
-        {
-            "name": "map-with-locate-control",
-            "type": "registry:example",
-            "registryDependencies": ["map"],
-            "files": [
-                {
-                    "path": "registry/new-york-v4/examples/map-with-locate-control.tsx",
-                    "type": "registry:example"
-                }
-            ]
-        },
-        {
-            "name": "map-with-locate-control-callbacks",
-            "type": "registry:example",
-            "registryDependencies": ["map"],
-            "files": [
-                {
-                    "path": "registry/new-york-v4/examples/map-with-locate-control-callbacks.tsx",
-                    "type": "registry:example"
-                }
-            ]
-        },
-        {
-            "name": "map-with-custom-control-position",
-            "type": "registry:example",
-            "registryDependencies": ["map"],
-            "files": [
-                {
-                    "path": "registry/new-york-v4/examples/map-with-custom-control-position.tsx",
-                    "type": "registry:example"
-                }
-            ]
-        },
-        {
-            "name": "map-with-complex-custom-control-position",
-            "type": "registry:example",
-            "registryDependencies": ["map"],
-            "files": [
-                {
-                    "path": "registry/new-york-v4/examples/map-with-complex-custom-control-position.tsx",
-                    "type": "registry:example"
-                }
-            ]
-        },
-        {
-            "name": "map-with-draw-control",
-            "type": "registry:example",
-            "registryDependencies": ["map"],
-            "files": [
-                {
-                    "path": "registry/new-york-v4/examples/map-with-draw-control.tsx",
-                    "type": "registry:example"
-                }
-            ]
-        },
-        {
-            "name": "map-with-draw-control-callback",
-            "type": "registry:example",
-            "registryDependencies": ["map"],
-            "files": [
-                {
-                    "path": "registry/new-york-v4/examples/map-with-draw-control-callback.tsx",
-                    "type": "registry:example"
-                }
-            ]
-        },
-        {
-            "name": "map-with-draw-control-specific-shapes",
-            "type": "registry:example",
-            "registryDependencies": ["map"],
-            "files": [
-                {
-                    "path": "registry/new-york-v4/examples/map-with-draw-control-specific-shapes.tsx",
-                    "type": "registry:example"
-                }
-            ]
-        },
-        {
-            "name": "map-with-search-control",
-            "type": "registry:example",
-            "registryDependencies": ["map"],
-            "files": [
-                {
-                    "path": "registry/new-york-v4/examples/map-with-search-control.tsx",
-                    "type": "registry:example"
-                }
-            ]
-        },
-        {
-            "name": "map-with-search-control-place-select",
-            "type": "registry:example",
-            "registryDependencies": ["map"],
-            "files": [
-                {
-                    "path": "registry/new-york-v4/examples/map-with-search-control-place-select.tsx",
-                    "type": "registry:example"
-                }
-            ]
-        },
-        {
-            "name": "map-with-search-control-results-change",
-            "type": "registry:example",
-            "registryDependencies": ["map"],
-            "files": [
-                {
-                    "path": "registry/new-york-v4/examples/map-with-search-control-results-change.tsx",
-                    "type": "registry:example"
-                }
-            ]
-        },
-        {
-            "name": "map-with-search-control-configurations",
-            "type": "registry:example",
-            "registryDependencies": ["map"],
-            "files": [
-                {
-                    "path": "registry/new-york-v4/examples/map-with-search-control-configurations.tsx",
-                    "type": "registry:example"
-                }
-            ]
-        },
-        {
-            "name": "map-with-custom-control-container",
-            "type": "registry:example",
-            "registryDependencies": ["map"],
-            "files": [
-                {
-                    "path": "registry/new-york-v4/examples/map-with-custom-control-container.tsx",
-                    "type": "registry:example"
-                }
-            ]
-        },
-        {
-            "name": "map-with-fullscreen-control",
-            "type": "registry:example",
-            "registryDependencies": ["map"],
-            "files": [
-                {
-                    "path": "registry/new-york-v4/examples/map-with-fullscreen-control.tsx",
-                    "type": "registry:example"
-                }
-            ]
+          "path": "registry/new-york-v4/ui/map.tsx",
+          "type": "registry:ui"
         }
-    ]
+      ],
+      "css": {
+        "@layer base": {
+          ".leaflet-container": {
+            "@apply !bg-card !font-[inherit]": {}
+          },
+          ".leaflet-container a": {
+            "@apply !text-inherit": {}
+          },
+          ".leaflet-div-icon": {
+            "@apply !bg-transparent !border-none": {}
+          },
+          ".leaflet-popup-content-wrapper, .leaflet-popup-content, .leaflet-popup-content p": {
+            "@apply ![all:unset]": {}
+          },
+          ".leaflet-popup": {
+            "@apply !animate-none": {}
+          },
+          ".leaflet-popup-close-button": {
+            "@apply ring-offset-background focus:ring-ring bg-secondary rounded-xs opacity-70 transition-opacity hover:opacity-100 focus:ring-2 focus:outline-hidden": {}
+          },
+          ".leaflet-tooltip, .leaflet-draw-tooltip": {
+            "@apply !bg-foreground !text-background !animate-none !rounded-md !border-none !p-0 !px-3 !py-1.5 !shadow-none": {}
+          },
+          ".leaflet-draw-tooltip:before": {
+            "@apply bg-foreground !top-1/2 !right-0.5 size-2.5 translate-x-1/2 -translate-y-1/2 rotate-45 rounded-[2px] !border-none": {}
+          },
+          ".leaflet-error-draw-tooltip": {
+            "@apply !bg-destructive !text-white": {}
+          },
+          ".leaflet-error-draw-tooltip:before": {
+            "@apply bg-destructive": {}
+          },
+          ".leaflet-draw-tooltip-subtext": {
+            "@apply !text-background": {}
+          },
+          ".leaflet-popup-tip-container, .leaflet-tooltip-top:before, .leaflet-tooltip-bottom:before, .leaflet-tooltip-left:before, .leaflet-tooltip-right:before": {
+            "@apply hidden": {}
+          },
+          ".leaflet-control-attribution": {
+            "@apply !bg-muted rounded-md !px-[4px] !py-[2px] text-[10px] !leading-none !text-inherit": {}
+          },
+          ".leaflet-draw-guide-dash": {
+            "@apply rounded-full": {}
+          },
+          ".leaflet-edit-marker-selected": {
+            "@apply !border-transparent !bg-transparent": {}
+          },
+          ".marker-cluster div": {
+            "@apply font-[inherit]": {}
+          }
+        }
+      }
+    },
+    {
+      "name": "basic-map",
+      "type": "registry:example",
+      "registryDependencies": [
+        "map"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york-v4/examples/basic-map.tsx",
+          "type": "registry:example"
+        }
+      ]
+    },
+    {
+      "name": "map-with-custom-tiles",
+      "type": "registry:example",
+      "registryDependencies": [
+        "map"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york-v4/examples/map-with-custom-tiles.tsx",
+          "type": "registry:example"
+        }
+      ]
+    },
+    {
+      "name": "map-with-custom-vector-tiles",
+      "type": "registry:example",
+      "registryDependencies": [
+        "map"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york-v4/examples/map-with-custom-vector-tiles.tsx",
+          "type": "registry:example"
+        }
+      ]
+    },
+    {
+      "name": "map-with-markers",
+      "type": "registry:example",
+      "registryDependencies": [
+        "map"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york-v4/examples/map-with-markers.tsx",
+          "type": "registry:example"
+        }
+      ]
+    },
+    {
+      "name": "map-with-marker-cluster-group",
+      "type": "registry:example",
+      "registryDependencies": [
+        "map"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york-v4/examples/map-with-marker-cluster-group.tsx",
+          "type": "registry:example"
+        }
+      ]
+    },
+    {
+      "name": "map-with-custom-marker-cluster-group",
+      "type": "registry:example",
+      "registryDependencies": [
+        "map"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york-v4/examples/map-with-custom-marker-cluster-group.tsx",
+          "type": "registry:example"
+        }
+      ]
+    },
+    {
+      "name": "map-with-custom-markers",
+      "type": "registry:example",
+      "registryDependencies": [
+        "map"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york-v4/examples/map-with-custom-markers.tsx",
+          "type": "registry:example"
+        }
+      ]
+    },
+    {
+      "name": "map-with-circle",
+      "type": "registry:example",
+      "registryDependencies": [
+        "map"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york-v4/examples/map-with-circle.tsx",
+          "type": "registry:example"
+        }
+      ]
+    },
+    {
+      "name": "map-with-circle-marker",
+      "type": "registry:example",
+      "registryDependencies": [
+        "map"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york-v4/examples/map-with-circle-marker.tsx",
+          "type": "registry:example"
+        }
+      ]
+    },
+    {
+      "name": "map-with-polyline",
+      "type": "registry:example",
+      "registryDependencies": [
+        "map"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york-v4/examples/map-with-polyline.tsx",
+          "type": "registry:example"
+        }
+      ]
+    },
+    {
+      "name": "map-with-polygon",
+      "type": "registry:example",
+      "registryDependencies": [
+        "map"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york-v4/examples/map-with-polygon.tsx",
+          "type": "registry:example"
+        }
+      ]
+    },
+    {
+      "name": "map-with-rectangle",
+      "type": "registry:example",
+      "registryDependencies": [
+        "map"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york-v4/examples/map-with-rectangle.tsx",
+          "type": "registry:example"
+        }
+      ]
+    },
+    {
+      "name": "map-with-styled-shapes",
+      "type": "registry:example",
+      "registryDependencies": [
+        "map"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york-v4/examples/map-with-styled-shapes.tsx",
+          "type": "registry:example"
+        }
+      ]
+    },
+    {
+      "name": "map-with-popups-and-tooltips",
+      "type": "registry:example",
+      "registryDependencies": [
+        "map"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york-v4/examples/map-with-popups-and-tooltips.tsx",
+          "type": "registry:example"
+        }
+      ]
+    },
+    {
+      "name": "map-with-zoom-control",
+      "type": "registry:example",
+      "registryDependencies": [
+        "map"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york-v4/examples/map-with-zoom-control.tsx",
+          "type": "registry:example"
+        }
+      ]
+    },
+    {
+      "name": "map-with-layers-control",
+      "type": "registry:example",
+      "registryDependencies": [
+        "map"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york-v4/examples/map-with-layers-control.tsx",
+          "type": "registry:example"
+        }
+      ]
+    },
+    {
+      "name": "map-with-tile-layers-control",
+      "type": "registry:example",
+      "registryDependencies": [
+        "map"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york-v4/examples/map-with-tile-layers-control.tsx",
+          "type": "registry:example"
+        }
+      ]
+    },
+    {
+      "name": "map-with-layer-groups-control",
+      "type": "registry:example",
+      "registryDependencies": [
+        "map"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york-v4/examples/map-with-layer-groups-control.tsx",
+          "type": "registry:example"
+        }
+      ]
+    },
+    {
+      "name": "map-with-feature-groups-control",
+      "type": "registry:example",
+      "registryDependencies": [
+        "map"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york-v4/examples/map-with-feature-groups-control.tsx",
+          "type": "registry:example"
+        }
+      ]
+    },
+    {
+      "name": "map-with-locate-control",
+      "type": "registry:example",
+      "registryDependencies": [
+        "map"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york-v4/examples/map-with-locate-control.tsx",
+          "type": "registry:example"
+        }
+      ]
+    },
+    {
+      "name": "map-with-locate-control-callbacks",
+      "type": "registry:example",
+      "registryDependencies": [
+        "map"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york-v4/examples/map-with-locate-control-callbacks.tsx",
+          "type": "registry:example"
+        }
+      ]
+    },
+    {
+      "name": "map-with-custom-control-position",
+      "type": "registry:example",
+      "registryDependencies": [
+        "map"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york-v4/examples/map-with-custom-control-position.tsx",
+          "type": "registry:example"
+        }
+      ]
+    },
+    {
+      "name": "map-with-complex-custom-control-position",
+      "type": "registry:example",
+      "registryDependencies": [
+        "map"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york-v4/examples/map-with-complex-custom-control-position.tsx",
+          "type": "registry:example"
+        }
+      ]
+    },
+    {
+      "name": "map-with-draw-control",
+      "type": "registry:example",
+      "registryDependencies": [
+        "map"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york-v4/examples/map-with-draw-control.tsx",
+          "type": "registry:example"
+        }
+      ]
+    },
+    {
+      "name": "map-with-draw-control-callback",
+      "type": "registry:example",
+      "registryDependencies": [
+        "map"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york-v4/examples/map-with-draw-control-callback.tsx",
+          "type": "registry:example"
+        }
+      ]
+    },
+    {
+      "name": "map-with-draw-control-specific-shapes",
+      "type": "registry:example",
+      "registryDependencies": [
+        "map"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york-v4/examples/map-with-draw-control-specific-shapes.tsx",
+          "type": "registry:example"
+        }
+      ]
+    },
+    {
+      "name": "map-with-search-control",
+      "type": "registry:example",
+      "registryDependencies": [
+        "map"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york-v4/examples/map-with-search-control.tsx",
+          "type": "registry:example"
+        }
+      ]
+    },
+    {
+      "name": "map-with-search-control-place-select",
+      "type": "registry:example",
+      "registryDependencies": [
+        "map"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york-v4/examples/map-with-search-control-place-select.tsx",
+          "type": "registry:example"
+        }
+      ]
+    },
+    {
+      "name": "map-with-search-control-results-change",
+      "type": "registry:example",
+      "registryDependencies": [
+        "map"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york-v4/examples/map-with-search-control-results-change.tsx",
+          "type": "registry:example"
+        }
+      ]
+    },
+    {
+      "name": "map-with-search-control-configurations",
+      "type": "registry:example",
+      "registryDependencies": [
+        "map"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york-v4/examples/map-with-search-control-configurations.tsx",
+          "type": "registry:example"
+        }
+      ]
+    },
+    {
+      "name": "map-with-custom-control-container",
+      "type": "registry:example",
+      "registryDependencies": [
+        "map"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york-v4/examples/map-with-custom-control-container.tsx",
+          "type": "registry:example"
+        }
+      ]
+    },
+    {
+      "name": "map-with-fullscreen-control",
+      "type": "registry:example",
+      "registryDependencies": [
+        "map"
+      ],
+      "files": [
+        {
+          "path": "registry/new-york-v4/examples/map-with-fullscreen-control.tsx",
+          "type": "registry:example"
+        }
+      ]
+    }
+  ]
 }

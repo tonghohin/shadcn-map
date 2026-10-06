@@ -3,7 +3,7 @@ export const siteConfig = {
     url: "https://shadcn-map.vercel.app",
     title: "A Map Component for shadcn/ui",
     description:
-        "Bring beautiful maps to your shadcn/ui projects. Built with Leaflet and React Leaflet.",
+        "Bring beautiful maps to your shadcn/ui projects. Built with Leaflet, React Leaflet and MapLibre GL.",
     links: {
         website: "https://tonghohin.vercel.app",
         github: "https://github.com/tonghohin/shadcn-map",

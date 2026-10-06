@@ -17,6 +17,7 @@ import {
     PlaceAutocomplete,
     type PlaceAutocompleteProps,
 } from "@/registry/new-york-v4/ui/place-autocomplete"
+import type {} from "@maplibre/maplibre-gl-leaflet"
 import type {
     Circle,
     CircleMarker,
@@ -33,6 +34,7 @@ import type {
     Map as LeafletMap,
     LocateOptions,
     LocationEvent,
+    MaplibreGL,
     Marker,
     MarkerCluster,
     PointExpression,
@@ -66,6 +68,8 @@ import {
     Undo2Icon,
     WaypointsIcon,
 } from "lucide-react"
+import type { Map as MaplibreMap } from "maplibre-gl"
+import "maplibre-gl/dist/maplibre-gl.css"
 import { useTheme } from "next-themes"
 import React, {
     Suspense,
@@ -189,7 +193,13 @@ const LeafletMarkerClusterGroup = createLazyComponent(async () =>
 
 function Map({
     zoom = 15,
+    minZoom = 1,
     maxZoom = 18,
+    maxBounds = [
+        [180, -Infinity],
+        [-180, Infinity],
+    ],
+    maxBoundsViscosity = 1,
     className,
     ...props
 }: Omit<MapContainerProps, "zoomControl"> & {
@@ -199,7 +209,10 @@ function Map({
     return (
         <LeafletMapContainer
             zoom={zoom}
+            minZoom={minZoom}
             maxZoom={maxZoom}
+            maxBounds={maxBounds}
+            maxBoundsViscosity={maxBoundsViscosity}
             attributionControl={false}
             zoomControl={false}
             className={cn(
@@ -211,10 +224,173 @@ function Map({
     )
 }
 
+const DEFAULT_VECTOR_STYLE_URL = "https://tiles.openfreemap.org/styles/positron"
+const DEFAULT_DARK_VECTOR_STYLE_URL =
+    "https://tiles.openfreemap.org/styles/dark"
+const DEFAULT_RASTER_URL = "https://tile.openstreetmap.org/{z}/{x}/{y}.png"
+const DEFAULT_RASTER_ATTRIBUTION =
+    '&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a>'
+
+interface MapTileSourceProps {
+    vectorStyleUrl?: string
+    darkVectorStyleUrl?: string
+    rasterUrl?: string
+    darkRasterUrl?: string
+    rasterAttribution?: string
+    darkRasterAttribution?: string
+}
+
+type MapTileSource =
+    // No attribution needed: vector styles define it in their sources
+    | { type: "vector"; styleUrl: string }
+    | { type: "raster"; url: string; attribution?: string }
+
+function resolveTileSource({
+    isDark,
+    webglSupported,
+    vectorStyleUrl,
+    darkVectorStyleUrl,
+    rasterUrl,
+    darkRasterUrl,
+    rasterAttribution,
+    darkRasterAttribution,
+}: MapTileSourceProps & {
+    isDark: boolean
+    webglSupported: boolean
+}): MapTileSource {
+    const userStyleUrl = isDark
+        ? (darkVectorStyleUrl ?? vectorStyleUrl)
+        : vectorStyleUrl
+    const userRasterUrl = isDark ? (darkRasterUrl ?? rasterUrl) : rasterUrl
+    const userRasterAttribution = isDark
+        ? (darkRasterAttribution ?? rasterAttribution)
+        : rasterAttribution
+
+    if (webglSupported && (userStyleUrl || !userRasterUrl)) {
+        return {
+            type: "vector",
+            styleUrl:
+                userStyleUrl ??
+                (isDark
+                    ? DEFAULT_DARK_VECTOR_STYLE_URL
+                    : DEFAULT_VECTOR_STYLE_URL),
+        }
+    }
+
+    return userRasterUrl
+        ? {
+              type: "raster",
+              url: userRasterUrl,
+              attribution: userRasterAttribution,
+          }
+        : {
+              type: "raster",
+              url: DEFAULT_RASTER_URL,
+              attribution: userRasterAttribution ?? DEFAULT_RASTER_ATTRIBUTION,
+          }
+}
+
+function getStyleAttribution(glMap: MaplibreMap) {
+    return Object.keys(glMap.getStyle()?.sources ?? {})
+        .map((sourceId) => glMap.getSource(sourceId)?.attribution)
+        .filter(Boolean)
+        .join(", ")
+}
+
+function MapVectorLayer({
+    styleUrl,
+    onError,
+}: {
+    styleUrl: string
+    onError: () => void
+}) {
+    const map = useMap()
+    const layerRef = useRef<MaplibreGL | null>(null)
+    const styleUrlRef = useRef(styleUrl)
+    const onErrorRef = useRef(onError)
+
+    useEffect(() => {
+        onErrorRef.current = onError
+    }, [onError])
+
+    useEffect(() => {
+        styleUrlRef.current = styleUrl
+        layerRef.current?.getMaplibreMap()?.setStyle(styleUrl)
+    }, [styleUrl])
+
+    useEffect(() => {
+        let cancelled = false
+        let contextLostTimeout: ReturnType<typeof setTimeout> | undefined
+        // The attribution is managed here rather than by maplibre-gl-leaflet,
+        // so it updates when the style changes and is removed with the layer
+        let attribution = ""
+
+        function removeLayer(layer: MaplibreGL, isBroken = false) {
+            if (isBroken) {
+                // A layer that failed to initialize has no GL map to clean up
+                layer.onRemove = function (this: MaplibreGL) {
+                    this.getContainer()?.remove()
+                    return this
+                }
+            }
+            map.removeLayer(layer)
+        }
+
+        async function addLayer() {
+            const { maplibreGL } = await import("@maplibre/maplibre-gl-leaflet")
+            if (cancelled) return
+
+            const layer = maplibreGL({
+                style: styleUrlRef.current,
+                attributionControl: false,
+            })
+
+            try {
+                layer.addTo(map)
+            } catch {
+                removeLayer(layer, true)
+                onErrorRef.current()
+                return
+            }
+
+            const glMap = layer.getMaplibreMap()
+            glMap.on("webglcontextlost", () => {
+                contextLostTimeout = setTimeout(
+                    () => onErrorRef.current(),
+                    3000
+                )
+            })
+            glMap.on("webglcontextrestored", () => {
+                clearTimeout(contextLostTimeout)
+            })
+            glMap.on("idle", () => {
+                const nextAttribution = getStyleAttribution(glMap)
+                if (nextAttribution === attribution) return
+                map.attributionControl?.removeAttribution(attribution)
+                map.attributionControl?.addAttribution(nextAttribution)
+                attribution = nextAttribution
+            })
+            layerRef.current = layer
+        }
+
+        addLayer()
+
+        return () => {
+            cancelled = true
+            clearTimeout(contextLostTimeout)
+            map.attributionControl?.removeAttribution(attribution)
+            if (layerRef.current) {
+                removeLayer(layerRef.current)
+                layerRef.current = null
+            }
+        }
+    }, [map])
+
+    return null
+}
+
 interface MapTileLayerOption {
     name: string
-    url: string
-    attribution?: string
 }
 
 interface MapLayerGroupOption
@@ -244,57 +420,79 @@ function useMapLayersContext() {
 
 function MapTileLayer({
     name = "Default",
+    vectorStyleUrl,
+    darkVectorStyleUrl,
+    rasterUrl,
+    darkRasterUrl,
+    rasterAttribution,
+    darkRasterAttribution,
     url,
-    attribution,
     darkUrl,
+    attribution,
     darkAttribution,
     ...props
-}: Partial<TileLayerProps> & {
-    name?: string
-    darkUrl?: string
-    darkAttribution?: string
-    ref?: Ref<TileLayer>
-}) {
+}: Omit<Partial<TileLayerProps>, "url" | "attribution"> &
+    MapTileSourceProps & {
+        name?: string
+        /** @deprecated Use `rasterUrl` instead. */
+        url?: string
+        /** @deprecated Use `darkRasterUrl` instead. */
+        darkUrl?: string
+        /** @deprecated Use `rasterAttribution` instead. */
+        attribution?: string
+        /** @deprecated Use `darkRasterAttribution` instead. */
+        darkAttribution?: string
+        /** Only applies to raster tiles. */
+        ref?: Ref<TileLayer>
+    }) {
     const map = useMap()
     if (map.attributionControl) {
         map.attributionControl.setPrefix("")
     }
 
     const context = useContext(MapLayersContext)
-    const DEFAULT_URL =
-        "https://{s}.basemaps.cartocdn.com/light_all/{z}/{x}/{y}.png"
-    const DEFAULT_DARK_URL =
-        "https://{s}.basemaps.cartocdn.com/dark_all/{z}/{x}/{y}.png"
-
     const { resolvedTheme } = useTheme()
-    const resolvedUrl =
-        resolvedTheme === "dark"
-            ? (darkUrl ?? url ?? DEFAULT_DARK_URL)
-            : (url ?? DEFAULT_URL)
-    const resolvedAttribution =
-        resolvedTheme === "dark" && darkAttribution
-            ? darkAttribution
-            : (attribution ??
-              '&copy; <a href="http://www.openstreetmap.org/copyright">OpenStreetMap</a>, &copy; <a href="https://carto.com/attributions">CARTO</a>')
+    const isWebGLSupported = useWebGLSupport()
+    const [isVectorFailed, setIsVectorFailed] = useState(false)
 
     useEffect(() => {
         if (context) {
-            context.registerTileLayer({
-                name,
-                url: resolvedUrl,
-                attribution: resolvedAttribution,
-            })
+            context.registerTileLayer({ name })
         }
-    }, [context, name, url, attribution])
+    }, [context, name])
 
     if (context && context.selectedTileLayer !== name) {
         return null
     }
 
+    if (isWebGLSupported === null) {
+        return null
+    }
+
+    const source = resolveTileSource({
+        isDark: resolvedTheme === "dark",
+        webglSupported: isWebGLSupported && !isVectorFailed,
+        vectorStyleUrl,
+        darkVectorStyleUrl,
+        rasterUrl: rasterUrl ?? url,
+        darkRasterUrl: darkRasterUrl ?? darkUrl,
+        rasterAttribution: rasterAttribution ?? attribution,
+        darkRasterAttribution: darkRasterAttribution ?? darkAttribution,
+    })
+
+    if (source.type === "vector") {
+        return (
+            <MapVectorLayer
+                styleUrl={source.styleUrl}
+                onError={() => setIsVectorFailed(true)}
+            />
+        )
+    }
+
     return (
         <LeafletTileLayer
-            url={resolvedUrl}
-            attribution={resolvedAttribution}
+            url={source.url}
+            attribution={source.attribution}
             {...props}
         />
     )
@@ -1486,6 +1684,32 @@ function useLeaflet() {
     }, [L, LeafletDraw])
 
     return { L, LeafletDraw }
+}
+
+let isWebGLSupportedCache: boolean | undefined
+
+function isWebGLSupported() {
+    if (isWebGLSupportedCache === undefined) {
+        try {
+            const canvas = document.createElement("canvas")
+            const gl = canvas.getContext("webgl2") ?? canvas.getContext("webgl")
+            isWebGLSupportedCache = !!gl
+            gl?.getExtension("WEBGL_lose_context")?.loseContext()
+        } catch {
+            isWebGLSupportedCache = false
+        }
+    }
+    return isWebGLSupportedCache
+}
+
+function useWebGLSupport() {
+    const [isSupported, setIsSupported] = useState<boolean | null>(null)
+
+    useEffect(() => {
+        setIsSupported(isWebGLSupported())
+    }, [])
+
+    return isSupported
 }
 
 function useDebounceLoadingState(delay = 200) {

@@ -1,0 +1,13 @@
+{
+    "$schema": "https://ui.shadcn.com/schema/registry-item.json",
+    "name": "map-with-custom-vector-tiles",
+    "type": "registry:example",
+    "registryDependencies": ["map"],
+    "files": [
+        {
+            "path": "registry/new-york-v4/examples/map-with-custom-vector-tiles.tsx",
+            "content": "import { Map, MapTileLayer } from \"@/registry/new-york-v4/ui/map\"\nimport type { LatLngExpression } from \"leaflet\"\n\nexport function MapWithCustomVectorTiles() {\n    const TORONTO_COORDINATES = [43.6532, -79.3832] satisfies LatLngExpression\n\n    return (\n        <Map center={TORONTO_COORDINATES} zoom={13}>\n            <MapTileLayer\n                vectorStyleUrl=\"https://tiles.openfreemap.org/styles/liberty\"\n                rasterUrl=\"https://tile.openstreetmap.org/{z}/{x}/{y}.png\"\n                rasterAttribution='&copy; <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a>'\n            />\n        </Map>\n    )\n}\n",
+            "type": "registry:example"
+        }
+    ]
+}
