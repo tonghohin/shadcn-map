@@ -24,6 +24,17 @@ export const examples: Registry["items"] = [
         ],
     },
     {
+        name: "map-with-custom-vector-tiles",
+        type: "registry:example",
+        registryDependencies: ["map"],
+        files: [
+            {
+                path: "examples/map-with-custom-vector-tiles.tsx",
+                type: "registry:example",
+            },
+        ],
+    },
+    {
         name: "map-with-markers",
         type: "registry:example",
         registryDependencies: ["map"],

@@ -15,7 +15,9 @@
                 "leaflet.fullscreen",
                 "react-leaflet",
                 "react-leaflet-markercluster",
-                "next-themes"
+                "next-themes",
+                "maplibre-gl@^5",
+                "@maplibre/maplibre-gl-leaflet"
             ],
             "devDependencies": [
                 "@types/leaflet",
@@ -105,6 +107,17 @@
             "files": [
                 {
                     "path": "registry/new-york-v4/examples/map-with-custom-tiles.tsx",
+                    "type": "registry:example"
+                }
+            ]
+        },
+        {
+            "name": "map-with-custom-vector-tiles",
+            "type": "registry:example",
+            "registryDependencies": ["map"],
+            "files": [
+                {
+                    "path": "registry/new-york-v4/examples/map-with-custom-vector-tiles.tsx",
                     "type": "registry:example"
                 }
             ]

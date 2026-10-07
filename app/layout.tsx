@@ -25,6 +25,8 @@ export const metadata: Metadata = {
         "map",
         "leaflet",
         "react leaflet",
+        "maplibre",
+        "openfreemap",
     ],
     authors: [
         {

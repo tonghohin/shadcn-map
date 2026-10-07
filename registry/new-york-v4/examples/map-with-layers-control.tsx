@@ -80,9 +80,9 @@ export function MapWithLayersControl() {
                 <MapLayersControl />
                 <MapTileLayer />
                 <MapTileLayer
-                    name="No Labels"
-                    url="https://{s}.basemaps.cartocdn.com/light_nolabels/{z}/{x}/{y}{r}.png"
-                    darkUrl="https://{s}.basemaps.cartocdn.com/dark_nolabels/{z}/{x}/{y}{r}.png"
+                    name="Colorful"
+                    vectorStyleUrl="https://tiles.openfreemap.org/styles/liberty"
+                    darkVectorStyleUrl="https://tiles.openfreemap.org/styles/fiord"
                 />
                 {PLACES.map((placesGroup) => (
                     <MapLayerGroup

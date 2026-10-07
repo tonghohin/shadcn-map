@@ -15,6 +15,8 @@ export const ui: Registry["items"] = [
             "react-leaflet",
             "react-leaflet-markercluster",
             "next-themes",
+            "maplibre-gl@^5",
+            "@maplibre/maplibre-gl-leaflet",
         ],
         devDependencies: [
             "@types/leaflet",
